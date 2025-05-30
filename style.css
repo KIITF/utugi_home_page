@@ -9,7 +9,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f0f0; /* 全体の背景色 */
+    background-color: #f0f0f0;
 }
 
 /* ギャラリーコンテナ */
@@ -17,56 +17,64 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%; /* 親であるbodyの幅に合わせる */
-    position: relative; /* 子要素のposition:absoluteの基準 */
+    width: 100%;
+    position: relative;
+    /* ポインターイベントをデフォルトに戻す（子要素のクリックを妨げない） */
+    pointer-events: auto; 
 }
 
 /* 壁と床が一体となった背景静止画 */
 .wall-background {
-    position: absolute; /* 親(gallery-container)を基準に配置 */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* 画面全体に広がる */
+    height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
     transition: opacity 0.5s ease-out;
-    z-index: 1; /* 最背面 */
+    z-index: 1;
+    pointer-events: none; /* クリックを透過させる */
 }
 
 /* 壁と床が一体となった移動時の動画 */
 .wall-video {
-    position: absolute; /* 親(gallery-container)を基準に配置 */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* 画面全体に広がる */
+    height: 100%;
     object-fit: cover;
-    opacity: 0; /* 初期は非表示 */
+    opacity: 0;
     transition: opacity 0.5s ease-out;
-    z-index: 2; /* 静止画より手前 */
+    z-index: 2;
+    pointer-events: none; /* クリックを透過させる */
 }
 
 /* 壁エリア - 画像ギャラリーの表示領域 */
 .wall-area {
-    height: 85%; /* 画面上1.5割を床と見立てるため */
+    height: 85%;
     position: relative;
     overflow: hidden;
-    z-index: 3; /* 背景動画/静止画より手前 */
+    z-index: 3;
+    /* wall-area自身もクリックを透過させる。ギャラリーアイテムがクリックされるように */
+    pointer-events: none; 
 }
 
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
 .gallery-inner {
     display: flex;
-    align-items: center; /* 垂直方向の中央揃え */
-    height: 100%; /* wall-areaの高さに合わせる */
+    align-items: center;
+    height: 100%;
     transform: translateX(0);
     transition: transform 0.5s ease-out;
-    position: relative; /* wall-areaの左端に固定 */
+    position: relative;
     left: 0;
     will-change: transform;
-    z-index: 4; /* wall-areaより手前 */
+    z-index: 4;
+    /* ギャラリーアイテム自体はクリックできるように */
+    pointer-events: auto; 
 }
 
 /* 各画像アイテム（額縁） - 変更なし */
@@ -81,6 +89,8 @@ html, body {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 0 40px;
+    /* 額縁はクリック可能 */
+    pointer-events: auto;
 }
 
 .gallery-item img {
@@ -91,7 +101,7 @@ html, body {
     transition: transform 0.3s ease;
 }
 
-/* ホバー時のオーバーレイとタイトル - 変更なし */
+/* ホバー時のオーバーレイとタイトル */
 .gallery-item .overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6); display: flex; flex-direction: column;
@@ -109,13 +119,15 @@ html, body {
 
 /* 床エリア - 矢印の配置のため */
 .floor-area {
-    height: 15%; /* wall-areaの残り */
-    background-color: transparent; /* 透過を維持 */
+    height: 15%;
+    background-color: transparent;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 5; /* ギャラリーアイテムより手前 */
+    z-index: 5;
+    /* floor-area自身もクリックを透過させる。矢印がクリックされるように */
+    pointer-events: none; 
 }
 
 /* ナビゲーション矢印 */
@@ -127,7 +139,9 @@ html, body {
     padding: 0 20px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 100; /* 最前面 */
+    z-index: 100;
+    /* 矢印はクリック可能 */
+    pointer-events: auto; 
 }
 
 .arrow {
