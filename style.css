@@ -32,8 +32,8 @@ html, body {
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
 .gallery-inner {
     display: flex; /* 横一列に配置 */
-    align-items: center; /* 垂直方向の中央揃え (JSでtopを制御するならコメントアウト) */
-    height: 100%;
+    align-items: center; /* 垂直方向の中央揃え */
+    height: 100%; /* 壁の高さに合わせる */
     transform: translateX(0);
     transition: transform 0.5s ease-out;
     position: absolute; /* 左端からスタート */
@@ -46,7 +46,7 @@ html, body {
     cursor: pointer;
     text-decoration: none;
     flex-shrink: 0; /* アイテムが縮まないように */
-    position: absolute; /* JSでtop/leftを制御するため */
+    /* position: absolute; を削除 - Flexboxで位置制御 */
 
     /* 額縁のスタイル */
     padding: 10px; /* 白枠の厚み */
@@ -56,6 +56,7 @@ html, body {
 
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 40px; /* アイテム間の基本的な左右マージン */
 }
 
 .gallery-item img {
