@@ -31,14 +31,13 @@ html, body {
 
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
 .gallery-inner {
-    /* display: flex; を削除 */
     height: 100%;
     transform: translateX(0);
     transition: transform 0.5s ease-out;
     position: absolute; /* 左端からスタート */
     left: 0;
     will-change: transform;
-    padding: 0 50vw; /* 両端に余白を持たせて、ギャラリーの最初と最後が見切れないように */
+    /* padding: 0 50vw; はJSで調整されるため不要 */
 }
 
 /* 各画像アイテム（額縁） */
@@ -74,7 +73,7 @@ html, body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
-    flex-direction: column; /* テキストが複数行になる可能性を考慮 */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -89,14 +88,14 @@ html, body {
 
 .gallery-item .overlay-text {
     color: white;
-    font-size: 1.1em; /* 少し小さくして複数行でも収まりやすく */
+    font-size: 1.1em;
     font-weight: bold;
     text-align: center;
-    padding: 5px 10px; /* パディングを調整 */
+    padding: 5px 10px;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    line-height: 1.3; /* 行間を調整 */
+    line-height: 1.3;
 }
 
 .gallery-item:hover .overlay-text {
