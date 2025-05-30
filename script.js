@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryInner = document.querySelector('.gallery-inner');
     const leftArrow = document.getElementById('leftArrow');
     const rightArrow = document.getElementById('rightArrow');
-    // wallArea は Y座標の統一により直接使わなくなりますが、参照として残します
-    const wallArea = document.querySelector('.wall-area'); 
 
     // ポートフォリオ画像のリスト、リンク先、タイトル
     const images = [
@@ -22,9 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0; // 現在中央に表示されている画像のインデックス
     const itemMargin = 40; // CSSの.gallery-itemのmargin-left/rightと合わせる
 
-    // 画像の目標となる短辺のサイズ (額縁なしの画像本体のサイズ)
-    // 以前のベースサイズから1.5倍に拡大: (280 * 1.5 = 420)を参考に、調整
-    const fixedBaseImgHeight = 420; // 画像の高さを固定（面積もある程度統一される）
+    // **画像の目標面積 (正方形の辺の長さの2乗として考える)**
+    // 例えば、目標面積が 150000 平方ピクセル (約 387px x 387px)
+    const TARGET_AREA = 150000; 
 
     // 画像を動的にギャラリーに追加
     images.forEach(imageData => {
@@ -66,20 +64,24 @@ document.addEventListener('DOMContentLoaded', () => {
             // 画像の自然なサイズと縦横比
             const naturalWidth = img.naturalWidth;
             const naturalHeight = img.naturalHeight;
-            const aspectRatio = naturalWidth / naturalHeight;
+            const aspectRatio = naturalWidth / naturalHeight; // 幅/高さ
 
-            // 高さを固定値に設定し、幅は縦横比から計算
-            let displayHeight = fixedBaseImgHeight;
-            let displayWidth = displayHeight * aspectRatio;
+            // **面積を固定して幅と高さを計算**
+            // 面積 = 幅 * 高さ
+            // 幅 = 面積 / 高さ
+            // 高さ = 幅 / 縦横比
+            // これらを連立すると、
+            // 幅 = 面積 / (幅 / 縦横比) => 幅^2 = 面積 * 縦横比 => 幅 = sqrt(面積 * 縦横比)
+            // 高さ = 面積 / 幅 => 高さ = 面積 / sqrt(面積 * 縦横比)
+            
+            let displayWidth = Math.sqrt(TARGET_AREA * aspectRatio);
+            let displayHeight = TARGET_AREA / displayWidth;
             
             // アイテム（額縁）の最終的なサイズを設定
             item.style.width = `${displayWidth + totalFrameThickness}px`;
             item.style.height = `${displayHeight + totalFrameThickness}px`;
 
-            // Y座標の調整はFlexboxのalign-items: centerに任せるため、
-            // JavaScriptでのtopやposition設定は削除
-            // もし何らかの理由でわずかにY座標をずらしたい場合は、
-            // item.style.position = 'relative'; と item.style.top = 'XXpx'; を使う
+            // Y座標の調整はFlexboxのalign-items: centerに任せるため、個別の設定は不要
 
             if (loadedImagesCount === images.length) {
                 // すべての画像がロードされた後に、ギャラリーの初期位置を設定
@@ -144,12 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 目標のアイテムの中心がビューポート中央に来るように移動量を計算
         const targetItem = galleryItems[targetIndex];
-        // offsetLeft は padding を含む galleryInner の左端からの位置
         const targetItemOffsetFromGalleryInnerStart = targetItem.offsetLeft;
         const targetItemWidth = targetItem.offsetWidth;
         const viewportCenter = window.innerWidth / 2;
 
-        // 目標の移動量: ビューポートの中央 - (アイテムのgalleryInnerからの開始位置 + アイテムの幅の半分 + galleryInnerのpaddingLeft)
+        // moveDistance: ビューポートの中央 - (アイテムのgalleryInnerからの開始位置 + アイテムの幅の半分 + galleryInnerのpaddingLeft)
         let moveDistance = viewportCenter - (targetItemOffsetFromGalleryInnerStart + (targetItemWidth / 2) + parseFloat(getComputedStyle(galleryInner).paddingLeft));
 
         // 限界値を計算
@@ -157,9 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const minTranslateX = (window.innerWidth / 2) - (galleryInner.scrollWidth - parseFloat(getComputedStyle(galleryInner).paddingRight) - (galleryItems[galleryItems.length - 1].offsetWidth / 2)); // 最後のアイテムが中央に来る位置
 
         // 限界値を超えないように補正
-        if (moveDistance > maxTranslateX + 0.1) {
+        if (moveDistance > maxTranslateX + 0.1) { // わずかな誤差を許容
             moveDistance = maxTranslateX;
-        } else if (moveDistance < minTranslateX - 0.1) {
+        } else if (moveDistance < minTranslateX - 0.1) { // わずかな誤差を許容
             moveDistance = minTranslateX;
         }
         
@@ -217,16 +218,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const naturalHeight = img.naturalHeight;
                 const aspectRatio = naturalWidth / naturalHeight;
 
-                // 高さを固定値に設定し、幅は縦横比から計算
-                let displayHeight = fixedBaseImgHeight;
-                let displayWidth = displayHeight * aspectRatio;
+                let displayWidth = Math.sqrt(TARGET_AREA * aspectRatio);
+                let displayHeight = TARGET_AREA / displayWidth;
                 
                 const framePadding = 10 * 2;
                 const frameBorder = 2 * 2;
                 const totalFrameThickness = framePadding + frameBorder;
 
-                item.style.height = `${displayHeight + totalFrameThickness}px`;
                 item.style.width = `${displayWidth + totalFrameThickness}px`;
+                item.style.height = `${displayHeight + totalFrameThickness}px`;
             }
         });
         updateGalleryLayout(); // ギャラリー全体の配置を更新
