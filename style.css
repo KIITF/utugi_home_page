@@ -1,233 +1,115 @@
-/* Headerなどの変更は前回の回答を参照してください */
-
-/*Portfolio Section*/
-
-/* Portfolio Section - 全体的な調整 */
-.portfolio-section {
-    padding: 100px 0;
-    background: #fff;
-    text-align: center;
+/* 全体的なリセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.portfolio-section h3 {
-    /* 既存のスタイルを維持 */
+html, body {
+    height: 100%;
+    overflow: hidden; /* スクロールバーを非表示にする */
+    font-family: Arial, sans-serif;
 }
 
-.portfolio-section p.subtitle {
-    /* 既存のスタイルを維持 */
+/* ギャラリーコンテナ */
+.gallery-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative; /* 矢印の配置基準 */
 }
 
-/* 各カテゴリのタイトル */
-.portfolio-category-title {
-    font-size: 36px;
-    color: #444;
-    margin: 80px 0 40px;
-    text-align: center;
-}
-
-/* 共通のグリッドコンテナスタイル */
-.portfolio-grid {
-    display: grid; /* CSS Grid を使用 */
-    gap: 15px; /* グリッドアイテム間の隙間 */
-    width: 90%;
-    max-width: 1190px;
-    margin: 40px auto 60px;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 最小幅を調整 */
-    grid-auto-rows: 50px; /* ★ここを細かく調整！行の基準単位を50pxに */
-    grid-auto-flow: dense; /* 空いたスペースを埋めるようにアイテムを配置 */
-}
-
-
-/* 共通のポートフォリオアイテムスタイル */
-.portfolio-item {
-    position: relative; /* transform, z-index の基準 */
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.1); /* 影を追加 */
-    overflow: hidden; /* 画像のはみ出しを隠す */
-    border-radius: 5px; /* 角を少し丸める */
-    background-color: #f0f0f0; /* ロード中のプレースホルダ色 */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* ホバーエフェクトのトランジション */
-}
-
-.portfolio-item img {
-    display: block;
-    width: 100%;
-    height: 100%; /* 親要素の高さいっぱいにする */
-    object-fit: cover; /* 縦横比を維持しつつ、要素を覆うように拡大・トリミング */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* ホバーエフェクト（共通） */
-.portfolio-item:hover { /* 親要素にホバーエフェクト */
-    box-shadow: 0px 8px 25px rgba(0,0,0,0.2); /* 影を強調 */
-    transform: translateY(-5px); /* 少し浮き上がる */
-}
-.portfolio-item:hover img {
-    opacity: 0.8;
-    transform: scale(1.03); /* 画像も少し拡大 */
-}
-
-
-/* ===== ロゴ作品のグリッド固有スタイル ===== */
-.logo-gallery {
-    /* grid-template-columns や grid-auto-rows は .portfolio-grid で設定済み */
-    /* ここに個別設定が不要なら削除してもOK */
-    /* 例外的に列の最小幅を変えたい場合のみここに記述 */
-}
-
-/* 各ロゴアイテムのサイズ指定とオフセット */
-/* grid-column: span X; で列の幅を、grid-row: span Y; で行の高さを指定します */
-/* transform: translate() で位置をずらします */
-
-.portfolio-item.grid-item.item-cappuccino {
-    grid-column: span 5; /* 5列分の幅 (例: 5*250px=1250px) */
-    grid-row: span 8; /* 8行分の高さ (例: 8*50px=400px)。アスペクト比 1250:400 = 3.125:1 (元の画像が約2.5:1なので、少し横長だが拡大は減る) */
-    transform: translate(10px, 20px); /* 右に10px、下に20pxずらす */
-    z-index: 3; /* 重なり順 */
-}
-
-.portfolio-item.grid-item.item-plant-yuki {
-    grid-column: span 3; /* 3列分の幅 (例: 3*250px=750px) */
-    grid-row: span 12; /* 12行分の高さ (例: 12*50px=600px)。アスペクト比 750:600 = 1.25:1 (元の画像が約0.57:1なので、より縦長に合わせる) */
-    transform: translate(-15px, 5px); /* 左に15px、下に5pxずらす */
-    z-index: 2;
-}
-
-.portfolio-item.grid-item.item-episode-x {
-    grid-column: span 6; /* 6列分の幅 (例: 6*250px=1500px) */
-    grid-row: span 6; /* 6行分の高さ (例: 6*50px=300px)。アスペクト比 1500:300 = 5:1 (元の画像が約4:1なので、もう少し縦に合わせる) */
-    transform: translate(5px, -10px); /* 右に5px、上に10pxずらす */
-    z-index: 4;
-}
-
-/* 使いまわし画像のサイズ指定例 - 適宜調整してください */
-.portfolio-item.grid-item.item-cappuccino-2 {
-    grid-column: span 4;
-    grid-row: span 7;
-    transform: translate(-5px, 25px);
-    z-index: 1;
-}
-.portfolio-item.grid-item.item-plant-yuki-2 {
-    grid-column: span 2;
-    grid-row: span 10;
-    transform: translate(20px, 10px);
-    z-index: 0;
-}
-.portfolio-item.grid-item.item-episode-x-2 {
-    grid-column: span 5;
-    grid-row: span 5;
-    transform: translate(-10px, -20px);
-    z-index: 5;
-}
-
-
-/* ===== 動画作品のスタイル (CSS Gridに統合) ===== */
-.video-gallery {
-    /* 既存の .portfolio-list と似たグリッドスタイルにする */
-    /* width: 90%; max-width: 1190px; margin: 40px auto 60px; は .portfolio-grid で設定済み */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 例: 3列表示 */
-    grid-auto-rows: 200px; /* 動画サムネイルの行の高さを固定（調整してください） */
-}
-
-.portfolio-item.video-item {
-    /* .portfolio-item 共通スタイルに任せる */
-    grid-column: span 1; /* デフォルトで1列分の幅 */
-    grid-row: span 1; /* デフォルトで1行分の高さ */
-    height: 100%; /* 親のグリッドセルいっぱいに */
-    transform: none; /* 動画アイテムはずらさない */
-    z-index: auto; /* 重なりを自動に */
-}
-
-.portfolio-item.video-item a {
-    display: block;
+/* 壁エリア */
+.wall-area {
+    height: 85%; /* 画面上1.5割を床と見立てるため */
+    background-image: url('images/wall_white.png'); /* 指定された壁の背景画像 */
+    background-size: cover; /* 壁画像がエリアを覆うように */
+    background-position: center;
     position: relative;
-    height: 100%;
+    overflow: hidden; /* 壁内で画像がはみ出さないように */
 }
 
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+/* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
+.gallery-inner {
+    display: flex;
+    /* justify-content: flex-start; /* 中央寄せではなく、左から配置 */
+    align-items: center; /* 垂直方向の中央揃えを維持 */
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* 半透明の黒背景 */
-    color: #fff;
-    display: flex; /* 中央寄せのためにFlexboxを使用 */
+    transform: translateX(0);
+    transition: transform 0.5s ease-out; /* スライドのアニメーション */
+    position: absolute; /* 左端からスタート */
+    left: 0; /* 左端からスタート */
+    will-change: transform; /* パフォーマンス最適化 */
+    padding: 0 50vw; /* 両端に余白を持たせて、ギャラリーの最初と最後が見切れないように */
+}
+
+/* 各画像アイテム */
+.gallery-item {
+    /* min-width: 300px;  JavaScriptで動的に幅を計算するのでCSSでは指定しない */
+    /* height: 80%;       画像の高さはJavaScriptで調整 */
+    margin: auto 40px; /* 左右の間隔 */
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Arimo', sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 1.2em;
-    opacity: 0; /* 通常は非表示 */
-    transition: opacity 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none; /* リンクの下線を消す */
+    perspective: 1000px; /* 3D的な傾きのためのパースペクティブ */
+
+    /* 額縁の厚み分だけ内部のimgを縮小 */
+    padding: 10px; /* 白枠の厚み */
+    border: 2px solid black; /* 黒枠の厚み */
+    background-color: white; /* 白枠の背景色 */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* 額縁全体の影 */
 }
 
-.portfolio-item.video-item:hover .video-overlay {
-    opacity: 1; /* ホバーで表示 */
+.gallery-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 画像が額縁内に収まるように */
+    transform: rotateY(5deg); /* わずかに傾けて立体感を出す */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1) inset; /* 画像自身の内側の影 */
 }
 
-/* 既存の .portfolio-list のスタイル（もし残す場合）もCSS Gridに統合するか、必要に応じて調整 */
-/* ul.portfolio-list li.item の代わりに .portfolio-item .grid-item を使用推奨 */
-
-
-/* レスポンシブ対応の調整 */
-@media only screen and (max-width: 960px) {
-    .portfolio-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* カラムを調整 */
-        gap: 10px; /* 隙間を調整 */
-    }
-    .logo-gallery {
-        grid-auto-rows: 40px; /* 行の高さを調整 */
-    }
-    .video-gallery {
-        grid-auto-rows: 150px; /* 行の高さを調整 */
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* カラムを調整 */
-    }
-    /* ロゴアイテムをスマートフォンで全て1列にする場合は以下を調整 */
-    .portfolio-item.grid-item {
-        grid-column: span 1 !important; /* 強制的に1列 */
-        grid-row: span 4 !important; /* 4単位の高さ (4*40px=160px) */
-        transform: none !important; /* ずらしをリセット */
-        z-index: auto !important; /* 重なりをリセット */
-    }
-    .portfolio-item.grid-item.item-plant-yuki {
-        grid-row: span 6 !important; /* 縦長画像を少し高めに */
-    }
-    .portfolio-item.video-item {
-        grid-row: span 1 !important; /* 動画アイテムは通常通り */
-        transform: none !important;
-        z-index: auto !important;
-    }
+/* ホバー時の効果 (オプション) */
+.gallery-item:hover img {
+    transform: rotateY(0deg) scale(1.01); /* 少し大きく＆傾きを戻す */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) inset;
 }
 
-@media only screen and (max-width: 720px) {
-    .portfolio-grid {
-        grid-template-columns: 1fr; /* スマートフォンでは常に1列 */
-        gap: 20px; /* 隙間を広げる */
-    }
-    .logo-gallery {
-        grid-auto-rows: 80px; /* 行の高さを調整 */
-    }
-    .video-gallery {
-        grid-auto-rows: 250px; /* 1列になった時の高さを調整 */
-    }
-    .portfolio-item.grid-item {
-        grid-column: span 1 !important;
-        grid-row: span auto !important; /* 自動で高さ調整 */
-        transform: none !important;
-        z-index: auto !important;
-    }
-    .portfolio-item.grid-item.item-cappuccino,
-    .portfolio-item.grid-item.item-cappuccino-2,
-    .portfolio-item.grid-item.item-episode-x,
-    .portfolio-item.grid-item.item-episode-x-2 {
-        grid-row: span 4 !important; /* 横長画像を適切な高さに */
-    }
-    .portfolio-item.grid-item.item-plant-yuki,
-    .portfolio-item.grid-item.item-plant-yuki-2 {
-        grid-row: span 8 !important; /* 縦長画像を適切な高さに */
-    }
-    .portfolio-item.video-item {
-        grid-row: span auto !important;
-    }
+/* 床エリア */
+.floor-area {
+    height: 15%; /* 画面下1.5割 */
+    background-color: black; /* 黒色 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ナビゲーション矢印 */
+.navigation-arrows {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    top: 50%; /* 床エリアの中央に配置 */
+    transform: translateY(-50%);
+}
+
+.arrow {
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+    z-index: 100; /* 最前面に表示 */
+}
+
+.arrow:hover {
+    color: #ccc; /* ホバーで少し明るく */
 }
