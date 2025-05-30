@@ -22,11 +22,39 @@ html, body {
 /* 壁エリア */
 .wall-area {
     height: 85%;
-    background-image: url('images/wall_white.png');
+    /* background-image: url('images/wall_white.png'); ←これはwall-backgroundが担当 */
     background-size: cover;
     background-position: center;
     position: relative;
     overflow: hidden; /* 壁内で画像がはみ出さないように */
+}
+
+/* wall-area内の背景静止画 */
+.wall-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-image は HTML で設定 */
+    background-size: cover;
+    background-position: center;
+    opacity: 1; /* 初期は表示 */
+    transition: opacity 0.5s ease-out; /* フェードアニメーション */
+    z-index: 1; /* 動画より奥 */
+}
+
+/* 動画要素 */
+.wall-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* エリアに合わせて動画を拡大縮小 */
+    opacity: 0; /* 初期は非表示 */
+    transition: opacity 0.5s ease-out; /* フェードアニメーション */
+    z-index: 2; /* 静止画より手前、画像ギャラリーより奥 */
 }
 
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
@@ -39,6 +67,7 @@ html, body {
     position: absolute; /* 左端からスタート */
     left: 0;
     will-change: transform;
+    z-index: 3; /* 動画より手前 */
 }
 
 /* 各画像アイテム（額縁） */
