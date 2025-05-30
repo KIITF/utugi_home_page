@@ -11,48 +11,51 @@ html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ギャラリーコンテナ */
+
+body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0; /* 例：薄いグレーの背景 */
+}
+
 .gallery-container {
     display: flex;
     flex-direction: column;
     height: 100%;
     position: relative;
+    /* background-color: transparent; 不要であれば削除 */
 }
 
-/* 壁エリア */
 .wall-area {
     height: 85%;
-    /* ここに背景を設定しない - wall-background が担当 */
     position: relative;
     overflow: hidden;
 }
 
-/* wall-area内の背景静止画 */
 .wall-background {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%; /* 親要素(wall-area)の幅に合わせる */
-    height: 100%; /* 親要素(wall-area)の高さに合わせる */
-    /* background-image は HTML で設定 */
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
     transition: opacity 0.5s ease-out;
-    z-index: 1; /* 動画より奥 */
+    z-index: 1;
 }
 
-/* 動画要素 */
 .wall-video {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%; /* 親要素(wall-area)の幅に合わせる */
-    height: 100%; /* 親要素(wall-area)の高さに合わせる */
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    opacity: 0; /* 初期は非表示 */
+    opacity: 0;
     transition: opacity 0.5s ease-out;
-    z-index: 2; /* 静止画より手前、画像ギャラリーより奥 */
+    z-index: 2;
 }
 
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
@@ -142,17 +145,16 @@ html, body {
 }
 
 
-/* 床エリア */
 .floor-area {
     height: 15%;
-    background-color: black; /* 黒色 */
+    background-color: transparent; /* 透過 */
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 100; /* 必要であれば最前面に */
 }
 
-/* ナビゲーション矢印 */
 .navigation-arrows {
     position: absolute;
     width: 100%;
@@ -161,7 +163,7 @@ html, body {
     padding: 0 20px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 100; /* 最前面に表示 */
+    z-index: 101; /* 矢印をさらに前面に */
 }
 
 .arrow {

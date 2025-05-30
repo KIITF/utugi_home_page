@@ -301,4 +301,73 @@ document.addEventListener('DOMContentLoaded', () => {
     if (images.length === 0) {
         updateArrowStates();
     }
+    // --- 移動動画の再生とギャラリー移動のロジック ---
+    function playMoveAnimation(direction) {
+        if (!moveVideo.paused && moveVideo.style.opacity === '1') {
+            return;
+        }
+        if ((direction === 'prev' && currentIndex === 0) || (direction === 'next' && currentIndex === galleryItems.length - 1)) {
+            return;
+        }
+
+        leftArrow.classList.add('disabled');
+        rightArrow.classList.add('disabled');
+
+        wallBackground.style.opacity = 0;
+        moveVideo.style.opacity = 1;
+
+        moveVideo.currentTime = 0;
+        const playPromise = moveVideo.play();
+
+        const moveDuration = 500; // ミリ秒単位、CSSのtransition時間と合わせる (0.5秒)
+
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // 動画再生開始後、すぐにギャラリーを移動させる
+                galleryInner.style.transitionDuration = `${moveDuration}ms`; // transition時間をJSから設定
+                moveToItem(direction);
+
+                // moveDuration後にtransitionDurationを元に戻す (必要であれば)
+                setTimeout(() => {
+                    galleryInner.style.transitionDuration = '0.5s'; // 元に戻す
+                }, moveDuration);
+
+            }).catch(error => {
+                console.error("動画の自動再生に失敗しました:", error);
+                wallBackground.style.opacity = 1;
+                moveVideo.style.opacity = 0;
+                galleryInner.style.transitionDuration = `${moveDuration}ms`;
+                moveToItem(direction);
+                setTimeout(() => {
+                    galleryInner.style.transitionDuration = '0.5s';
+                }, moveDuration);
+                updateArrowStates();
+            });
+        } else {
+            galleryInner.style.transitionDuration = `${moveDuration}ms`;
+            moveToItem(direction);
+            setTimeout(() => {
+                galleryInner.style.transitionDuration = '0.5s';
+            }, moveDuration);
+        }
+
+        // 動画の再生終了を待って、静止画に戻し、ボタンを有効化
+        moveVideo.onended = () => {
+            wallBackground.style.opacity = 1;
+            moveVideo.style.opacity = 0;
+            moveVideo.pause();
+            updateArrowStates();
+        };
+
+        // 動画がループしない設定であることを前提に、
+        // onendedが呼ばれない場合へのフォールバックとしてsetTimeoutを使用 (念のため)
+        setTimeout(() => {
+            if (moveVideo.style.opacity === '1') {
+                moveVideo.pause();
+                moveVideo.style.opacity = 0;
+                wallBackground.style.opacity = 1;
+                updateArrowStates();
+            }
+        }, Math.max(moveDuration, moveVideo.duration * 1000) + 100); // 少し長めに設定
+    }
 });
