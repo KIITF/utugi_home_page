@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ポートフォリオ画像のリストとリンク先
     const images = [
-        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/に飛ぶ', alt: 'Cappuccino' },
-        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/に飛ぶ', alt: 'Episode X' },
-        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/に飛ぶ', alt: 'Plant Yuki' },
+        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino' },
+        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X' },
+        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki' },
         // 画像を増やしたい場合はここに追加してください（使いまわし可）
-        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/に飛ぶ', alt: 'Cappuccino 2' },
-        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/に飛ぶ', alt: 'Episode X 2' },
-        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/に飛ぶ', alt: 'Plant Yuki 2' },
+        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino 2' },
+        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X 2' },
+        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki 2' },
     ];
 
     let currentIndex = 0; // 現在表示されている画像のインデックス
