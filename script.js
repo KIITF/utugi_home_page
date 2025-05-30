@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **画像の目標面積 (正方形の辺の長さの2乗として考える)**
     // 例えば、目標面積が 150000 平方ピクセル (約 387px x 387px)
-    const TARGET_AREA = 150000; 
+    const TARGET_AREA = 90000; 
 
     // 画像を動的にギャラリーに追加
     images.forEach(imageData => {
