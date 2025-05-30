@@ -10,8 +10,8 @@ body {
 
 .gallery-container {
     position: relative;
-    width: 80vw; /* 適切なサイズに調整 */
-    height: 60vh; /* 適切なサイズに調整 */
+    width: 100vw; /* 適切なサイズに調整 */
+    height: 100vh; /* 適切なサイズに調整 */
     display: flex;
     justify-content: center;
     align-items: center;
