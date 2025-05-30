@@ -46,7 +46,6 @@ html, body {
     cursor: pointer;
     text-decoration: none;
     flex-shrink: 0; /* アイテムが縮まないように */
-    /* position: absolute; を削除 - Flexboxで位置制御 */
 
     /* 額縁のスタイル */
     padding: 10px; /* 白枠の厚み */
