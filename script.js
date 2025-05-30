@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightArrow = document.getElementById('rightArrow');
     
     const wallBackground = document.querySelector('.wall-background');
-    const moveVideo = document.querySelector('.wall-video'); // idではなくclassで取得
+    const moveVideo = document.querySelector('.wall-video');
 
     // ポートフォリオ画像のリスト、リンク先、タイトル
     const images = [
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
     const itemMargin = 40;
-    const moveDistanceMultiplier = 2.5; // 移動距離の倍率
+    const moveDistanceMultiplier = 2.5; // 移動距離の倍率（ご指定の2.5倍）
 
     const TARGET_AREA = 150000; 
 
@@ -136,37 +136,39 @@ document.addEventListener('DOMContentLoaded', () => {
         leftArrow.classList.add('disabled');
         rightArrow.classList.add('disabled');
 
-        // 動画ファイルのパスを方向に応じて設定
-        const videoSrc = (direction === 'right' || direction === 'next') 
-                         ? 'movies/wall_move_right.mp4' 
-                         : 'movies/wall_move_left.mp4';
-        
-        // 新しいsource要素を作成し、videoタグに追加
-        // 既存のsourceがあれば削除してから追加
-        while (moveVideo.firstChild) {
-            moveVideo.removeChild(moveVideo.firstChild);
-        }
-        const source = document.createElement('source');
-        source.src = videoSrc;
-        source.type = 'video/mp4'; // 必要に応じてwebmも追加
-        moveVideo.appendChild(source);
-        
-        moveVideo.load(); // 新しいsourceをロード
-
+        // 背景切り替えを瞬時に行う
         wallBackground.style.opacity = 0;
         moveVideo.style.opacity = 1;
         
         moveVideo.currentTime = 0;
         const playPromise = moveVideo.play();
 
-        const moveDuration = 500;
-        galleryInner.style.transitionDuration = `${moveDuration}ms`;
+        const moveDuration = 500; // ミリ秒単位、CSSのtransition時間と合わせる
+        galleryInner.style.transitionDuration = `${moveDuration}ms`; // 額縁の移動時間を設定
 
+        // 動画ファイルのパスを方向に応じて設定
+        const videoSrc = (direction === 'next') // 'right'は'next'と同じ方向
+                         ? 'movies/wall_move_right.mp4' 
+                         : 'movies/wall_move_left.mp4';
+        
+        // 既存のsourceがあれば削除してから追加
+        if (moveVideo.src !== videoSrc) { // srcが変わった時のみロード
+            while (moveVideo.firstChild) {
+                moveVideo.removeChild(moveVideo.firstChild);
+            }
+            const source = document.createElement('source');
+            source.src = videoSrc;
+            source.type = 'video/mp4';
+            moveVideo.appendChild(source);
+            moveVideo.load(); // 新しいsourceをロード
+        }
+        
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 moveToItem(direction);
             }).catch(error => {
                 console.warn("動画の自動再生がブロックされました。動画なしでギャラリーを移動します:", error);
+                // 自動再生がブロックされた場合は動画なしで移動し、静止画に戻す
                 wallBackground.style.opacity = 1;
                 moveVideo.style.opacity = 0;
                 moveToItem(direction);
@@ -176,18 +178,21 @@ document.addEventListener('DOMContentLoaded', () => {
             moveToItem(direction);
         }
 
+        // 動画のonendedイベントハンドラ
         moveVideo.onended = () => {
+            // 背景切り替えを瞬時に行う
             wallBackground.style.opacity = 1;
             moveVideo.style.opacity = 0;
             moveVideo.pause();
             updateArrowStates();
         };
 
+        // フォールバック用のsetTimeout
         setTimeout(() => {
             if (moveVideo.style.opacity === '1' && !moveVideo.paused) {
                 moveVideo.pause();
-                moveVideo.style.opacity = 0;
                 wallBackground.style.opacity = 1;
+                moveVideo.style.opacity = 0;
                 updateArrowStates();
             }
         }, moveDuration + 200);
@@ -211,33 +216,17 @@ document.addEventListener('DOMContentLoaded', () => {
             targetIndex = Math.max(currentIndex - 1, 0);
         }
 
-        // ここでcurrentIndexを更新するのを一度やめる
-        // 移動の計算は、あくまで目標となる位置を算出するため
-        // currentIndexの更新は移動完了時、または移動先の限界値補正後に行うべき
-
-        // 移動すべき目標のX位置 (ビューポートの中心にアイテムの中心を合わせる)
-        const targetItem = galleryItems[targetIndex];
-        const targetItemOffsetFromGalleryInnerStart = targetItem.offsetLeft;
-        const targetItemWidth = targetItem.offsetWidth;
-        const viewportCenter = window.innerWidth / 2;
-        const galleryInnerPaddingLeft = parseFloat(getComputedStyle(galleryInner).paddingLeft);
-
         let newTranslateX;
-
-        // **移動距離の倍率適用ロジック**
-        // 常に次のアイテムの中心に移動しつつ、その距離に倍率をかける
         let distanceBetweenItems = 0;
-        if (currentIndex !== targetIndex) { // 実際にインデックスが変化する場合
+
+        // 次のアイテムの中心を基準とした移動量を計算
+        // currentIndex と targetIndex が異なる場合のみ、アイテム間の距離を計算
+        if (currentIndex !== targetIndex) {
             const currentItem = galleryItems[currentIndex];
+            const targetItem = galleryItems[targetIndex];
             distanceBetweenItems = Math.abs( (targetItem.offsetLeft + targetItem.offsetWidth / 2) - (currentItem.offsetLeft + currentItem.offsetWidth / 2) );
-        } else { // 端にいる場合など、インデックスが変わらないが移動が必要な場合
-            // この場合は、現在中央にあるアイテムの次のアイテム（または前のアイテム）までの距離
-            if (direction === 'next' && currentIndex < galleryItems.length - 1) {
-                 distanceBetweenItems = Math.abs( (galleryItems[currentIndex + 1].offsetLeft + galleryItems[currentIndex + 1].offsetWidth / 2) - (targetItem.offsetLeft + targetItem.offsetWidth / 2) );
-            } else if (direction === 'prev' && currentIndex > 0) {
-                 distanceBetweenItems = Math.abs( (galleryItems[currentIndex - 1].offsetLeft + galleryItems[currentIndex - 1].offsetWidth / 2) - (targetItem.offsetLeft + targetItem.offsetWidth / 2) );
-            }
         }
+        // ここで計算された distanceBetweenItems は、1アイテム分の中心間距離
         
         // 倍率を適用した移動量
         if (direction === 'next') {
@@ -246,14 +235,16 @@ document.addEventListener('DOMContentLoaded', () => {
             newTranslateX = currentTranslateX + (distanceBetweenItems * moveDistanceMultiplier);
         }
 
-
         // 限界値を計算
-        const maxTranslateX = (viewportCenter) - (galleryItems[0].offsetWidth / 2) - galleryInnerPaddingLeft;
-        const minTranslateX = (viewportCenter) - (galleryInner.scrollWidth - galleryInnerPaddingLeft - (galleryItems[galleryItems.length - 1].offsetWidth / 2));
+        const viewportWidth = window.innerWidth;
+        const galleryInnerPaddingLeft = parseFloat(getComputedStyle(galleryInner).paddingLeft);
+        const galleryInnerScrollWidth = galleryInner.scrollWidth;
+
+        const maxTranslateX = (viewportWidth / 2) - (galleryItems[0].offsetWidth / 2) - galleryInnerPaddingLeft;
+        const minTranslateX = (viewportWidth / 2) - (galleryInnerScrollWidth - (galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingRight));
 
         // 限界値を超えないように補正（誤差を考慮）
-        // 限界値で停止し、currentIndexもそれに合わせる
-        let finalIndex = targetIndex; // 最終的に止まるインデックス
+        let finalIndex = targetIndex; 
 
         if (newTranslateX > maxTranslateX + 0.1) {
             newTranslateX = maxTranslateX;
@@ -263,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
             finalIndex = galleryItems.length - 1; // 最後のアイテムに強制
         }
         
-        // 最終的なcurrentIndexを更新
         currentIndex = finalIndex; 
 
         galleryInner.style.transform = `translateX(${newTranslateX}px)`;
