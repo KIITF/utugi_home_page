@@ -7,7 +7,7 @@
 
 html, body {
     height: 100%;
-    overflow: hidden; /* スクロールバーを非表示にする */
+    overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -22,11 +22,9 @@ html, body {
 /* 壁エリア */
 .wall-area {
     height: 85%;
-    /* background-image: url('images/wall_white.png'); ←これはwall-backgroundが担当 */
-    background-size: cover;
-    background-position: center;
+    /* ここに背景を設定しない - wall-background が担当 */
     position: relative;
-    overflow: hidden; /* 壁内で画像がはみ出さないように */
+    overflow: hidden;
 }
 
 /* wall-area内の背景静止画 */
@@ -34,13 +32,13 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; /* 親要素(wall-area)の幅に合わせる */
+    height: 100%; /* 親要素(wall-area)の高さに合わせる */
     /* background-image は HTML で設定 */
     background-size: cover;
     background-position: center;
-    opacity: 1; /* 初期は表示 */
-    transition: opacity 0.5s ease-out; /* フェードアニメーション */
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
     z-index: 1; /* 動画より奥 */
 }
 
@@ -49,23 +47,24 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* エリアに合わせて動画を拡大縮小 */
+    width: 100%; /* 親要素(wall-area)の幅に合わせる */
+    height: 100%; /* 親要素(wall-area)の高さに合わせる */
+    object-fit: cover;
     opacity: 0; /* 初期は非表示 */
-    transition: opacity 0.5s ease-out; /* フェードアニメーション */
+    transition: opacity 0.5s ease-out;
     z-index: 2; /* 静止画より手前、画像ギャラリーより奥 */
 }
 
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
 .gallery-inner {
-    display: flex; /* 横一列に配置 */
+    display: flex;
     align-items: center; /* 垂直方向の中央揃え */
-    height: 100%; /* 壁の高さに合わせる */
+    height: 100%; /* wall-areaの高さに合わせる */
     transform: translateX(0);
     transition: transform 0.5s ease-out;
-    position: absolute; /* 左端からスタート */
-    left: 0;
+    position: relative; /* gallery-inner自体はrelativeで、left:0で壁の左端に配置 */
+                        /* これにより内部のflexboxレイアウトが適切に機能 */
+    left: 0; /* wall-areaの左端に固定 */
     will-change: transform;
     z-index: 3; /* 動画より手前 */
 }
@@ -75,14 +74,15 @@ html, body {
     cursor: pointer;
     text-decoration: none;
     flex-shrink: 0; /* アイテムが縮まないように */
+    /* position: absolute; を削除 - Flexboxで位置制御 */
 
-    /* 額縁のスタイル */
+    /* 額縁のスタイル - これが額縁そのもの */
     padding: 10px; /* 白枠の厚み */
     border: 2px solid black; /* 黒枠の厚み */
     background-color: white; /* 白枠の背景色 */
     box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* 額縁全体の影 */
 
-    overflow: hidden;
+    overflow: hidden; /* オーバーレイがはみ出さないように */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 0 40px; /* アイテム間の基本的な左右マージン */
 }
@@ -110,7 +110,7 @@ html, body {
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
-    z-index: 1;
+    z-index: 1; /* 画像より手前に表示 */
 }
 
 .gallery-item:hover .overlay {
@@ -138,14 +138,14 @@ html, body {
 .gallery-item:hover {
     transform: scale(1.03);
     box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-    z-index: 50;
+    z-index: 50; /* ホバーしたアイテムが手前に来るように */
 }
 
 
 /* 床エリア */
 .floor-area {
     height: 15%;
-    background-color: black;
+    background-color: black; /* 黒色 */
     position: relative;
     display: flex;
     justify-content: center;
@@ -161,6 +161,7 @@ html, body {
     padding: 0 20px;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 100; /* 最前面に表示 */
 }
 
 .arrow {
@@ -169,7 +170,6 @@ html, body {
     cursor: pointer;
     user-select: none;
     transition: color 0.3s ease;
-    z-index: 100;
 }
 
 .arrow:hover {

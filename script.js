@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemMargin = 40; // CSSの.gallery-itemのmargin-left/rightと合わせる
 
     // **画像の目標面積 (正方形の辺の長さの2乗として考える)**
-    const TARGET_AREA = 150000; // 例: 387px x 387px 程度の面積
+    const TARGET_AREA = 150000; 
 
     // 画像を動的にギャラリーに追加
     images.forEach(imageData => {
@@ -54,8 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
 
     // 画像がロードされてからサイズを調整
+    // すべての画像を一度にロードし、それぞれのonloadイベントでカウントアップ。
+    // 全てロードされたらレイアウト更新関数を呼ぶ。
     galleryItems.forEach(item => {
         const img = item.querySelector('img');
+        // 画像のonloadハンドラを設定
         img.onload = () => {
             loadedImagesCount++;
 
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const naturalWidth = img.naturalWidth;
             const naturalHeight = img.naturalHeight;
             const aspectRatio = naturalWidth / naturalHeight; // 幅/高さ
-
+            
             // 面積を固定して幅と高さを計算
             let displayWidth = Math.sqrt(TARGET_AREA * aspectRatio);
             let displayHeight = TARGET_AREA / displayWidth;
@@ -77,19 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
             item.style.width = `${displayWidth + totalFrameThickness}px`;
             item.style.height = `${displayHeight + totalFrameThickness}px`;
 
+            // すべての画像がロードされたらレイアウトを更新
             if (loadedImagesCount === images.length) {
-                // すべての画像がロードされた後に、ギャラリーの初期位置を設定
                 updateGalleryLayout();
             }
         };
+        // 画像のロードエラーハンドラを設定
         img.onerror = () => {
             console.error(`画像のロードに失敗しました: ${img.src}`);
-            loadedImagesCount++;
+            loadedImagesCount++; // エラーでもカウントを進める
             if (loadedImagesCount === images.length) {
                 updateGalleryLayout();
             }
         };
-        // キャッシュされている画像の場合
+        // キャッシュされている画像の場合、onloadが発火しないことがあるので、
+        // readyState が complete であれば手動で onload をトリガーする
         if (img.complete) {
             img.onload();
         }
@@ -99,29 +104,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ギャラリーのレイアウトを更新する関数 (横一列)
     function updateGalleryLayout() {
+        if (galleryItems.length === 0) return; // 画像がない場合は処理しない
+
         let totalGalleryContentWidth = 0; // アイテムとアイテム間のマージンを含む合計幅
         galleryItems.forEach(item => {
             totalGalleryContentWidth += item.offsetWidth + (itemMargin * 2); // アイテム幅 + 左右マージン
         });
 
-        // ギャラリーの全体の幅を設定
+        // galleryInnerの幅を設定
         galleryInner.style.width = `${totalGalleryContentWidth}px`;
 
         // ギャラリーの最初と最後に画面半分の余白を追加 (スクロールの見た目を改善)
         const viewportWidth = window.innerWidth;
+        // 最初のアイテムが画面中央に来るように、paddingLeftを調整
         galleryInner.style.paddingLeft = `${viewportWidth / 2 - (galleryItems[0].offsetWidth / 2) - itemMargin}px`;
+        // 最後のアイテムが画面中央に来るように、paddingRightを調整
         galleryInner.style.paddingRight = `${viewportWidth / 2 - (galleryItems[galleryItems.length - 1].offsetWidth / 2) - itemMargin}px`;
 
-        // 最初の画像を中央に配置する初期位置は、paddingLeftで調整されるため、
-        // transformXは0に戻しておく
+        // 初期表示位置を0に戻す (paddingLeftで位置調整されるため)
         galleryInner.style.transform = `translateX(0px)`;
         currentTranslateX = 0;
 
+        // レイアウト更新後に矢印の状態を更新
         updateArrowStates();
     }
 
-    // --- 新しい移動動画の再生ロジック ---
+    // --- 移動動画の再生とギャラリー移動のロジック ---
     function playMoveAnimation(direction) {
+        // 既に動画再生中か、ギャラリーの端にいる場合は何もしない
+        if (!moveVideo.paused && moveVideo.style.opacity === '1') {
+            return;
+        }
+        if ((direction === 'prev' && currentIndex === 0) || (direction === 'next' && currentIndex === galleryItems.length - 1)) {
+            return; // ギャラリーの端なら移動しない
+        }
+
         // 矢印ボタンを無効化（動画再生中はクリックさせない）
         leftArrow.classList.add('disabled');
         rightArrow.classList.add('disabled');
@@ -129,14 +146,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // 静止画を隠し、動画を表示
         wallBackground.style.opacity = 0;
         moveVideo.style.opacity = 1;
+        
         moveVideo.currentTime = 0; // 動画を最初から再生
-        moveVideo.play();
+        const playPromise = moveVideo.play();
 
-        // ギャラリーの実際の移動 (動画の再生と同時に行う)
-        // ここでの移動は即座に行われるように、transitionを一時的に無効化する方が、
-        // 動画の動きと同期しやすくなる可能性があります。
-        // ただし、今回はCSSのtransitionを維持し、動画と動きを合わせる努力をします。
-        moveToItem(direction); 
+        // play()メソッドがPromiseを返す場合があるため、エラーハンドリング
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // 再生が開始されたらギャラリーを移動
+                moveToItem(direction);
+            }).catch(error => {
+                console.error("動画の自動再生に失敗しました:", error);
+                // 自動再生がブロックされた場合は、動画なしで移動し、静止画に戻す
+                wallBackground.style.opacity = 1;
+                moveVideo.style.opacity = 0;
+                moveToItem(direction); // 動画なしでギャラリーだけ移動
+                updateArrowStates(); // 矢印の状態を更新
+            });
+        } else {
+            // Promiseを返さないブラウザの場合（古いブラウザなど）
+            moveToItem(direction);
+        }
 
         // 動画の再生終了を待って、静止画に戻す
         moveVideo.onended = () => {
@@ -145,19 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
             moveVideo.pause(); // 再生を停止してリソースを解放
 
             // 動画再生後、矢印ボタンを再度有効化
-            updateArrowStates(); // 既存の関数を呼び出して状態をリフレッシュ
+            updateArrowStates();
         };
-        // 動画がループしない場合は、onendedイベントが必ず発火します。
     }
-
-    let currentTranslateX = 0; // galleryInnerの現在のtranslateX値
 
     // ギャラリーを移動させる関数
     function moveToItem(direction) {
+        // 現在のtransformY値を正確に取得
         const transformValue = window.getComputedStyle(galleryInner).transform;
-        if (transformValue !== 'none') {
+        if (transformValue && transformValue !== 'none') {
             const matrix = new DOMMatrixReadOnly(transformValue);
             currentTranslateX = matrix.m41;
+        } else {
+            currentTranslateX = 0;
         }
 
         let targetIndex = currentIndex;
@@ -168,16 +198,20 @@ document.addEventListener('DOMContentLoaded', () => {
             targetIndex = Math.max(currentIndex - 1, 0);
         }
 
+        // 目標のアイテムの中心がビューポート中央に来るように移動量を計算
         const targetItem = galleryItems[targetIndex];
-        const targetItemOffsetFromGalleryInnerStart = targetItem.offsetLeft;
+        const targetItemOffsetFromGalleryInnerStart = targetItem.offsetLeft; // galleryInnerからの相対位置
         const targetItemWidth = targetItem.offsetWidth;
         const viewportCenter = window.innerWidth / 2;
 
+        // moveDistance: ビューポートの中央 - (アイテムのgalleryInnerからの開始位置 + アイテムの幅の半分 + galleryInnerのpaddingLeft)
         let moveDistance = viewportCenter - (targetItemOffsetFromGalleryInnerStart + (targetItemWidth / 2) + parseFloat(getComputedStyle(galleryInner).paddingLeft));
 
-        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft);
-        const minTranslateX = (window.innerWidth / 2) - (galleryInner.scrollWidth - parseFloat(getComputedStyle(galleryInner).paddingRight) - (galleryItems[galleryItems.length - 1].offsetWidth / 2));
+        // 限界値を計算
+        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft); // 最初のアイテムが中央に来る位置
+        const minTranslateX = (window.innerWidth / 2) - (galleryInner.scrollWidth - parseFloat(getComputedStyle(galleryInner).paddingRight) - (galleryItems[galleryItems.length - 1].offsetWidth / 2)); // 最後のアイテムが中央に来る位置
 
+        // 限界値を超えないように補正（誤差を考慮）
         if (moveDistance > maxTranslateX + 0.1) {
             moveDistance = maxTranslateX;
         } else if (moveDistance < minTranslateX - 0.1) {
@@ -189,20 +223,21 @@ document.addEventListener('DOMContentLoaded', () => {
         currentTranslateX = moveDistance;
 
         // 動画再生中はupdateArrowStatesを呼ばず、onendedで呼ぶように変更
-        // updateArrowStates(); 
+        // (ここでは呼ばない)
     }
 
     // 矢印の有効/無効状態を更新する関数
     function updateArrowStates() {
         // 動画再生中でなければ有効/無効を更新
-        if (moveVideo.style.opacity === '0' || moveVideo.paused) { // opacityが0または停止中であれば
-            if (!galleryInner.scrollWidth || galleryItems.length === 0) {
+        // `moveVideo.paused` も確認することで、動画が完全に停止していることを保証
+        if (moveVideo.paused && moveVideo.style.opacity === '0') { 
+            if (galleryItems.length === 0) { // 画像がまだ読み込まれていない、または空の場合
                 leftArrow.classList.add('disabled');
                 rightArrow.classList.add('disabled');
                 return;
             }
 
-            const epsilon = 1; 
+            const epsilon = 1; // 許容誤差
 
             const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft);
             const minTranslateX = (window.innerWidth / 2) - (galleryInner.scrollWidth - parseFloat(getComputedStyle(galleryInner).paddingRight) - (galleryItems[galleryItems.length - 1].offsetWidth / 2));
@@ -224,13 +259,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 矢印クリックイベント
     leftArrow.addEventListener('click', () => {
-        if (!leftArrow.classList.contains('disabled')) { // 無効化されていなければ
+        // disabledクラスが付与されていなければ動画再生をトリガー
+        if (!leftArrow.classList.contains('disabled')) {
             playMoveAnimation('prev');
         }
     });
 
     rightArrow.addEventListener('click', () => {
-        if (!rightArrow.classList.contains('disabled')) { // 無効化されていなければ
+        // disabledクラスが付与されていなければ動画再生をトリガー
+        if (!rightArrow.classList.contains('disabled')) {
             playMoveAnimation('next');
         }
     });
@@ -259,7 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updateGalleryLayout(); // ギャラリー全体の配置を更新
     });
 
-    // 初期状態での矢印の状態を更新 (動画再生中は無効化されないようonload時は有効)
-    // この行は、画像がすべてロードされてupdateGalleryLayoutが呼ばれた後に実行される必要があります
-    // そのため、updateGalleryLayoutの最後でupdateArrowStatesを呼び出しています。
+    // 初期化時にも矢印の状態を更新 (画像ロード完了後にupdateGalleryLayoutが呼ばれるため、ここでは不要)
+    // ただし、画像が全くない場合は、最初にupdateArrowStatesを呼んでおくべき
+    if (images.length === 0) {
+        updateArrowStates();
+    }
 });
