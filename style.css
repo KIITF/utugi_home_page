@@ -1,0 +1,120 @@
+/* 全体的なリセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* スクロールバーを非表示にする */
+    font-family: Arial, sans-serif;
+}
+
+/* ギャラリーコンテナ */
+.gallery-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative; /* 矢印の配置基準 */
+}
+
+/* 壁エリア */
+.wall-area {
+    height: 85%; /* 画面上1.5割を床と見立てるため */
+    background-image: url('images/wall_white.png'); /* 指定された壁の背景画像 */
+    background-size: cover; /* 壁画像がエリアを覆うように */
+    background-position: center;
+    position: relative;
+    overflow: hidden; /* 壁内で画像がはみ出さないように */
+}
+
+/* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
+.gallery-inner {
+    display: flex;
+    height: 100%;
+    /* 初期位置を中央に調整 */
+    transform: translateX(0);
+    transition: transform 0.5s ease-out; /* スライドのアニメーション */
+    position: absolute;
+    left: 50%; /* 中央寄せの基準 */
+    transform: translateX(-50%); /* 中央寄せ */
+    will-change: transform; /* パフォーマンス最適化 */
+    padding: 0 50vw; /* 両端に余白を持たせて、画像がない部分を隠す */
+}
+
+/* 各画像アイテム */
+.gallery-item {
+    min-width: 300px; /* 画像の幅に合わせて調整してください */
+    height: 80%; /* 壁エリアの高さに対する割合 */
+    margin: auto 40px; /* 左右の間隔 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none; /* リンクの下線を消す */
+    perspective: 1000px; /* 3D的な傾きのためのパースペクティブ */
+}
+
+.gallery-item img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 画像自身の影 */
+    transform: rotateY(5deg); /* わずかに傾けて立体感を出す */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 額縁のスタイル */
+.gallery-item .frame {
+    position: absolute;
+    border: 8px solid white; /* 白枠 */
+    outline: 2px solid black; /* 外側の黒枠 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none; /* クリックイベントを画像にパススルー */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 10px rgba(0,0,0,0.1) inset; /* 額縁の影と内側の影 */
+}
+
+/* ホバー時の効果 (オプション) */
+.gallery-item:hover img {
+    transform: rotateY(0deg) scale(1.02); /* 少し大きく＆傾きを戻す */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* 床エリア */
+.floor-area {
+    height: 15%; /* 画面下1.5割 */
+    background-color: black; /* 黒色 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ナビゲーション矢印 */
+.navigation-arrows {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    top: 50%; /* 床エリアの中央に配置 */
+    transform: translateY(-50%);
+}
+
+.arrow {
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+}
+
+.arrow:hover {
+    color: #ccc; /* ホバーで少し明るく */
+}
