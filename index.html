@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="gallery-container">
-        <video id="video-player" class="hidden" preload="auto">
-            <source src="" type="video/mp4">
-        </video>
-        <div id="controls">
-            <button id="left-arrow" class="arrow">←</button>
-            <button id="right-arrow" class="arrow">→</button>
+    <div class="gallery-container">
+        <img id="wall-base" src="images/wall_base.png" alt="Wall Base">
+        <video id="video-left" src="movies/wall_move_left.mp4" preload="auto" muted></video>
+        <video id="video-right" src="movies/wall_move_right.mp4" preload="auto" muted></video>
+
+        <div class="controls">
+            <button id="arrow-left">←</button>
+            <button id="arrow-right">→</button>
         </div>
     </div>
 
