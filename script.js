@@ -1,54 +1,61 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const galleryContainer = document.getElementById('gallery-container');
+    const galleryContainer = document.getElementById('gallery-container'); // 今回は直接使いませんが、要素の取得は残しておきます
     const videoPlayer = document.getElementById('video-player');
     const leftArrow = document.getElementById('left-arrow');
     const rightArrow = document.getElementById('right-arrow');
 
+    // 動画のパス
     const videoPaths = {
         left: 'movies/wall_move_left.mp4',
         right: 'movies/wall_move_right.mp4'
     };
 
-    // 動画を事前に読み込むための関数
-    // 今回はpreload="auto"とposter属性を使うため、DOMへの追加は不要
+    // 動画を事前に読み込むための関数 (変更なし)
     const preloadVideos = () => {
-        // poster属性でwal_base.pngが表示されるため、ここでは特別なDOM操作は不要
-        // ブラウザがpreload="auto"に基づいて動画データを事前に取得する
+        for (const key in videoPaths) {
+            if (videoPaths.hasOwnProperty(key)) {
+                const video = document.createElement('video');
+                video.src = videoPaths[key];
+                video.preload = 'auto'; // 'auto' または 'metadata'
+                video.style.display = 'none'; // 画面に表示しない
+                document.body.appendChild(video); // DOMに追加して読み込みを開始させる
+            }
+        }
     };
 
     // 動画の再生と背景の切り替えを行う関数
     const playVideo = (direction) => {
-        // 矢印ボタンを一時的に無効化
-        leftArrow.disabled = true;
-        rightArrow.disabled = true;
+        // 再生中の場合は何もしない (連続クリック防止)
+        if (!videoPlayer.paused && !videoPlayer.ended) {
+            return;
+        }
 
+        // 動画プレーヤーのソースを設定
         videoPlayer.src = videoPaths[direction];
-        videoPlayer.load(); // 動画を再ロード
+        videoPlayer.load(); // ソースを再ロードして準備
 
-        // 動画が準備完了したら再生を開始し、スムーズに表示を切り替える
-        videoPlayer.addEventListener('canplaythrough', function handler() {
-            videoPlayer.removeEventListener('canplaythrough', handler); // イベントリスナーを一度だけ実行
-
-            // 背景画像を非表示にする（透明にする）
-            galleryContainer.style.backgroundImage = 'none';
-
-            // videoPlayerを表示状態にする
-            videoPlayer.classList.remove('hidden');
-            videoPlayer.classList.add('visible'); // opacity: 1; を適用
-
+        // 動画が再生可能になったら表示して再生
+        videoPlayer.oncanplaythrough = () => { // oncanplaythrough: 途切れることなく再生できると判断されたら
+            videoPlayer.classList.add('video-active'); // display: block にする
             videoPlayer.play()
                 .catch(error => {
                     console.error("動画の再生に失敗しました:", error);
                     resetToBackground();
                 });
-        }, { once: true }); // イベントリスナーが一度だけ実行されるように設定
+            videoPlayer.oncanplaythrough = null; // イベントリスナーを一度だけ実行するために解除
+        };
 
-        // エラーハンドリング
-        videoPlayer.addEventListener('error', function errorHandler(e) {
-            videoPlayer.removeEventListener('error', errorHandler);
-            console.error("動画再生中にエラーが発生しました:", e);
-            resetToBackground();
-        }, { once: true });
+        // oncanplaythroughが何らかの理由で発火しない場合（非常に短い動画など）
+        // に備えて、少し遅れても再生を試みるフォールバック
+        setTimeout(() => {
+            if (videoPlayer.paused) { // まだ再生が始まっていなければ
+                videoPlayer.classList.add('video-active');
+                videoPlayer.play().catch(error => {
+                    console.error("動画の再生に失敗しました (fallback):", error);
+                    resetToBackground();
+                });
+            }
+        }, 100); // 100ms 待つ
     };
 
     // 動画再生終了後の処理
@@ -56,24 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
         resetToBackground();
     });
 
-    // 背景画像に戻す関数
+    // 動画再生中にエラーが発生した場合の処理
+    videoPlayer.addEventListener('error', (e) => {
+        console.error("動画再生中にエラーが発生しました:", e);
+        resetToBackground();
+    });
+
+    // 背景画像に戻す関数 (動画を非表示にする)
     const resetToBackground = () => {
         videoPlayer.pause();
-        videoPlayer.currentTime = 0; // 動画を最初に戻す
-
-        // videoPlayerを非表示にする
-        videoPlayer.classList.remove('visible');
-        videoPlayer.classList.add('hidden'); // opacity: 0; を適用
-
-        // transitionが完了するのを待ってから背景画像を再表示
-        // これにより、動画が完全に透明になってから背景画像が現れる
-        videoPlayer.addEventListener('transitionend', function handler() {
-            videoPlayer.removeEventListener('transitionend', handler);
-            galleryContainer.style.backgroundImage = 'url("images/wall_base.png")';
-            // 矢印ボタンを再度有効化
-            leftArrow.disabled = false;
-            rightArrow.disabled = false;
-        }, { once: true });
+        videoPlayer.classList.remove('video-active'); // display: none にする
+        videoPlayer.src = ''; // ソースをクリアしてメモリを解放
+        // galleryContainerの背景は常に表示されているため、特別な操作は不要
     };
 
     // イベントリスナーの設定
@@ -85,6 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         playVideo('right');
     });
 
-    // ページロード時に動画を事前に読み込む (preload="auto"が主となる)
+    // ページロード時に動画を事前に読み込む
     preloadVideos();
 });

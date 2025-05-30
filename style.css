@@ -12,6 +12,7 @@ body {
     position: relative;
     width: 100vw;
     height: 100vh;
+    /* wall_base.pngを常に背景として表示 */
     background-image: url('images/wall_base.png');
     background-size: cover;
     background-position: center;
@@ -28,10 +29,12 @@ body {
     height: 100%;
     object-fit: cover; /* 画面いっぱいに表示し、アスペクト比を維持する */
     z-index: 10; /* 動画を背景より手前に表示 */
+    display: none; /* 初期状態では非表示 */
 }
 
-.hidden {
-    display: none;
+/* 動画表示中のクラス */
+.video-active {
+    display: block; /* 動画再生時のみ表示 */
 }
 
 #controls {
