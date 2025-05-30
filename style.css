@@ -8,7 +8,7 @@
 html, body {
     height: 100%;
     overflow: hidden; /* スクロールバーを非表示にする */
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* フォントを少し変更 */
 }
 
 /* ギャラリーコンテナ */
@@ -32,8 +32,7 @@ html, body {
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
 .gallery-inner {
     display: flex;
-    /* justify-content: flex-start; /* 中央寄せではなく、左から配置 */
-    align-items: center; /* 垂直方向の中央揃えを維持 */
+    /* align-items: center;  画像の縦位置はJSで調整するため、CSSでの中央揃えは不要 */
     height: 100%;
     transform: translateX(0);
     transition: transform 0.5s ease-out; /* スライドのアニメーション */
@@ -43,25 +42,25 @@ html, body {
     padding: 0 50vw; /* 両端に余白を持たせて、ギャラリーの最初と最後が見切れないように */
 }
 
-/* 各画像アイテム */
+/* 各画像アイテム（額縁） */
 .gallery-item {
-    /* min-width: 300px;  JavaScriptで動的に幅を計算するのでCSSでは指定しない */
-    /* height: 80%;       画像の高さはJavaScriptで調整 */
     margin: auto 40px; /* 左右の間隔 */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute; /* JSでtopとleftを制御するため */
     cursor: pointer;
     text-decoration: none; /* リンクの下線を消す */
-    perspective: 1000px; /* 3D的な傾きのためのパースペクティブ */
 
-    /* 額縁の厚み分だけ内部のimgを縮小 */
+    /* 額縁のスタイル */
     padding: 10px; /* 白枠の厚み */
     border: 2px solid black; /* 黒枠の厚み */
     background-color: white; /* 白枠の背景色 */
     box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* 額縁全体の影 */
+
+    overflow: hidden; /* ホバー時のテキストがはみ出さないように */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* ホバー時のアニメーション */
 }
 
 .gallery-item img {
@@ -69,16 +68,53 @@ html, body {
     width: 100%;
     height: 100%;
     object-fit: contain; /* 画像が額縁内に収まるように */
-    transform: rotateY(5deg); /* わずかに傾けて立体感を出す */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1) inset; /* 画像自身の内側の影 */
+    /* transform: rotateY(5deg);  回転を削除 */
+    transition: transform 0.3s ease; /* ホバー時のアニメーション */
 }
 
-/* ホバー時の効果 (オプション) */
-.gallery-item:hover img {
-    transform: rotateY(0deg) scale(1.01); /* 少し大きく＆傾きを戻す */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) inset;
+/* ホバー時のオーバーレイとタイトル */
+.gallery-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 薄暗いオーバーレイ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* 初期状態では非表示 */
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* オーバーレイがクリックを邪魔しないように */
+    z-index: 1; /* 画像より手前に表示 */
 }
+
+.gallery-item:hover .overlay {
+    opacity: 1; /* ホバー時に表示 */
+}
+
+.gallery-item .overlay-text {
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    padding: 10px;
+    opacity: 0; /* 初期状態では非表示 */
+    transform: translateY(20px); /* 下から少しスライドして現れる */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-item:hover .overlay-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ホバー時の拡大効果 */
+.gallery-item:hover {
+    transform: scale(1.03); /* 全体を少し拡大 */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6); /* 影を濃くする */
+    z-index: 50; /* 他の画像より手前に来るように */
+}
+
 
 /* 床エリア */
 .floor-area {
@@ -112,4 +148,9 @@ html, body {
 
 .arrow:hover {
     color: #ccc; /* ホバーで少し明るく */
+}
+
+.arrow.disabled {
+    color: rgba(255, 255, 255, 0.3); /* 無効な矢印は薄く */
+    cursor: default;
 }
