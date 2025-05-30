@@ -19,15 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let currentIndex = 0; // 現在中央に表示されている画像のインデックス
-    const itemMargin = 40; // CSSの.gallery-itemのmargin-left/rightと合わせる
 
-    // 画像のランダムなサイズ設定範囲（額縁なし）
-    const minImgHeight = 200; // 画像の最小高さ
-    const maxImgHeight = 400; // 画像の最大高さ
+    // --- 設定値 ---
+    const itemsPerPage = 6; // 1ページ（画面幅）に表示したい作品数
+    const baseItemWidth = 280; // 額縁込みのアイテムの基準幅（px）
+    const itemHorizontalGap = 80; // アイテム間の水平方向の間隔（px）
 
     // 壁の上下に確保したい余白のピクセル値
-    // この値を変えることで、壁の下上にもっと余裕を持たせられます
-    const wallVerticalPadding = 60; // 例えば60pxを上下の余白に
+    const wallVerticalPadding = 80; // 上下80pxの余白を確保
+
+    // 各アイテムの表示サイズを調整する範囲（中央値からの±px）
+    const sizeVariationRange = 40; // 基準サイズから±40pxの範囲で変動させる
+    // --- /設定値 ---
 
     // 画像を動的にギャラリーに追加
     images.forEach(imageData => {
@@ -55,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let loadedImagesCount = 0;
     const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
 
-    // 画像がロードされてからサイズを調整し、位置を決定
+    // 画像がロードされてからサイズと位置を決定
     galleryItems.forEach(item => {
         const img = item.querySelector('img');
         img.onload = () => {
             loadedImagesCount++;
-
+            
             // 額縁の厚み (CSSのpaddingとborderの合計)
             const framePadding = 10 * 2; // top/bottom and left/right padding
             const frameBorder = 2 * 2;   // top/bottom and left/right border
@@ -71,27 +74,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const naturalHeight = img.naturalHeight;
             const aspectRatio = naturalWidth / naturalHeight;
 
-            // ランダムな高さを決定
-            const randomHeight = minImgHeight + Math.random() * (maxImgHeight - minImgHeight);
-            
-            let displayHeight = randomHeight;
-            let displayWidth = displayHeight * aspectRatio;
+            // アイテムのランダムな表示幅を決定
+            const randomWidthOffset = Math.random() * sizeVariationRange * 2 - sizeVariationRange; // -sizeVariationRange から +sizeVariationRange
+            let itemDisplayWidth = baseItemWidth + randomWidthOffset;
 
-            // 画像のサイズを適用 (額縁込み)
-            item.style.height = `${displayHeight + totalFrameThickness}px`;
-            item.style.width = `${displayWidth + totalFrameThickness}px`;
+            // 幅に合わせて高さを計算
+            let itemDisplayHeight = itemDisplayWidth / aspectRatio;
 
-            // 垂直方向のランダムな位置調整
+            // 高さが壁の利用可能な範囲を超えないように調整
             const wallAreaHeight = wallArea.clientHeight;
-            // 壁の利用可能な高さからアイテムの高さを引いた範囲内でランダムに配置
-            const availableVerticalSpace = wallAreaHeight - (wallVerticalPadding * 2) - item.offsetHeight;
-            const randomTop = Math.random() * availableVerticalSpace;
-            item.style.top = `${wallVerticalPadding + randomTop}px`;
-            // flexboxで中央揃えされているため、topを使う場合はposition:absoluteが必要
-            // しかし、今回は横一列なので、flexboxのalign-itemsに任せる
-            // もしランダムな垂直オフセットを適用するなら`position: absolute`と`top`を使う
-            // 現状は`align-items: center`で中央揃えされているため、コメントアウト
-            // item.style.position = 'absolute'; // これを有効にするなら、CSSのalign-items: centerはコメントアウト
+            const availableWallHeight = wallAreaHeight - (wallVerticalPadding * 2);
+
+            if (itemDisplayHeight > availableWallHeight) {
+                itemDisplayHeight = availableWallHeight;
+                itemDisplayWidth = itemDisplayHeight * aspectRatio; // 高さに合わせて幅を再計算
+            }
+
+            // アイテム（額縁）の最終的なサイズを設定
+            item.style.width = `${itemDisplayWidth}px`;
+            item.style.height = `${itemDisplayHeight}px`;
+
+            // 垂直方向の位置調整（壁の上下余白を意識し、縦横比を考慮）
+            // 利用可能な垂直スペース内でランダムに配置
+            const currentItemHeightWithoutFrame = itemDisplayHeight - totalFrameThickness;
+            const availableVerticalSpaceForImage = wallAreaHeight - (wallVerticalPadding * 2) - currentItemHeightWithoutFrame;
+            
+            let randomTopOffset = Math.random() * availableVerticalSpaceForImage; // 画像の高さに応じてランダムな位置
+
+            // 最終的なtop位置 (額縁のpadding/borderも考慮)
+            item.style.top = `${wallVerticalPadding + randomTopOffset - (framePadding / 2) - (frameBorder / 2)}px`;
+            item.style.position = 'absolute'; // topを有効にする
 
             if (loadedImagesCount === images.length) {
                 // すべての画像がロードされた後に、ギャラリーの初期位置を設定
@@ -115,24 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ギャラリーのレイアウトを更新する関数 (横一列)
     function updateGalleryLayout() {
-        let totalGalleryWidth = 0;
-        galleryItems.forEach(item => {
-            totalGalleryWidth += item.offsetWidth + (itemMargin * 2); // アイテム幅 + 左右マージン
+        let currentX = 0; // galleryInnerの左端からの配置基準X座標
+
+        // 各アイテムのX座標を設定
+        galleryItems.forEach((item, index) => {
+            // ランダムな水平オフセット（水平方向の「いい感じ」のズレ）
+            const randomXOffset = (Math.random() - 0.5) * (itemHorizontalGap / 2); // -40pxから+40px
+
+            item.style.left = `${currentX + randomXOffset}px`;
+            currentX += item.offsetWidth + itemHorizontalGap; // 次のアイテムの開始位置
         });
 
         // ギャラリーの全体の幅を設定
-        galleryInner.style.width = `${totalGalleryWidth}px`;
+        galleryInner.style.width = `${currentX}px`;
 
         // ギャラリーの最初と最後に画面半分の余白を追加 (スクロールの見た目を改善)
         const viewportWidth = window.innerWidth;
         galleryInner.style.paddingLeft = `${viewportWidth / 2}px`;
         galleryInner.style.paddingRight = `${viewportWidth / 2}px`;
 
-
         // 最初の画像を画面中央に配置する初期位置
-        // galleryInnerのpaddingLeftを考慮して最初のアイテムの真ん中を中央に
-        const firstItemOffset = (galleryItems[0].offsetWidth / 2); // 最初のアイテムの中心
-        const initialTranslateX = (viewportWidth / 2) - firstItemOffset - parseFloat(getComputedStyle(galleryInner).paddingLeft);
+        // galleryInnerのpaddingLeftを考慮
+        const initialTranslateX = (viewportWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft) - parseFloat(galleryItems[0].style.left || 0);
         
         galleryInner.style.transform = `translateX(${initialTranslateX}px)`;
         currentTranslateX = initialTranslateX;
@@ -148,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTranslateX = matrix.m41;
         }
 
-        let targetIndex = currentIndex; // ターゲットインデックスを現在値で初期化
+        let targetIndex = currentIndex;
 
         if (direction === 'next') {
             targetIndex = Math.min(currentIndex + 1, galleryItems.length - 1);
@@ -157,14 +173,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 移動距離を計算
-        // 目標のアイテムの左端 + アイテム幅の半分
-        const targetItemOffsetFromGalleryStart = galleryItems[targetIndex].offsetLeft + (galleryItems[targetIndex].offsetWidth / 2);
-        // ビューポート中央 - (ギャラリーの左端からのアイテムの中心位置 + ギャラリーのpaddingLeft)
-        let moveDistance = (window.innerWidth / 2) - (targetItemOffsetFromGalleryStart + parseFloat(getComputedStyle(galleryInner).paddingLeft));
+        const targetItem = galleryItems[targetIndex];
+        const targetItemLeft = parseFloat(targetItem.style.left);
+        const targetItemWidth = targetItem.offsetWidth;
+        const viewportCenter = window.innerWidth / 2;
+
+        // 目標のアイテムの中心がビューポート中央に来るように
+        let moveDistance = viewportCenter - (targetItemLeft + (targetItemWidth / 2) + parseFloat(getComputedStyle(galleryInner).paddingLeft));
 
         // 限界値を計算
-        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft); // 最初のアイテムが中央に来る位置
-        const minTranslateX = (window.innerWidth / 2) - (galleryInner.scrollWidth - galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft); // 最後のアイテムが中央に来る位置
+        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft) - parseFloat(galleryItems[0].style.left || 0); // 最初のアイテムが中央に来る位置
+        const minTranslateX = (window.innerWidth / 2) - (parseFloat(galleryInner.style.width) - galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft) - parseFloat(galleryItems[galleryItems.length - 1].style.left || 0); // 最後のアイテムが中央に来る位置
 
         // 限界値を超えないように補正
         if (moveDistance > maxTranslateX) {
@@ -186,9 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const epsilon = 1; 
 
-        // 限界位置の計算を再確認
-        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft);
-        const minTranslateX = (window.innerWidth / 2) - (galleryInner.scrollWidth - galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft);
+        // 限界位置の計算
+        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft) - parseFloat(galleryItems[0].style.left || 0);
+        const minTranslateX = (window.innerWidth / 2) - (parseFloat(galleryInner.style.width) - galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(getComputedStyle(galleryInner).paddingLeft) - parseFloat(galleryItems[galleryItems.length - 1].style.left || 0);
 
         if (currentTranslateX >= maxTranslateX - epsilon) {
             leftArrow.classList.add('disabled');
@@ -227,23 +246,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 const naturalHeight = img.naturalHeight;
                 const aspectRatio = naturalWidth / naturalHeight;
 
-                const randomHeight = minImgHeight + Math.random() * (maxImgHeight - minImgHeight);
-                let displayHeight = randomHeight;
-                let displayWidth = displayHeight * aspectRatio;
-
                 const framePadding = 10 * 2;
                 const frameBorder = 2 * 2;
                 const totalFrameThickness = framePadding + frameBorder;
 
-                item.style.height = `${displayHeight + totalFrameThickness}px`;
-                item.style.width = `${displayWidth + totalFrameThickness}px`;
+                const randomWidthOffset = Math.random() * sizeVariationRange * 2 - sizeVariationRange;
+                let itemDisplayWidth = baseItemWidth + randomWidthOffset;
 
-                // 垂直方向の位置もリサイズ時に再計算し直す
+                let itemDisplayHeight = itemDisplayWidth / aspectRatio;
+
                 const wallAreaHeight = wallArea.clientHeight;
-                const availableVerticalSpace = wallAreaHeight - (wallVerticalPadding * 2) - item.offsetHeight;
-                const randomTop = Math.random() * availableVerticalSpace;
-                item.style.top = `${wallVerticalPadding + randomTop}px`;
-                item.style.position = 'absolute'; // topを有効にする
+                const availableWallHeight = wallAreaHeight - (wallVerticalPadding * 2);
+
+                if (itemDisplayHeight > availableWallHeight) {
+                    itemDisplayHeight = availableWallHeight;
+                    itemDisplayWidth = itemDisplayHeight * aspectRatio;
+                }
+
+                item.style.width = `${itemDisplayWidth}px`;
+                item.style.height = `${itemDisplayHeight}px`;
+
+                const currentItemHeightWithoutFrame = itemDisplayHeight - totalFrameThickness;
+                const availableVerticalSpaceForImage = wallAreaHeight - (wallVerticalPadding * 2) - currentItemHeightWithoutFrame;
+                
+                let randomTopOffset = Math.random() * availableVerticalSpaceForImage;
+                item.style.top = `${wallVerticalPadding + randomTopOffset - (framePadding / 2) - (frameBorder / 2)}px`;
             }
         });
         updateGalleryLayout(); // ギャラリー全体の配置を更新
