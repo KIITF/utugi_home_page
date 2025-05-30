@@ -9,53 +9,51 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0; /* 全体の背景色 */
 }
 
-
-body {
-    height: 100%;
-    overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f0f0; /* 例：薄いグレーの背景 */
-}
-
+/* ギャラリーコンテナ */
 .gallery-container {
     display: flex;
     flex-direction: column;
     height: 100%;
-    position: relative;
-    /* background-color: transparent; 不要であれば削除 */
+    width: 100%; /* 親であるbodyの幅に合わせる */
+    position: relative; /* 子要素のposition:absoluteの基準 */
 }
 
-.wall-area {
-    height: 85%;
-    position: relative;
-    overflow: hidden;
-}
-
+/* 壁と床が一体となった背景静止画 */
 .wall-background {
-    position: absolute;
+    position: absolute; /* 親(gallery-container)を基準に配置 */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; /* 画面全体に広がる */
     background-size: cover;
     background-position: center;
     opacity: 1;
     transition: opacity 0.5s ease-out;
-    z-index: 1;
+    z-index: 1; /* 最背面 */
 }
 
+/* 壁と床が一体となった移動時の動画 */
 .wall-video {
-    position: absolute;
+    position: absolute; /* 親(gallery-container)を基準に配置 */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* 追加 */
-    opacity: 0;
+    height: 100%; /* 画面全体に広がる */
+    object-fit: cover;
+    opacity: 0; /* 初期は非表示 */
     transition: opacity 0.5s ease-out;
-    z-index: 2;
+    z-index: 2; /* 静止画より手前 */
+}
+
+/* 壁エリア - 画像ギャラリーの表示領域 */
+.wall-area {
+    height: 85%; /* 画面上1.5割を床と見立てるため */
+    position: relative;
+    overflow: hidden;
+    z-index: 3; /* 背景動画/静止画より手前 */
 }
 
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
@@ -65,96 +63,62 @@ body {
     height: 100%; /* wall-areaの高さに合わせる */
     transform: translateX(0);
     transition: transform 0.5s ease-out;
-    position: relative; /* gallery-inner自体はrelativeで、left:0で壁の左端に配置 */
-                        /* これにより内部のflexboxレイアウトが適切に機能 */
-    left: 0; /* wall-areaの左端に固定 */
+    position: relative; /* wall-areaの左端に固定 */
+    left: 0;
     will-change: transform;
-    z-index: 3; /* 動画より手前 */
+    z-index: 4; /* wall-areaより手前 */
 }
 
-/* 各画像アイテム（額縁） */
+/* 各画像アイテム（額縁） - 変更なし */
 .gallery-item {
     cursor: pointer;
     text-decoration: none;
-    flex-shrink: 0; /* アイテムが縮まないように */
-    /* position: absolute; を削除 - Flexboxで位置制御 */
-
-    /* 額縁のスタイル - これが額縁そのもの */
-    padding: 10px; /* 白枠の厚み */
-    border: 2px solid black; /* 黒枠の厚み */
-    background-color: white; /* 白枠の背景色 */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* 額縁全体の影 */
-
-    overflow: hidden; /* オーバーレイがはみ出さないように */
+    flex-shrink: 0;
+    padding: 10px;
+    border: 2px solid black;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin: 0 40px; /* アイテム間の基本的な左右マージン */
+    margin: 0 40px;
 }
 
 .gallery-item img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 変更 (contain から cover へ) */
+    object-fit: contain;
     transition: transform 0.3s ease;
 }
 
-/* ホバー時のオーバーレイとタイトル */
+/* ホバー時のオーバーレイとタイトル - 変更なし */
 .gallery-item .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 1; /* 画像より手前に表示 */
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); display: flex; flex-direction: column;
+    justify-content: center; align-items: center; opacity: 0;
+    transition: opacity 0.3s ease; pointer-events: none; z-index: 1;
 }
-
-.gallery-item:hover .overlay {
-    opacity: 1;
-}
-
+.gallery-item:hover .overlay { opacity: 1; }
 .gallery-item .overlay-text {
-    color: white;
-    font-size: 1.1em;
-    font-weight: bold;
-    text-align: center;
-    padding: 5px 10px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    line-height: 1.3;
+    color: white; font-size: 1.1em; font-weight: bold; text-align: center;
+    padding: 5px 10px; opacity: 0; transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease; line-height: 1.3;
 }
+.gallery-item:hover .overlay-text { opacity: 1; transform: translateY(0); }
+.gallery-item:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(0,0,0,0.6); z-index: 50; }
 
-.gallery-item:hover .overlay-text {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ホバー時の拡大効果 */
-.gallery-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-    z-index: 50; /* ホバーしたアイテムが手前に来るように */
-}
-
-
+/* 床エリア - 矢印の配置のため */
 .floor-area {
-    height: 15%;
-    background-color: transparent; /* 透過 */
+    height: 15%; /* wall-areaの残り */
+    background-color: transparent; /* 透過を維持 */
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100; /* 必要であれば最前面に */
+    z-index: 5; /* ギャラリーアイテムより手前 */
 }
 
+/* ナビゲーション矢印 */
 .navigation-arrows {
     position: absolute;
     width: 100%;
@@ -163,22 +127,12 @@ body {
     padding: 0 20px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 101; /* 矢印をさらに前面に */
+    z-index: 100; /* 最前面 */
 }
 
 .arrow {
-    font-size: 3rem;
-    color: white;
-    cursor: pointer;
-    user-select: none;
+    font-size: 3rem; color: white; cursor: pointer; user-select: none;
     transition: color 0.3s ease;
 }
-
-.arrow:hover {
-    color: #ccc;
-}
-
-.arrow.disabled {
-    color: rgba(255, 255, 255, 0.3);
-    cursor: default;
-}
+.arrow:hover { color: #ccc; }
+.arrow.disabled { color: rgba(255, 255, 255, 0.3); cursor: default; }
