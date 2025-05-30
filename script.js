@@ -2,22 +2,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryInner = document.querySelector('.gallery-inner');
     const leftArrow = document.getElementById('leftArrow');
     const rightArrow = document.getElementById('rightArrow');
+    const wallArea = document.querySelector('.wall-area');
 
-    // ポートフォリオ画像のリストとリンク先
+    // ポートフォリオ画像のリスト、リンク先、タイトル
     const images = [
-        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino' },
-        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X' },
-        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki' },
-        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino 2' },
-        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X 2' },
-        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki 2' },
-        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino 3' },
-        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X 3' },
-        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki 3' },
+        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino', title: '贅沢と君とカプチーノ(cover)' },
+        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X', title: 'EpisodeX(cover)' },
+        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki', title: '食虫植物(cover)' },
+        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino 2', title: '贅沢と君とカプチーノ(cover)' },
+        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X 2', title: 'EpisodeX(cover)' },
+        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki 2', title: '食虫植物(cover)' },
+        { src: 'images/cappuccino.png', link: 'https://www.youtube.com/', alt: 'Cappuccino 3', title: '贅沢と君とカプチーノ(cover)' },
+        { src: 'images/EpisodeX.png', link: 'https://www.youtube.com/', alt: 'Episode X 3', title: 'EpisodeX(cover)' },
+        { src: 'images/c_plant_yuki.png', link: 'https://www.youtube.com/', alt: 'Plant Yuki 3', title: '食虫植物(cover)' },
     ];
 
     let currentIndex = 0;
-    const marginBetweenItems = 40; // gallery-itemの左右マージン (CSSと合わせる)
+    const itemHorizontalMargin = 40; // gallery-itemの左右マージン (CSSと合わせる)
 
     // 画像を動的にギャラリーに追加
     images.forEach(imageData => {
@@ -30,48 +31,60 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = imageData.src;
         img.alt = imageData.alt;
 
+        // ホバー時のオーバーレイとタイトル要素
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+        const overlayText = document.createElement('div');
+        overlayText.classList.add('overlay-text');
+        overlayText.textContent = imageData.title;
+        overlay.appendChild(overlayText);
+
         a.appendChild(img);
+        a.appendChild(overlay); // 画像の上にオーバーレイを追加
         galleryInner.appendChild(a);
     });
 
-    // 画像がロードされてからサイズを調整し、位置をずらす
-    // すべての画像をロードし終わってから処理を実行
     let loadedImagesCount = 0;
-    const galleryItems = document.querySelectorAll('.gallery-item');
+    const galleryItems = Array.from(document.querySelectorAll('.gallery-item')); // NodeListを配列に変換
 
+    // 画像がロードされてからサイズを調整し、位置をずらす
     galleryItems.forEach(item => {
         const img = item.querySelector('img');
         img.onload = () => {
             loadedImagesCount++;
 
-            // 画像のサイズに合わせて額縁（paddingとborder）の幅を調整
             // 画像の縦横比を保ちつつ、壁の高さの一定割合に収める
-            const wallAreaHeight = document.querySelector('.wall-area').clientHeight;
-            const targetHeight = wallAreaHeight * 0.7; // 壁の高さの70%を使用
+            const wallAreaHeight = wallArea.clientHeight;
+            const targetHeight = wallAreaHeight * 0.5; // 壁の高さの50%を使用（画像サイズを調整）
             const aspectRatio = img.naturalWidth / img.naturalHeight;
+
+            // 初期幅と高さ
             let imgWidth = targetHeight * aspectRatio;
             let imgHeight = targetHeight;
 
-            // 最小幅と最大幅を設定して極端なサイズにならないようにする (任意)
-            if (imgWidth < 200) imgWidth = 200;
-            if (imgWidth > 450) imgWidth = 450;
+            // 画像の最大・最小サイズを設定（額縁含まず）
+            const minImgWidth = 180;
+            const maxImgWidth = 350;
+
+            if (imgWidth < minImgWidth) imgWidth = minImgWidth;
+            if (imgWidth > maxImgWidth) imgWidth = maxImgWidth;
             imgHeight = imgWidth / aspectRatio; // 幅に合わせて高さを再計算
 
-            item.style.width = `${imgWidth + (10 * 2) + (2 * 2)}px`; // 画像幅 + padding + border
-            item.style.height = `${imgHeight + (10 * 2) + (2 * 2)}px`; // 画像高さ + padding + border
+            // 額縁の厚み (CSSのpaddingとborderの合計)
+            const framePadding = 10 * 2; // top/bottom padding
+            const frameBorder = 2 * 2; // top/bottom border
+            const totalFrameThickness = framePadding + frameBorder;
 
-            // 額縁の位置を「いい感じにずらす」
-            // wall-areaの高さの範囲内でランダムに位置を調整
-            const wallPaddingTopBottom = wallAreaHeight * 0.1; // 壁の上下の余白
-            const availableHeight = wallAreaHeight - wallPaddingTopBottom * 2 - item.offsetHeight;
-            const randomTop = Math.random() * availableHeight; // ランダムな上方向のオフセット
+            item.style.width = `${imgWidth + totalFrameThickness}px`;
+            item.style.height = `${imgHeight + totalFrameThickness}px`;
+
+            // 額縁の位置を「いい感じにずらす」（縦方向）
+            // 壁の上下の余白と画像の高さを考慮して、ランダムなtop位置を決定
+            const wallPaddingTopBottom = wallAreaHeight * 0.1; // 壁の上下に10%の余白
+            const availableVerticalSpace = wallAreaHeight - (wallPaddingTopBottom * 2) - item.offsetHeight;
+            const randomTop = Math.random() * availableVerticalSpace;
             item.style.top = `${randomTop + wallPaddingTopBottom}px`;
             item.style.position = 'absolute'; // topを有効にするためにabsoluteにする
-
-            // 各アイテムを壁内でランダムなX位置に配置するためのleftオフセットを設定
-            // これは後で移動量を計算する際に使う
-            item.dataset.originalLeft = parseFloat(item.style.left || 0);
-
 
             if (loadedImagesCount === images.length) {
                 // すべての画像がロードされた後に、ギャラリーの初期位置を設定
@@ -86,66 +99,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateGalleryPosition();
             }
         };
+        // キャッシュされている画像の場合はonloadが発火しないことがあるため、
+        // 既にcompleteしている場合は手動でonloadをトリガーする
+        if (img.complete) {
+            img.onload();
+        }
     });
+
+    let currentTranslateX = 0; // galleryInnerの現在のtranslateX値
 
     // ギャラリーの全体幅を計算し、配置
     function updateGalleryPosition() {
-        let totalWidth = 0;
-        let currentX = 0; // 各アイテムの開始位置
-        const items = Array.from(galleryInner.children); // ライブコレクションではなく配列に変換
+        let currentXOffset = 0; // galleryInnerの左端からの各アイテムの相対X位置
 
-        items.forEach((item, index) => {
-            // 各アイテムにランダムな左右のオフセットを適用
-            // item.style.marginLeft = `${marginBetweenItems + (Math.random() * 80 - 40)}px`; // -40pxから+40pxまでランダムにずらす
-            // item.style.marginRight = `${marginBetweenItems + (Math.random() * 80 - 40)}px`;
-
-            // ここでは margin-left/right はCSSで固定し、ギャラリー全体の移動で対応
-            // 各アイテムを横にずらす（CSSのmargin-left/rightに加えて）
-            const randomXOffset = (Math.random() - 0.5) * 80; // -40px から +40px の範囲
-            item.style.marginLeft = `${marginBetweenItems + randomXOffset}px`;
-            item.style.marginRight = `${marginBetweenItems - randomXOffset}px`;
-
-
-            // 各アイテムの最終的な幅（margin含む）を計算
-            const itemFullWidth = item.offsetWidth + parseFloat(getComputedStyle(item).marginLeft) + parseFloat(getComputedStyle(item).marginRight);
+        galleryItems.forEach((item, index) => {
+            // 各アイテムにランダムな左右のマージンオフセットを適用
+            // itemHorizontalMarginはCSSで定義された基本マージン
+            // -itemHorizontalMargin/2 から +itemHorizontalMargin/2 の範囲でランダムにずらす
+            const randomXOffset = (Math.random() - 0.5) * itemHorizontalMargin; // -20px から +20px の範囲
             
-            // アイテムのleftプロパティを更新（absolute配置とギャラリー全体の移動を組み合わせる）
-            // この`left`は、`gallery-inner`の左端からの相対位置
-            item.style.left = `${currentX}px`;
-            currentX += itemFullWidth; // 次のアイテムの開始位置を更新
+            // `gallery-inner`の左端からの正確な配置
+            // margin-left はCSSで指定されているので、別途計算しない
+            // ここでは各アイテムのleftプロパティを直接設定して、ギャラリー全体のレイアウトを構築
+            item.style.left = `${currentXOffset + (itemHorizontalMargin / 2) + randomXOffset}px`;
+            
+            // 次のアイテムの開始位置を更新
+            // (アイテム幅 + 左右マージンの合計)
+            currentXOffset += item.offsetWidth + itemHorizontalMargin;
         });
 
-        // gallery-inner全体の幅を計算し、設定
-        totalWidth = currentX; // 最後のアイテムの末尾までの幅
-        galleryInner.style.width = `${totalWidth}px`;
+        // gallery-innerの全体の幅を設定
+        // 最後のアイテムの右端 + ギャラリーの最後のマージン
+        galleryInner.style.width = `${currentXOffset + (itemHorizontalMargin / 2)}px`;
 
-
-        // ギャラリーの初期位置を設定（最初の画像を中央に）
-        // padding: 0 50vw; を考慮して、全体の幅を計算
-        const viewportWidth = window.innerWidth;
-        const initialGalleryOffset = (viewportWidth / 2) - (items[0].offsetWidth / 2) - parseFloat(getComputedStyle(items[0]).marginLeft);
+        // 最初の画像を画面中央に配置する初期位置
+        // `(window.innerWidth / 2)`: ビューポートの中央
+        // `- (galleryItems[0].offsetWidth / 2)`: 最初のアイテムの中心まで戻す
+        // `- (parseFloat(getComputedStyle(galleryItems[0]).left))` : 最初のアイテムのleftオフセットを引く
+        const initialGalleryOffset = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(galleryItems[0].style.left);
+        
         galleryInner.style.transform = `translateX(${initialGalleryOffset}px)`;
-        currentTranslateX = initialGalleryOffset; // 初期位置を設定
+        currentTranslateX = initialGalleryOffset; // 初期位置をセット
 
-        // 矢印の有効/無効状態を更新
-        updateArrowStates();
+        updateArrowStates(); // 矢印の状態を更新
     }
-
-
-    let currentTranslateX = 0; // galleryInnerの現在のtranslateX値
 
     // ギャラリーを移動させる関数
     function moveToItem(direction) {
         // 現在のtranslateX値を数値として取得
         const transformValue = window.getComputedStyle(galleryInner).transform;
         if (transformValue !== 'none') {
-            currentTranslateX = parseFloat(transformValue.split(',')[4]);
-        } else {
-            currentTranslateX = 0;
+            const matrix = new DOMMatrixReadOnly(transformValue);
+            currentTranslateX = matrix.m41; // translateXの値を取得
         }
 
         let targetIndex;
-        let moveDistance = 0;
 
         if (direction === 'next') {
             targetIndex = currentIndex + 1;
@@ -160,18 +168,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 目標の画像に中央を合わせる移動距離を計算
-        // `gallery-inner`の`left: 0;`からスタートしたときの、目標アイテムの左端位置
+        // 目標アイテムの左端位置 (galleryInnerからの相対)
         const targetItemLeft = parseFloat(galleryItems[targetIndex].style.left);
-        const itemCenterOffset = galleryItems[targetIndex].offsetWidth / 2; // アイテムの中心までのオフセット
-        const viewportCenter = window.innerWidth / 2; // ビューポートの中央
+        // 目標アイテムの幅
+        const targetItemWidth = galleryItems[targetIndex].offsetWidth;
+        // ビューポートの中央
+        const viewportCenter = window.innerWidth / 2;
 
-        // 目標の移動量: アイテムの左端がビューポート中央に来るように
-        moveDistance = viewportCenter - targetItemLeft - itemCenterOffset;
+        // 目標の移動量: アイテムの中心がビューポート中央に来るように
+        let moveDistance = viewportCenter - (targetItemLeft + (targetItemWidth / 2));
 
         // ギャラリーの左端と右端の限界値
-        const minTranslateX = window.innerWidth / 2 - galleryInner.scrollWidth + (galleryItems[galleryItems.length - 1].offsetWidth / 2); // 右端の画像が中央に来る位置
-        const maxTranslateX = window.innerWidth / 2 - (galleryItems[0].offsetWidth / 2); // 左端の画像が中央に来る位置
+        // 最初のアイテムの中心が画面中央に来る位置
+        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(galleryItems[0].style.left);
+        // 最後のアイテムの中心が画面中央に来る位置
+        const minTranslateX = (window.innerWidth / 2) - (galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(galleryItems[galleryItems.length - 1].style.left);
 
+
+        // 限界値を超えないように補正
         if (moveDistance > maxTranslateX) {
             moveDistance = maxTranslateX;
         } else if (moveDistance < minTranslateX) {
@@ -187,28 +201,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 矢印の有効/無効状態を更新する関数
     function updateArrowStates() {
-        // galleryInnerが完全にロードされていなければ何もしない
-        if (!galleryInner.scrollWidth) return;
+        if (!galleryInner.scrollWidth || galleryItems.length === 0) return;
 
-        // 許容誤差を設定
-        const epsilon = 5; // 5pxの誤差を許容
+        // 許容誤差を設定（浮動小数点誤差を吸収するため）
+        const epsilon = 1; 
 
-        // 現在の表示位置（左端からのtranslateX値）
-        const currentLeft = currentTranslateX;
+        // 左端の限界位置（最初の画像が完全に左端に表示される位置）
+        const maxTranslateX = (window.innerWidth / 2) - (galleryItems[0].offsetWidth / 2) - parseFloat(galleryItems[0].style.left);
+        // 右端の限界位置（最後の画像が完全に右端に表示される位置）
+        const minTranslateX = (window.innerWidth / 2) - (galleryItems[galleryItems.length - 1].offsetWidth / 2) - parseFloat(galleryItems[galleryItems.length - 1].style.left);
 
-        // ギャラリーの左端がビューポート中央に来るべき理想の位置
-        const idealMaxLeft = window.innerWidth / 2 - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryItems[0]).marginLeft);
-
-        // ギャラリーの右端がビューポート中央に来るべき理想の位置
-        const idealMinLeft = window.innerWidth / 2 - galleryInner.scrollWidth + (galleryItems[galleryItems.length - 1].offsetWidth / 2) + parseFloat(getComputedStyle(galleryItems[galleryItems.length - 1]).marginRight);
-
-        if (currentLeft >= idealMaxLeft - epsilon) {
+        if (currentTranslateX >= maxTranslateX - epsilon) {
             leftArrow.classList.add('disabled');
         } else {
             leftArrow.classList.remove('disabled');
         }
 
-        if (currentLeft <= idealMinLeft + epsilon) {
+        if (currentTranslateX <= minTranslateX + epsilon) {
             rightArrow.classList.add('disabled');
         } else {
             rightArrow.classList.remove('disabled');
@@ -229,36 +238,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // リサイズ時にギャラリーの位置を再調整
+    // リサイズ時にギャラリーの位置とアイテムのサイズを再調整
     window.addEventListener('resize', () => {
         // 画像のサイズと位置の計算を再実行
-        loadedImagesCount = 0; // ロード済みカウントをリセットして再計算を強制
         galleryItems.forEach(item => {
             const img = item.querySelector('img');
-            // 画像のロード完了を待つ必要があるので、onloadトリガーのロジックに任せる
-            // もしくは、ここではDOM要素の再配置のみを行い、サイズは別途計算
-            // 今回は簡略化のため、リサイズ時もすべての画像が再配置される想定
-            const wallAreaHeight = document.querySelector('.wall-area').clientHeight;
-            const targetHeight = wallAreaHeight * 0.7;
-            const imgNaturalWidth = img.naturalWidth;
-            const imgNaturalHeight = img.naturalHeight;
-            const aspectRatio = imgNaturalWidth / imgNaturalHeight;
+            // 画像のロードが完了していることを確認
+            if (img.complete) {
+                const wallAreaHeight = wallArea.clientHeight;
+                const targetHeight = wallAreaHeight * 0.5;
+                const aspectRatio = img.naturalWidth / img.naturalHeight;
 
-            let imgWidth = targetHeight * aspectRatio;
-            let imgHeight = targetHeight;
+                let imgWidth = targetHeight * aspectRatio;
+                let imgHeight = targetHeight;
 
-            if (imgWidth < 200) imgWidth = 200;
-            if (imgWidth > 450) imgWidth = 450;
-            imgHeight = imgWidth / aspectRatio;
+                const minImgWidth = 180;
+                const maxImgWidth = 350;
 
-            item.style.width = `${imgWidth + (10 * 2) + (2 * 2)}px`;
-            item.style.height = `${imgHeight + (10 * 2) + (2 * 2)}px`;
+                if (imgWidth < minImgWidth) imgWidth = minImgWidth;
+                if (imgWidth > maxImgWidth) imgWidth = maxImgWidth;
+                imgHeight = imgWidth / aspectRatio;
 
-            const wallPaddingTopBottom = wallAreaHeight * 0.1;
-            const availableHeight = wallAreaHeight - wallPaddingTopBottom * 2 - item.offsetHeight;
-            const randomTop = Math.random() * availableHeight;
-            item.style.top = `${randomTop + wallPaddingTopBottom}px`;
+                const framePadding = 10 * 2;
+                const frameBorder = 2 * 2;
+                const totalFrameThickness = framePadding + frameBorder;
+
+                item.style.width = `${imgWidth + totalFrameThickness}px`;
+                item.style.height = `${imgHeight + totalFrameThickness}px`;
+
+                const wallPaddingTopBottom = wallAreaHeight * 0.1;
+                const availableVerticalSpace = wallAreaHeight - (wallPaddingTopBottom * 2) - item.offsetHeight;
+                const randomTop = Math.random() * availableVerticalSpace;
+                item.style.top = `${randomTop + wallPaddingTopBottom}px`;
+            }
         });
-        updateGalleryPosition();
+        updateGalleryPosition(); // ギャラリー全体の配置を更新
     });
 });
