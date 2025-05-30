@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
     const itemMargin = 40;
-    const moveDistanceMultiplier = 1.5; // 移動距離の倍率
+    const moveDistanceMultiplier = 2.5; // 移動距離の倍率
 
     const TARGET_AREA = 150000; 
 
