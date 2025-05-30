@@ -19,7 +19,6 @@ html, body {
     height: 100%;
     width: 100%;
     position: relative;
-    /* ポインターイベントをデフォルトに戻す（子要素のクリックを妨げない） */
     pointer-events: auto; 
 }
 
@@ -35,7 +34,7 @@ html, body {
     opacity: 1;
     transition: opacity 0.5s ease-out;
     z-index: 1;
-    pointer-events: none; /* クリックを透過させる */
+    pointer-events: none;
 }
 
 /* 壁と床が一体となった移動時の動画 */
@@ -49,7 +48,7 @@ html, body {
     opacity: 0;
     transition: opacity 0.5s ease-out;
     z-index: 2;
-    pointer-events: none; /* クリックを透過させる */
+    pointer-events: none;
 }
 
 /* 壁エリア - 画像ギャラリーの表示領域 */
@@ -58,7 +57,6 @@ html, body {
     position: relative;
     overflow: hidden;
     z-index: 3;
-    /* wall-area自身もクリックを透過させる。ギャラリーアイテムがクリックされるように */
     pointer-events: none; 
 }
 
@@ -73,11 +71,10 @@ html, body {
     left: 0;
     will-change: transform;
     z-index: 4;
-    /* ギャラリーアイテム自体はクリックできるように */
     pointer-events: auto; 
 }
 
-/* 各画像アイテム（額縁） - 変更なし */
+/* 各画像アイテム（額縁） */
 .gallery-item {
     cursor: pointer;
     text-decoration: none;
@@ -89,7 +86,6 @@ html, body {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 0 40px;
-    /* 額縁はクリック可能 */
     pointer-events: auto;
 }
 
@@ -126,7 +122,6 @@ html, body {
     justify-content: center;
     align-items: center;
     z-index: 5;
-    /* floor-area自身もクリックを透過させる。矢印がクリックされるように */
     pointer-events: none; 
 }
 
@@ -140,7 +135,6 @@ html, body {
     top: 50%;
     transform: translateY(-50%);
     z-index: 100;
-    /* 矢印はクリック可能 */
     pointer-events: auto; 
 }
 
