@@ -197,4 +197,68 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentLeft = currentTranslateX;
 
         // ギャラリーの左端がビューポート中央に来るべき理想の位置
-        const idealMaxLeft = window.innerWidth / 2 - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle
+        const idealMaxLeft = window.innerWidth / 2 - (galleryItems[0].offsetWidth / 2) - parseFloat(getComputedStyle(galleryItems[0]).marginLeft);
+
+        // ギャラリーの右端がビューポート中央に来るべき理想の位置
+        const idealMinLeft = window.innerWidth / 2 - galleryInner.scrollWidth + (galleryItems[galleryItems.length - 1].offsetWidth / 2) + parseFloat(getComputedStyle(galleryItems[galleryItems.length - 1]).marginRight);
+
+        if (currentLeft >= idealMaxLeft - epsilon) {
+            leftArrow.classList.add('disabled');
+        } else {
+            leftArrow.classList.remove('disabled');
+        }
+
+        if (currentLeft <= idealMinLeft + epsilon) {
+            rightArrow.classList.add('disabled');
+        } else {
+            rightArrow.classList.remove('disabled');
+        }
+    }
+
+
+    // 矢印クリックイベント
+    leftArrow.addEventListener('click', () => {
+        if (!leftArrow.classList.contains('disabled')) {
+            moveToItem('prev');
+        }
+    });
+
+    rightArrow.addEventListener('click', () => {
+        if (!rightArrow.classList.contains('disabled')) {
+            moveToItem('next');
+        }
+    });
+
+    // リサイズ時にギャラリーの位置を再調整
+    window.addEventListener('resize', () => {
+        // 画像のサイズと位置の計算を再実行
+        loadedImagesCount = 0; // ロード済みカウントをリセットして再計算を強制
+        galleryItems.forEach(item => {
+            const img = item.querySelector('img');
+            // 画像のロード完了を待つ必要があるので、onloadトリガーのロジックに任せる
+            // もしくは、ここではDOM要素の再配置のみを行い、サイズは別途計算
+            // 今回は簡略化のため、リサイズ時もすべての画像が再配置される想定
+            const wallAreaHeight = document.querySelector('.wall-area').clientHeight;
+            const targetHeight = wallAreaHeight * 0.7;
+            const imgNaturalWidth = img.naturalWidth;
+            const imgNaturalHeight = img.naturalHeight;
+            const aspectRatio = imgNaturalWidth / imgNaturalHeight;
+
+            let imgWidth = targetHeight * aspectRatio;
+            let imgHeight = targetHeight;
+
+            if (imgWidth < 200) imgWidth = 200;
+            if (imgWidth > 450) imgWidth = 450;
+            imgHeight = imgWidth / aspectRatio;
+
+            item.style.width = `${imgWidth + (10 * 2) + (2 * 2)}px`;
+            item.style.height = `${imgHeight + (10 * 2) + (2 * 2)}px`;
+
+            const wallPaddingTopBottom = wallAreaHeight * 0.1;
+            const availableHeight = wallAreaHeight - wallPaddingTopBottom * 2 - item.offsetHeight;
+            const randomTop = Math.random() * availableHeight;
+            item.style.top = `${randomTop + wallPaddingTopBottom}px`;
+        });
+        updateGalleryPosition();
+    });
+});
