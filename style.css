@@ -32,7 +32,7 @@ html, body {
 /* ギャラリー内部（画像を格納し、横スクロールさせる部分） */
 .gallery-inner {
     display: flex; /* 横一列に配置 */
-    align-items: center; /* 垂直方向の中央揃えの基本 */
+    align-items: center; /* 垂直方向の中央揃え (JSでtopを制御するならコメントアウト) */
     height: 100%;
     transform: translateX(0);
     transition: transform 0.5s ease-out;
@@ -45,8 +45,8 @@ html, body {
 .gallery-item {
     cursor: pointer;
     text-decoration: none;
-    position: absolute; /* JSでtopを制御するため */
     flex-shrink: 0; /* アイテムが縮まないように */
+    position: absolute; /* JSでtop/leftを制御するため */
 
     /* 額縁のスタイル */
     padding: 10px; /* 白枠の厚み */
