@@ -42,22 +42,22 @@
 
         /* Gallery Tab Styling */
         .gallery-tab-button {
-            padding: 0.5rem 1rem; /* py-2 px-4 */
-            margin: 0.25rem; /* m-1 */
-            font-size: 0.875rem; /* text-sm */
-            color: #6B7280; /* text-gray-500 */
+            padding: 0.5rem 1rem; 
+            margin: 0.25rem; 
+            font-size: 0.875rem; 
+            color: #6B7280; 
             background-color: transparent;
             border: 2px solid transparent;
-            border-radius: 0.375rem; /* rounded-md */
+            border-radius: 0.375rem; 
             transition: all 0.3s ease;
             cursor: pointer;
         }
         .gallery-tab-button:hover {
-            color: #1F2937; /* text-gray-800 */
+            color: #1F2937; 
         }
         .gallery-tab-button.active-tab {
-            color: #10B981; /* text-emerald-500 */
-            font-weight: 600; /* semibold */
+            color: #10B981; 
+            font-weight: 600; 
             border-bottom: 2px solid #10B981;
             border-radius: 0;
         }
@@ -66,32 +66,33 @@
             display: block;
             width: 100%;
             height: 1px;
-            background-color: #E5E7EB; /* Tailwind gray-200 */
+            background-color: #E5E7EB; 
             margin-top: 0.5rem;
         }
 
         /* Gallery Content Area Styling */
         .gallery-content-area {
-            padding: 1.5rem; /* p-6 */
-            margin-top: 1rem; /* mt-4 */
-            background-color: #F9FAFB; /* bg-gray-50 */
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            padding: 1.5rem; 
+            margin-top: 1rem; 
+            background-color: #F9FAFB; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
             position: relative; 
         }
 
         /* Gallery Item Styling */
         .gallery-item {
-            border: 1px solid #E5E7EB; /* Tailwind gray-200 */
-            display: block; /* Changed to block for <a> tag to wrap correctly */
-            font-size: 0.75rem; /* text-xs */
+            border: 1px solid #E5E7EB; 
+            display: block; 
+            font-size: 0.75rem; 
             text-align: center;
             overflow: hidden;
-            background-color: #FFFFFF; /* bg-white */
-            border-radius: 0.375rem; /* rounded-md */
+            background-color: #FFFFFF; 
+            border-radius: 0.375rem; 
             transition: transform 0.2s ease-in-out;
+            position: relative; /* For potential absolute positioning of play icons etc. */
         }
-         .gallery-item a, .gallery-item img { /* Ensure link and image fill the item */
+         .gallery-item a, .gallery-item img, .gallery-item video { 
             display: block;
             width: 100%;
             height: 100%;
@@ -99,7 +100,7 @@
         .gallery-item:hover {
             transform: scale(1.03);
         }
-        .gallery-item img {
+        .gallery-item img, .gallery-item video {
             object-fit: cover;
         }
 
@@ -109,15 +110,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1.5rem; /* mt-6, applied after all tab contents */
-            padding: 0.5rem 1rem; /* py-2 px-4, or adjust as needed */
+            margin-top: 1.5rem; 
+            padding: 0.5rem 1rem; 
         }
         .gallery-arrow-button {
-            background-color: #E5E7EB; /* bg-gray-200 */
-            color: #374151; /* text-gray-700 */
+            background-color: #E5E7EB; 
+            color: #374151; 
             border: none;
-            padding: 0.75rem; /* p-3 */
-            border-radius: 50%; /* rounded-full */
+            padding: 0.75rem; 
+            border-radius: 50%; 
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease;
             display: flex;
@@ -125,12 +126,12 @@
             justify-content: center;
         }
         .gallery-arrow-button:hover {
-            background-color: #D1D5DB; /* bg-gray-300 */
-            color: #1F2937; /* text-gray-800 */
+            background-color: #D1D5DB; 
+            color: #1F2937; 
         }
         .gallery-arrow-button svg {
-            width: 1.25rem; /* w-5 */
-            height: 1.25rem; /* h-5 */
+            width: 1.25rem; 
+            height: 1.25rem; 
         }
 
         /* タブコンテンツの表示・非表示 */
@@ -143,7 +144,7 @@
 
         /* ヘッダーの高さ分のオフセット */
         section[id] {
-            scroll-margin-top: 4rem; /* h-16 */
+            scroll-margin-top: 4rem; 
         }
     </style>
 </head>
@@ -207,43 +208,8 @@
                     <div id="logo-content" class="tab-content active">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
                         <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">指定されたグリッドレイアウトによるロゴ作品の展示例です。</p>
-                        <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-3 mx-auto max-w-3xl aspect-[5/3]">
-                            <div class="gallery-item col-span-2">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/cappuccino.png" alt="カプチーノの画像 (1-2)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(1-2)';">
-                                </a>
+                        <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-3 mx-auto max-w-3xl aspect-[5/3]">
                             </div>
-                            <div class="gallery-item col-start-3 row-span-2">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/c_plant_yuki.png" alt="雪と植物の画像 (3,8)" onerror="this.onerror=null;this.src='https://placehold.co/200x400/FFFFFF/1F2937?text=c_plant_yuki.png+(3,8)';">
-                                </a>
-                            </div>
-                            <div class="gallery-item col-start-4 col-span-2">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/cappuccino.png" alt="カプチーノの画像 (4-5)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(4-5)';">
-                                </a>
-                            </div>
-                            <div class="gallery-item col-start-1 col-span-2 row-start-2 row-span-2">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/EpisodeX_square.png" alt="EpisodeX 正方形の画像 (6,7,11,12)" onerror="this.onerror=null;this.src='https://placehold.co/400x400/FFFFFF/1F2937?text=EpisodeX_square.png+(6,7,11,12)';">
-                                </a>
-                            </div>
-                            <div class="gallery-item col-start-4 col-span-2 row-start-2">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/cappuccino.png" alt="カプチーノの画像 (9-10)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(9-10)';">
-                                </a>
-                            </div>
-                            <div class="gallery-item col-start-3 col-span-2 row-start-3">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/EpisodeX.png" alt="EpisodeXの画像 (13-14)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=EpisodeX.png+(13-14)';">
-                                </a>
-                            </div>
-                            <div class="gallery-item col-start-5 row-start-3">
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                                    <img src="images/EpisodeX_square.png" alt="EpisodeX 正方形の画像 (15)" onerror="this.onerror=null;this.src='https://placehold.co/200x200/FFFFFF/1F2937?text=EpisodeX_square.png+(15)';">
-                                </a>
-                            </div>
-                        </div>
                         <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
                     </div>
 
@@ -328,7 +294,8 @@
                             </svg>
                         </button>
                     </div>
-                </div> </div>
+                </div> 
+            </div>
         </section>
 
         <section id="data" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
@@ -391,7 +358,96 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Gallery Tab and Arrow Navigation
+            // --- Gallery Item Data ---
+            const logoDesignItemsData = [
+                { type: 'image', fileName: 'cappuccino.png', altText: 'カプチーノの画像', link: 'https://youtube.com', cells: [1, 2], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'c_plant_yuki.png', altText: '雪と植物の画像', link: 'https://youtube.com', cells: [3, 8], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'cappuccino.png', altText: 'カプチーノの画像', link: 'https://youtube.com', cells: [4, 5], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'EpisodeX_square.png', altText: 'EpisodeX 正方形の画像', link: 'https://youtube.com', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
+                { type: 'video', fileName: 'pastel.mp4', altText: 'Pastel Motion Video', link: 'https://youtube.com', cells: [9, 10], pathPrefix: 'resources/shape_motion/' },
+                { type: 'image', fileName: 'EpisodeX.png', altText: 'EpisodeXの画像', link: 'https://youtube.com', cells: [13, 14], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'EpisodeX_square.png', altText: 'EpisodeX 正方形の画像', link: 'https://youtube.com', cells: [15], pathPrefix: 'resources/logo/' }
+            ];
+
+            // --- Helper function to get grid cell classes ---
+            function getGridPositionClasses(cells) {
+                const numRows = 3;
+                const numCols = 5;
+                let minRow = numRows + 1, maxRow = 0, minCol = numCols + 1, maxCol = 0;
+
+                cells.forEach(cellNumber => {
+                    const row = Math.floor((cellNumber - 1) / numCols) + 1;
+                    const col = ((cellNumber - 1) % numCols) + 1;
+                    if (row < minRow) minRow = row;
+                    if (row > maxRow) maxRow = row;
+                    if (col < minCol) minCol = col;
+                    if (col > maxCol) maxCol = col;
+                });
+
+                const rowSpan = maxRow - minRow + 1;
+                const colSpan = maxCol - minCol + 1;
+
+                return `col-start-${minCol} col-span-${colSpan} row-start-${minRow} row-span-${rowSpan}`;
+            }
+
+            // --- Function to create and append gallery items ---
+            function populateLogoGallery() {
+                const container = document.getElementById('logo-grid-items-container');
+                if (!container) return;
+                container.innerHTML = ''; // Clear existing items
+
+                logoDesignItemsData.forEach(itemData => {
+                    const itemWrapper = document.createElement('div');
+                    itemWrapper.className = `gallery-item ${getGridPositionClasses(itemData.cells)}`;
+                    
+                    const link = document.createElement('a');
+                    link.href = itemData.link;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+
+                    let mediaElement;
+                    const mediaPath = `${itemData.pathPrefix}${itemData.fileName}`;
+
+                    if (itemData.type === 'image') {
+                        mediaElement = document.createElement('img');
+                        mediaElement.src = mediaPath;
+                        mediaElement.alt = itemData.altText;
+                        mediaElement.onerror = function() {
+                            this.onerror = null; // Prevent infinite loop on placeholder error
+                            this.src = `https://placehold.co/${itemWrapper.offsetWidth}x${itemWrapper.offsetHeight}/FFFFFF/1F2937?text=${encodeURIComponent(itemData.fileName)}`;
+                        };
+                    } else if (itemData.type === 'video') {
+                        mediaElement = document.createElement('video');
+                        mediaElement.src = mediaPath;
+                        mediaElement.muted = true; // Required for autoplay/programmatic play in many browsers
+                        mediaElement.preload = 'metadata'; // Load enough to get dimensions and first frame
+                        // mediaElement.loop = true; // Optional: if you want videos to loop
+
+                        mediaElement.addEventListener('mouseover', () => {
+                            mediaElement.play().catch(error => console.error("Video play failed:", error));
+                        });
+                        mediaElement.addEventListener('mouseout', () => {
+                            mediaElement.pause();
+                        });
+                        // Fallback for video (though less common than image error)
+                        mediaElement.onerror = function() {
+                            this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
+                        };
+                    }
+                    
+                    if (mediaElement) {
+                        link.appendChild(mediaElement);
+                        itemWrapper.appendChild(link);
+                        container.appendChild(itemWrapper);
+                    }
+                });
+            }
+
+            // Populate the logo gallery on load
+            populateLogoGallery();
+
+
+            // --- Gallery Tab and Arrow Navigation (existing code) ---
             const tabButtonContainer = document.getElementById('gallery-tab-buttons-container');
             const tabButtons = tabButtonContainer ? Array.from(tabButtonContainer.querySelectorAll('.gallery-tab-button')) : [];
             const tabContents = document.querySelectorAll('.tab-content');
@@ -406,7 +462,6 @@
             function updateTabs(newIndex) {
                 if (tabButtons.length === 0 || tabContents.length === 0) return;
 
-                // Deactivate current tab and content
                 if (tabButtons[currentTabIndex]) { 
                     tabButtons[currentTabIndex].classList.remove(activeTabClass);
                     const currentTabId = tabButtons[currentTabIndex].dataset.tab;
@@ -416,7 +471,6 @@
                     }
                 }
 
-                // Activate new tab and content
                 currentTabIndex = newIndex;
                 if (tabButtons[currentTabIndex]) { 
                     tabButtons[currentTabIndex].classList.add(activeTabClass);
@@ -440,7 +494,6 @@
                 } else if (currentTabIndex === -1) { 
                     currentTabIndex = 0;
                 }
-
 
                 tabButtons.forEach((button, index) => {
                     button.addEventListener('click', function () {
@@ -469,13 +522,13 @@
                 }
             }
 
-
-            // Chart.js for Data section
+            // Chart.js for Data section (existing code)
             const ctxSkills = document.getElementById('skillsChart');
             if (ctxSkills) {
                 try {
                     new Chart(ctxSkills, {
                         type: 'pie',
+                        // ... (rest of Chart.js config)
                         data: {
                             labels: ['Illustrator', 'Photoshop', 'After Effects', 'Blender', 'Web制作 (HTML/CSS/JS)'],
                             datasets: [{
