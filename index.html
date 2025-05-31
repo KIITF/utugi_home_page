@@ -154,7 +154,7 @@
                 font-size: 3.5rem;
                 line-height: 6rem;
             }
-            .sm\:px-6-custom { /* Custom class for 3.5rem padding */
+            .sm\:px-14 { /* Custom class for 3.5rem padding */
                  padding-left: 3.5rem;
                  padding-right: 3.5rem;
             }
@@ -202,22 +202,50 @@
         }
         /* Footer SNS icons */
         .footer-sns-icons img {
-            width: 24px; /* Adjust size as needed */
+            width: 24px; 
             height: 24px;
             transition: opacity 0.3s ease;
         }
         .footer-sns-icons a:hover img {
             opacity: 0.7;
         }
+        /* Hamburger Menu Styling */
+        .mobile-menu {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 6rem; /* Below header */
+            left: 0;
+            right: 0;
+            background-color: black; /* Match header */
+            padding: 1rem 0;
+            z-index: 40; /* Below header's z-index */
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid #374151; /* gray-700 for separator */
+        }
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+        .mobile-menu a:hover {
+            background-color: #1F2937; /* gray-800 for hover */
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6-custom">
+    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14">
         <div class="text-lg sm:text-xl font-bold">
             <a href="#">空木/utugi</a> 
         </div>
-        <nav>
+        <nav class="hidden sm:block"> {/* Hide on small screens */}
             <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
                 <li><a href="#profile" class="hover:text-gray-300 px-2 py-1 rounded-md">About</a></li>
                 <li><a href="#gallery" class="hover:text-gray-300 px-2 py-1 rounded-md">Gallery</a></li>
@@ -225,11 +253,26 @@
                 <li><a href="#contact" class="hover:text-gray-300 px-2 py-1 rounded-md">Contact</a></li>
             </ul>
         </nav>
+        <div class="sm:hidden"> {/* Hamburger button - Show only on small screens */}
+            <button id="hamburger-button" class="text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
     </header>
+    {/* Mobile Menu - Initially hidden */}
+    <nav id="mobile-menu-nav" class="mobile-menu">
+        <a href="#profile" class="mobile-menu-link">About</a>
+        <a href="#gallery" class="mobile-menu-link">Gallery</a>
+        <a href="#data" class="mobile-menu-link">Data</a>
+        <a href="#contact" class="mobile-menu-link">Contact</a>
+    </nav>
+
 
     <main class="pt-24">
 
-        <section id="profile" class="bg-white py-12 sm:py-20 px-4 sm:px-6-custom flex items-center justify-center"> 
+        <section id="profile" class="bg-white py-12 sm:py-20 px-4 sm:px-14 flex items-center justify-center"> 
             <div class="container mx-auto max-w-3xl"> 
                 <div class="bg-gray-50 p-8 sm:p-12 rounded-lg shadow-xl flex flex-col sm:flex-row items-center text-center sm:text-left">
                     <img src="resources/images/utugi_icon.png" alt="空木/utugi アイコン" 
@@ -246,7 +289,7 @@
             </div>
         </section>
 
-        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-6-custom bg-white">
+        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
             <div class="container mx-auto max-w-5xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -337,7 +380,7 @@
             </div>
         </section>
 
-        <section id="data" class="py-12 sm:py-20 px-4 sm:px-6-custom bg-white"> 
+        <section id="data" class="py-12 sm:py-20 px-4 sm:px-14 bg-white"> 
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -373,7 +416,7 @@
             </div>
         </section>
 
-        <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-6-custom">
+        <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-14">
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -417,11 +460,29 @@
                 <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
             </a>
         </div>
-        <p class="text-sm">&copy; 2024 空木/utugi. All Rights Reserved.</p> 
+        <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p> 
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Hamburger Menu Toggle
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mobileMenu = document.getElementById('mobile-menu-nav');
+            const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+
+            if (hamburgerButton && mobileMenu) {
+                hamburgerButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('active');
+                });
+                // Close menu when a link is clicked
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('active');
+                    });
+                });
+            }
+
+
             // --- Gallery Item Data ---
             const logoDesignItemsData = [
                 { type: 'image', fileName: 'cappuccino.png', altText: 'カプチーノの画像', link: 'https://youtube.com', cells: [1, 2], pathPrefix: 'resources/logo/' },
