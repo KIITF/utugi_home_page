@@ -318,10 +318,10 @@
 
                 <div class="mb-6 tabs-container-bottom-line">
                     <div id="gallery-tab-buttons-container" class="flex flex-wrap justify-center">
-                        <button data-tab="shape" class="gallery-tab-button">Shape Motion</button>
+                        <button data-tab="shape" class="gallery-tab-button active-tab">Shape Motion</button>
                         <button data-tab="lyric" class="gallery-tab-button">Lyric Motion</button>
                         <button data-tab="3dcg" class="gallery-tab-button">3DCG</button>
-                        <button data-tab="logo" class="gallery-tab-button active-tab">Logo Designs</button>
+                        <button data-tab="logo" class="gallery-tab-button">Logo Designs</button>
                     </div>
                 </div>
 
@@ -700,19 +700,27 @@
                         position: 'bottom',
                         labels: { color: '#374151' }
                     },
-                    title: {
+                    title: { // これはグラフ全体のタイトルであり、ツールチップのタイトルではありません
                         display: true,
                         font: { size: 16 },
                         color: '#1F2937'
                     },
-                    tooltip: { // ツールチップの設定を追加
+                    tooltip: {
                         callbacks: {
+                            // pie/doughnutチャートでは、ツールチップのタイトルはデフォルトで
+                            // セグメントのラベル（例: 'オリジナル楽曲MV制作'）になります。
+                            // このため、titleコールバックを明示的に設定する必要はありません。
+
                             label: function(context) {
-                                // context.label には、データセットの各項目のラベル（例: 'オリジナル楽曲MV制作'）が入ります。
-                                // これだけを返すことで、数値は表示されなくなります。
-                                return context.label || '';
+                                // このコールバックはツールチップの「body」部分の各行を生成します。
+                                // ユーザーが「bodyいらない」と指定し、数値も不要であるため、
+                                // 空の文字列を返すことでこの行を非表示にします。
+                                return '';
                             }
                         }
+                        // もし、残った行（タイトル行）の隣にある色の四角いマーク（カラースウォッチ）も
+                        // 非表示にしたい場合は、以下の行のコメントを解除してください。
+                        // displayColors: false
                     }
                 },
                 animation: {
