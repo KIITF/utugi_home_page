@@ -154,6 +154,10 @@
                 font-size: 3.5rem;
                 line-height: 6rem;
             }
+            .sm\:px-6-custom { /* Custom class for 3.5rem padding */
+                 padding-left: 3.5rem;
+                 padding-right: 3.5rem;
+            }
         }
         /* History list styling */
         .history-item {
@@ -196,11 +200,20 @@
         .data-area-block:last-child {
             margin-bottom: 0;
         }
+        /* Footer SNS icons */
+        .footer-sns-icons img {
+            width: 24px; /* Adjust size as needed */
+            height: 24px;
+            transition: opacity 0.3s ease;
+        }
+        .footer-sns-icons a:hover img {
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6">
+    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6-custom">
         <div class="text-lg sm:text-xl font-bold">
             <a href="#">空木/utugi</a> 
         </div>
@@ -216,7 +229,7 @@
 
     <main class="pt-24">
 
-        <section id="profile" class="bg-white py-12 sm:py-20 px-4 sm:px-6 flex items-center justify-center"> 
+        <section id="profile" class="bg-white py-12 sm:py-20 px-4 sm:px-6-custom flex items-center justify-center"> 
             <div class="container mx-auto max-w-3xl"> 
                 <div class="bg-gray-50 p-8 sm:p-12 rounded-lg shadow-xl flex flex-col sm:flex-row items-center text-center sm:text-left">
                     <img src="resources/images/utugi_icon.png" alt="空木/utugi アイコン" 
@@ -233,7 +246,7 @@
             </div>
         </section>
 
-        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-6 bg-white">
+        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-6-custom bg-white">
             <div class="container mx-auto max-w-5xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -324,7 +337,7 @@
             </div>
         </section>
 
-        <section id="data" class="py-12 sm:py-20 px-4 sm:px-6 bg-white"> 
+        <section id="data" class="py-12 sm:py-20 px-4 sm:px-6-custom bg-white"> 
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -360,7 +373,7 @@
             </div>
         </section>
 
-        <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-6">
+        <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-6-custom">
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -368,35 +381,43 @@
                         <span class="first-letter">C</span><span class="rest-of-title">ontact</span>
                     </h2>
                     <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
+                    <p class="text-sm text-gray-500 mt-1">2025.04.20更新 受付状態 : <span class="text-red-600 font-semibold">要相談</span></p>
                     <span class="section-title-line mt-4 sm:mt-6"></span>
                 </div>
                 <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                    <p class="text-gray-700 text-center mb-4">お問い合わせは、以下のフォームまたはメールアドレスまでお願いいたします。</p>
+                    <p class="text-gray-700 text-center mb-6">ご依頼はXのDM、またはメール(utugi0313@gmail.com)でも受け付けております。</p>
                     <form action="#" method="POST">
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前</label>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前(Name)</label>
                             <input type="text" name="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
                         </div>
                         <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス</label>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス(Address) </label>
                             <input type="email" name="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
                         </div>
                         <div class="mb-6">
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">メッセージ</label>
-                            <textarea name="message" id="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required></textarea>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">ご依頼内容(Consult)</label>
+                            <textarea name="message" id="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="依頼内容・納期・ご予算の3点については必ずお書きください。" required></textarea>
                         </div>
                         <div>
                             <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">送信</button>
                         </div>
                     </form>
-                    <p class="text-xs text-gray-500 mt-4 text-center">または <a href="mailto:contact@utugi.example.com" class="text-gray-700 hover:underline">contact@utugi.example.com</a> まで</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
-        <p>© 2024 空木/utugi. All Rights Reserved.</p> 
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+        <div class="footer-sns-icons flex justify-center space-x-4 mb-4">
+            <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク">
+                <img src="resources/images/X_icon.png" alt="X icon" onerror="this.style.display='none'">
+            </a>
+            <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク">
+                <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
+            </a>
+        </div>
+        <p class="text-sm">&copy; 2024 空木/utugi. All Rights Reserved.</p> 
     </footer>
 
     <script>
