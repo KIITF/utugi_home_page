@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>空木 / utugi - Portfolio</title>
+    <title>空木utugi - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -202,7 +202,7 @@
 
     <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6">
         <div class="text-lg sm:text-xl font-bold">
-            <a href="#">空木 / utugi</a>
+            <a href="#">空木utugi</a> {/* Artist name updated */}
         </div>
         <nav>
             <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
@@ -216,20 +216,20 @@
 
     <main class="pt-24">
 
-        <section id="profile" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
-            <div class="container mx-auto max-w-4xl">
-                <div class="text-center mb-12 sm:mb-16">
-                    <span class="section-title-line mb-4 sm:mb-6"></span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
-                        <span class="first-letter">P</span><span class="rest-of-title">rofile</span>
-                    </h2>
-                    <span class="section-title-line mt-4 sm:mt-6"></span>
-                </div>
-                <div class="bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                    <p class="text-gray-700 leading-relaxed">
-                        アーティスト「空木 / utugi」のプロフィールページです。ここに経歴、活動内容、ステートメントなどを記述します。
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
+        <section id="profile" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6 flex items-center justify-center"> {/* Centering content */}
+            <div class="container mx-auto max-w-3xl"> {/* Adjusted max-width for profile */}
+                <div class="bg-gray-50 p-8 sm:p-12 rounded-lg shadow-xl flex flex-col sm:flex-row items-center text-center sm:text-left">
+                    <img src="resources/images/utugi_icon.png" alt="空木utugi アイコン" 
+                         class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-0 sm:mr-8 shadow-md"
+                         onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/374151?text=Icon';">
+                    <div>
+                        <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">空木utugi</h1> {/* Artist name updated */}
+                        <p class="text-xl text-emerald-600 font-semibold mb-4">映像クリエーター</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            なんとかかんとか。ここにアーティストの紹介文やメッセージを記述します。
+                            心を動かす映像表現を追求し、一つ一つの作品に想いを込めて制作しています。
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -397,7 +397,7 @@
     </main>
 
     <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
-        <p>© 2024 空木 / utugi. All Rights Reserved.</p>
+        <p>© 2024 空木utugi. All Rights Reserved.</p> {/* Artist name updated */}
     </footer>
 
     <script>
@@ -577,18 +577,18 @@
             }
 
             // --- Data Section Charts ---
-            // Lighter green theme colors
+            // Lighter green theme colors - avoiding darker shades
             const lightGreenThemeColors = [
-                'rgba(167, 201, 176, 0.7)', // #A7C9B0 - Soft Sage/Mint
-                'rgba(193, 217, 199, 0.7)', // #C1D9C7 - Paler Sage/Mint
-                'rgba(218, 232, 221, 0.7)', // #DAE8DD - Very Pale Green
-                'rgba(140, 180, 150, 0.7)'  // #8CB496 - Gentle Medium-Light Green
+                'rgba(193, 217, 199, 0.8)', // #C1D9C7 - Paler Sage/Mint (Main)
+                'rgba(218, 232, 221, 0.8)', // #DAE8DD - Very Pale Green (Accent 1)
+                'rgba(167, 201, 176, 0.7)', // #A7C9B0 - Soft Sage/Mint (Accent 2, slightly darker but still light)
+                'rgba(229, 239, 233, 0.8)'  // #E5EFE9 - Almost White Green (Accent 3)
             ];
             const lightGreenThemeBorders = [
-                'rgba(167, 201, 176, 1)',
                 'rgba(193, 217, 199, 1)',
                 'rgba(218, 232, 221, 1)',
-                'rgba(140, 180, 150, 1)'
+                'rgba(167, 201, 176, 1)',
+                'rgba(229, 239, 233, 1)'
             ];
 
             const commonChartOptions = {
@@ -608,11 +608,10 @@
                 animation: { 
                     animateScale: true,
                     animateRotate: true,
-                    duration: 1000 
+                    duration: 1500 // Slower animation
                 }
             };
             
-            // Chart configurations
             const requestRatioChartConfig = {
                 type: 'pie',
                 data: {
@@ -643,7 +642,6 @@
                 options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'MVでの3DCG使用度合い' } } }
             };
 
-            // Intersection Observer for charts
             let requestRatioChartInstance = null;
             let cgUsageChartInstance = null;
 
@@ -661,10 +659,11 @@
                 });
             };
 
-            const chartObserver = new IntersectionObserver(chartObserverCallback, {
+            const chartObserverOptions = {
                 root: null, 
-                threshold: 0.1 // Trigger when 10% of the element is visible
-            });
+                threshold: 0.5 // Trigger when 50% of the element is visible
+            };
+            const chartObserver = new IntersectionObserver(chartObserverCallback, chartObserverOptions);
 
             const ctxRequestRatio = document.getElementById('requestRatioChart');
             const ctxCgUsage = document.getElementById('cgUsageChart');
@@ -672,8 +671,6 @@
             if (ctxRequestRatio) chartObserver.observe(ctxRequestRatio);
             if (ctxCgUsage) chartObserver.observe(ctxCgUsage);
 
-
-            // --- History Section ---
             const historyData = [
                 { artist: 'Sera。', title: 'セプテントリオー', date: '2024/12/28', type: 'オリジナル楽曲MV制作' },
                 { artist: 'ユキ YUKI', title: 'ジェヘナ', date: '2024/12/16', type: '歌ってみたMV制作' },
