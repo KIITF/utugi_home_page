@@ -144,13 +144,13 @@
 
         /* ヘッダーの高さ分のオフセット */
         section[id] {
-            scroll-margin-top: 6rem; /* Updated to 6rem */
+            scroll-margin-top: 6rem; 
         }
 
         /* Custom style for gallery tab content titles on sm screens and up */
         @media (min-width: 640px) {
             .gallery-content-area .tab-content h3 {
-                font-family: 'Californian FB', serif; /* Added serif fallback */
+                font-family: 'Californian FB', serif; 
                 font-size: 3.5rem;
                 line-height: 6rem;
             }
@@ -160,22 +160,22 @@
             display: flex;
             justify-content: space-between;
             padding: 0.5rem 0;
-            border-bottom: 1px solid #E5E7EB; /* Tailwind gray-200 */
+            border-bottom: 1px solid #E5E7EB; 
         }
         .history-item:last-child {
             border-bottom: none;
         }
         .history-item .title {
-            font-weight: 500; /* medium */
-            color: #374151; /* gray-700 */
+            font-weight: 500; 
+            color: #374151; 
         }
         .history-item .artist {
-            color: #6B7280; /* gray-500 */
-            font-size: 0.875rem; /* text-sm */
+            color: #6B7280; 
+            font-size: 0.875rem; 
         }
          .history-item .date, .history-item .type {
-            font-size: 0.875rem; /* text-sm */
-            color: #4B5563; /* gray-600 */
+            font-size: 0.875rem; 
+            color: #4B5563; 
             white-space: nowrap;
         }
         .history-item > div {
@@ -187,11 +187,11 @@
 
         /* Data section individual area styling */
         .data-area-block {
-            background-color: #F9FAFB; /* bg-gray-50 */
-            padding: 1.5rem; /* p-6 */
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-            margin-bottom: 2rem; /* mb-8 */
+            background-color: #F9FAFB; 
+            padding: 1.5rem; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+            margin-bottom: 2rem; 
         }
         .data-area-block:last-child {
             margin-bottom: 0;
@@ -202,7 +202,7 @@
 
     <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6">
         <div class="text-lg sm:text-xl font-bold">
-            <a href="#">空木utugi</a> {/* Artist name updated */}
+            <a href="#">空木/utugi</a> 
         </div>
         <nav>
             <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
@@ -216,18 +216,17 @@
 
     <main class="pt-24">
 
-        <section id="profile" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6 flex items-center justify-center"> {/* Centering content */}
-            <div class="container mx-auto max-w-3xl"> {/* Adjusted max-width for profile */}
+        <section id="profile" class="bg-white py-12 sm:py-20 px-4 sm:px-6 flex items-center justify-center"> 
+            <div class="container mx-auto max-w-3xl"> 
                 <div class="bg-gray-50 p-8 sm:p-12 rounded-lg shadow-xl flex flex-col sm:flex-row items-center text-center sm:text-left">
-                    <img src="resources/images/utugi_icon.png" alt="空木utugi アイコン" 
+                    <img src="resources/images/utugi_icon.png" alt="空木/utugi アイコン" 
                          class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-0 sm:mr-8 shadow-md"
                          onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/374151?text=Icon';">
                     <div>
-                        <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">空木utugi</h1> {/* Artist name updated */}
+                        <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">空木/utugi</h1> 
                         <p class="text-xl text-emerald-600 font-semibold mb-4">映像クリエーター</p>
                         <p class="text-gray-700 leading-relaxed">
-                            なんとかかんとか。ここにアーティストの紹介文やメッセージを記述します。
-                            心を動かす映像表現を追求し、一つ一つの作品に想いを込めて制作しています。
+                            なんとかかんとか。
                         </p>
                     </div>
                 </div>
@@ -361,7 +360,7 @@
             </div>
         </section>
 
-        <section id="contact" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
+        <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-6">
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -397,7 +396,7 @@
     </main>
 
     <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
-        <p>© 2024 空木utugi. All Rights Reserved.</p> {/* Artist name updated */}
+        <p>© 2024 空木/utugi. All Rights Reserved.</p> 
     </footer>
 
     <script>
@@ -577,12 +576,11 @@
             }
 
             // --- Data Section Charts ---
-            // Lighter green theme colors - avoiding darker shades
             const lightGreenThemeColors = [
-                'rgba(193, 217, 199, 0.8)', // #C1D9C7 - Paler Sage/Mint (Main)
-                'rgba(218, 232, 221, 0.8)', // #DAE8DD - Very Pale Green (Accent 1)
-                'rgba(167, 201, 176, 0.7)', // #A7C9B0 - Soft Sage/Mint (Accent 2, slightly darker but still light)
-                'rgba(229, 239, 233, 0.8)'  // #E5EFE9 - Almost White Green (Accent 3)
+                'rgba(193, 217, 199, 0.8)', 
+                'rgba(218, 232, 221, 0.8)', 
+                'rgba(167, 201, 176, 0.7)', 
+                'rgba(229, 239, 233, 0.8)'  
             ];
             const lightGreenThemeBorders = [
                 'rgba(193, 217, 199, 1)',
@@ -608,7 +606,7 @@
                 animation: { 
                     animateScale: true,
                     animateRotate: true,
-                    duration: 1500 // Slower animation
+                    duration: 1500 
                 }
             };
             
@@ -661,7 +659,7 @@
 
             const chartObserverOptions = {
                 root: null, 
-                threshold: 0.5 // Trigger when 50% of the element is visible
+                threshold: 0.8 // Trigger when 80% of the element is visible
             };
             const chartObserver = new IntersectionObserver(chartObserverCallback, chartObserverOptions);
 
