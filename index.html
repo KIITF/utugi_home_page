@@ -83,9 +83,7 @@
         /* Gallery Item Styling */
         .gallery-item {
             border: 1px solid #E5E7EB; /* Tailwind gray-200 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block; /* Changed to block for <a> tag to wrap correctly */
             font-size: 0.75rem; /* text-xs */
             text-align: center;
             overflow: hidden;
@@ -93,14 +91,18 @@
             border-radius: 0.375rem; /* rounded-md */
             transition: transform 0.2s ease-in-out;
         }
+         .gallery-item a, .gallery-item img { /* Ensure link and image fill the item */
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
         .gallery-item:hover {
             transform: scale(1.03);
         }
         .gallery-item img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
         }
+
 
         /* Gallery Navigation Arrows Styling */
         .gallery-nav-arrows {
@@ -206,13 +208,41 @@
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
                         <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">指定されたグリッドレイアウトによるロゴ作品の展示例です。</p>
                         <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-3 mx-auto max-w-3xl aspect-[5/3]">
-                            <div class="gallery-item col-span-2"><img src="https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(1-2)" alt="cappuccino.png 1-2" onerror="this.src='https://placehold.co/400x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item col-start-3 row-span-2"><img src="https://placehold.co/200x400/FFFFFF/1F2937?text=c_plant_yuki.png+(3,8)" alt="c_plant_yuki.png 3,8" onerror="this.src='https://placehold.co/200x400/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item col-start-4 col-span-2"><img src="https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(4-5)" alt="cappuccino.png 4-5" onerror="this.src='https://placehold.co/400x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item col-start-1 col-span-2 row-start-2 row-span-2"><img src="https://placehold.co/400x400/FFFFFF/1F2937?text=EpisodeX_square.png+(6,7,11,12)" alt="EpisodeX_sauqre.png 6,7,11,12" onerror="this.src='https://placehold.co/400x400/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item col-start-4 col-span-2 row-start-2"><img src="https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(9-10)" alt="cappuccino.png 9-10" onerror="this.src='https://placehold.co/400x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item col-start-3 col-span-2 row-start-3"><img src="https://placehold.co/400x200/FFFFFF/1F2937?text=EpisodeX.png+(13-14)" alt="EpisodeX.png 13-14" onerror="this.src='https://placehold.co/400x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item col-start-5 row-start-3"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=EpisodeX_square.png+(15)" alt="EpisodeX_sauqre.png 15" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
+                            <div class="gallery-item col-span-2">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/cappuccino.png" alt="カプチーノの画像 (1-2)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(1-2)';">
+                                </a>
+                            </div>
+                            <div class="gallery-item col-start-3 row-span-2">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/c_plant_yuki.png" alt="雪と植物の画像 (3,8)" onerror="this.onerror=null;this.src='https://placehold.co/200x400/FFFFFF/1F2937?text=c_plant_yuki.png+(3,8)';">
+                                </a>
+                            </div>
+                            <div class="gallery-item col-start-4 col-span-2">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/cappuccino.png" alt="カプチーノの画像 (4-5)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(4-5)';">
+                                </a>
+                            </div>
+                            <div class="gallery-item col-start-1 col-span-2 row-start-2 row-span-2">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/EpisodeX_sauqre.png" alt="EpisodeX 正方形の画像 (6,7,11,12)" onerror="this.onerror=null;this.src='https://placehold.co/400x400/FFFFFF/1F2937?text=EpisodeX_square.png+(6,7,11,12)';">
+                                </a>
+                            </div>
+                            <div class="gallery-item col-start-4 col-span-2 row-start-2">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/cappuccino.png" alt="カプチーノの画像 (9-10)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=cappuccino.png+(9-10)';">
+                                </a>
+                            </div>
+                            <div class="gallery-item col-start-3 col-span-2 row-start-3">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/EpisodeX.png" alt="EpisodeXの画像 (13-14)" onerror="this.onerror=null;this.src='https://placehold.co/400x200/FFFFFF/1F2937?text=EpisodeX.png+(13-14)';">
+                                </a>
+                            </div>
+                            <div class="gallery-item col-start-5 row-start-3">
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                                    <img src="images/EpisodeX_sauqre.png" alt="EpisodeX 正方形の画像 (15)" onerror="this.onerror=null;this.src='https://placehold.co/200x200/FFFFFF/1F2937?text=EpisodeX_square.png+(15)';">
+                                </a>
+                            </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
                     </div>
@@ -221,21 +251,21 @@
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Lyric Motion</h3>
                         <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">リリックモーションの作品を3x5グリッドで表示します。</p>
                         <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-3 mx-auto max-w-3xl aspect-[5/3]">
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+1" alt="Lyric 1" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+2" alt="Lyric 2" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+3" alt="Lyric 3" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+4" alt="Lyric 4" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+5" alt="Lyric 5" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+6" alt="Lyric 6" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+7" alt="Lyric 7" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+8" alt="Lyric 8" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+9" alt="Lyric 9" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+10" alt="Lyric 10" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+11" alt="Lyric 11" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+12" alt="Lyric 12" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+13" alt="Lyric 13" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+14" alt="Lyric 14" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+15" alt="Lyric 15" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+1" alt="リリックモーション 1の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+2" alt="リリックモーション 2の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+3" alt="リリックモーション 3の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+4" alt="リリックモーション 4の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+5" alt="リリックモーション 5の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+6" alt="リリックモーション 6の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+7" alt="リリックモーション 7の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+8" alt="リリックモーション 8の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+9" alt="リリックモーション 9の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+10" alt="リリックモーション 10の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+11" alt="リリックモーション 11の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+12" alt="リリックモーション 12の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+13" alt="リリックモーション 13の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+14" alt="リリックモーション 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+15" alt="リリックモーション 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                         </div>
                         <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
                     </div>
@@ -244,21 +274,21 @@
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
                         <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">シェイプモーションの作品を3x5グリッドで表示します。</p>
                         <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-3 mx-auto max-w-3xl aspect-[5/3]">
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+1" alt="Shape 1" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+2" alt="Shape 2" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+3" alt="Shape 3" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+4" alt="Shape 4" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+5" alt="Shape 5" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+6" alt="Shape 6" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+7" alt="Shape 7" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+8" alt="Shape 8" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+9" alt="Shape 9" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+10" alt="Shape 10" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+11" alt="Shape 11" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+12" alt="Shape 12" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+13" alt="Shape 13" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+14" alt="Shape 14" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+15" alt="Shape 15" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+1" alt="シェイプモーション 1の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+2" alt="シェイプモーション 2の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+3" alt="シェイプモーション 3の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+4" alt="シェイプモーション 4の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+5" alt="シェイプモーション 5の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+6" alt="シェイプモーション 6の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+7" alt="シェイプモーション 7の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+8" alt="シェイプモーション 8の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+9" alt="シェイプモーション 9の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+10" alt="シェイプモーション 10の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+11" alt="シェイプモーション 11の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+12" alt="シェイプモーション 12の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+13" alt="シェイプモーション 13の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+14" alt="シェイプモーション 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Shape+15" alt="シェイプモーション 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                         </div>
                         <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
                     </div>
@@ -267,21 +297,21 @@
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">3DCG</h3>
                         <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">3DCGの作品を3x5グリッドで表示します。</p>
                         <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-3 mx-auto max-w-3xl aspect-[5/3]">
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+1" alt="3DCG 1" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+2" alt="3DCG 2" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+3" alt="3DCG 3" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+4" alt="3DCG 4" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+5" alt="3DCG 5" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+6" alt="3DCG 6" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+7" alt="3DCG 7" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+8" alt="3DCG 8" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+9" alt="3DCG 9" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+10" alt="3DCG 10" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+11" alt="3DCG 11" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+12" alt="3DCG 12" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+13" alt="3DCG 13" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+14" alt="3DCG 14" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
-                            <div class="gallery-item"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+15" alt="3DCG 15" onerror="this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error'; this.onerror=null;"></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+1" alt="3DCG 1の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+2" alt="3DCG 2の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+3" alt="3DCG 3の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+4" alt="3DCG 4の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+5" alt="3DCG 5の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+6" alt="3DCG 6の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+7" alt="3DCG 7の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+8" alt="3DCG 8の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+9" alt="3DCG 9の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+10" alt="3DCG 10の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+11" alt="3DCG 11の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+12" alt="3DCG 12の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+13" alt="3DCG 13の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+14" alt="3DCG 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+15" alt="3DCG 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                         </div>
                         <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
                     </div>
@@ -298,8 +328,7 @@
                             </svg>
                         </button>
                     </div>
-                </div>
-            </div>
+                </div> </div>
         </section>
 
         <section id="data" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
@@ -378,7 +407,7 @@
                 if (tabButtons.length === 0 || tabContents.length === 0) return;
 
                 // Deactivate current tab and content
-                if (tabButtons[currentTabIndex]) { // Check if currentTabIndex is valid before accessing properties
+                if (tabButtons[currentTabIndex]) { 
                     tabButtons[currentTabIndex].classList.remove(activeTabClass);
                     const currentTabId = tabButtons[currentTabIndex].dataset.tab;
                     const currentContent = document.getElementById(currentTabId + '-content');
@@ -389,7 +418,7 @@
 
                 // Activate new tab and content
                 currentTabIndex = newIndex;
-                if (tabButtons[currentTabIndex]) { // Check if newIndex is valid before accessing properties
+                if (tabButtons[currentTabIndex]) { 
                     tabButtons[currentTabIndex].classList.add(activeTabClass);
                     const newTabId = tabButtons[currentTabIndex].dataset.tab;
                     const newContent = document.getElementById(newTabId + '-content');
@@ -400,17 +429,15 @@
             }
 
             if (tabButtons.length > 0) {
-                // Initialize currentTabIndex based on initially active tab
                 currentTabIndex = tabButtons.findIndex(button => button.classList.contains(activeTabClass));
-                if (currentTabIndex === -1 && tabButtons.length > 0) { // If no tab is active, default to the first one
+                if (currentTabIndex === -1 && tabButtons.length > 0) { 
                      currentTabIndex = 0;
-                     // Ensure the first tab is visually activated if no tab was initially active
                      if(tabButtons[currentTabIndex] && !tabButtons[currentTabIndex].classList.contains(activeTabClass)) {
                         updateTabs(currentTabIndex);
-                     } else if (!tabButtons[currentTabIndex]) { // Reset to 0 if somehow currentTabIndex is out of bounds
+                     } else if (!tabButtons[currentTabIndex]) { 
                         currentTabIndex = 0;
                      }
-                } else if (currentTabIndex === -1) { // Should not happen if tabButtons.length > 0
+                } else if (currentTabIndex === -1) { 
                     currentTabIndex = 0;
                 }
 
@@ -425,7 +452,7 @@
                     prevButton.addEventListener('click', function() {
                         let newIndex = currentTabIndex - 1;
                         if (newIndex < 0) {
-                            newIndex = tabButtons.length - 1; // Loop to last tab
+                            newIndex = tabButtons.length - 1; 
                         }
                         updateTabs(newIndex);
                     });
@@ -435,7 +462,7 @@
                     nextButton.addEventListener('click', function() {
                         let newIndex = currentTabIndex + 1;
                         if (newIndex >= tabButtons.length) {
-                            newIndex = 0; // Loop to first tab
+                            newIndex = 0; 
                         }
                         updateTabs(newIndex);
                     });
