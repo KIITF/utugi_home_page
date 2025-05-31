@@ -144,7 +144,7 @@
 
         /* ヘッダーの高さ分のオフセット */
         section[id] {
-            scroll-margin-top: 4rem; 
+            scroll-margin-top: 6rem; /* Updated to 6rem */
         }
 
         /* Custom style for gallery tab content titles on sm screens and up */
@@ -155,11 +155,41 @@
                 line-height: 6rem;
             }
         }
+        /* History list styling */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #E5E7EB; /* Tailwind gray-200 */
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-item .title {
+            font-weight: 500; /* medium */
+            color: #374151; /* gray-700 */
+        }
+        .history-item .artist {
+            color: #6B7280; /* gray-500 */
+            font-size: 0.875rem; /* text-sm */
+        }
+         .history-item .date, .history-item .type {
+            font-size: 0.875rem; /* text-sm */
+            color: #4B5563; /* gray-600 */
+            white-space: nowrap;
+        }
+        .history-item > div {
+             margin-right: 1rem;
+        }
+        .history-item > div:last-child {
+            margin-right: 0;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <header class="bg-black text-white h-16 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6">
+    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6"> {/* Header height updated to h-24 (6rem) */}
         <div class="text-lg sm:text-xl font-bold">
             <a href="#">空木 / utugi</a>
         </div>
@@ -173,7 +203,7 @@
         </nav>
     </header>
 
-    <main class="pt-16">
+    <main class="pt-24"> {/* Padding top updated to 6rem */}
 
         <section id="profile" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
             <div class="container mx-auto max-w-4xl">
@@ -294,10 +324,23 @@
                     <p class="text-gray-600 text-base sm:text-lg mt-2">実績記録</p>
                     <span class="section-title-line mt-4 sm:mt-6"></span>
                 </div>
-                <div class="max-w-2xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                    <p class="text-gray-700 mb-6 text-center text-sm sm:text-base">スキルセットや使用ツールなどのデータを円グラフで表示します。</p>
-                    <div class="relative h-64 sm:h-96">
-                        <canvas id="skillsChart"></canvas>
+                <div class="max-w-3xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div class="relative h-64 sm:h-80">
+                            <canvas id="requestRatioChart"></canvas>
+                        </div>
+                        <div class="relative h-64 sm:h-80">
+                            <canvas id="cgUsageChart"></canvas>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
+                    <div id="history-list-container" class="space-y-2">
+                        </div>
+                    <div class="text-center mt-6">
+                        <button id="toggle-history-button" class="text-emerald-600 hover:text-emerald-700 font-medium">
+                            もっと見る
+                        </button>
                     </div>
                 </div>
             </div>
@@ -365,7 +408,6 @@
                 { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 3', link: 'https://youtube.com', cells: [14, 15], pathPrefix: 'resources/shape_motion/' }
             ];
 
-
             // --- Helper function to get grid cell classes ---
             function getGridPositionClasses(cells) {
                 const numRows = 3;
@@ -391,7 +433,6 @@
             function populateGallery(containerId, itemsData) {
                 const container = document.getElementById(containerId);
                 if (!container) {
-                    // console.error(`Container with id "${containerId}" not found.`); // Keep for debugging if needed
                     return;
                 }
                 container.innerHTML = ''; 
@@ -445,7 +486,6 @@
                 });
             }
 
-            // Populate galleries on load
             populateGallery('logo-grid-items-container', logoDesignItemsData);
             populateGallery('shape-grid-items-container', shapeMotionItemsData);
 
@@ -521,61 +561,131 @@
                 }
             }
 
-            const ctxSkills = document.getElementById('skillsChart');
-            if (ctxSkills) {
-                try {
-                    new Chart(ctxSkills, {
-                        type: 'pie',
-                        data: {
-                            labels: ['Illustrator', 'Photoshop', 'After Effects', 'Blender', 'Web制作 (HTML/CSS/JS)'],
-                            datasets: [{
-                                label: '使用割合',
-                                data: [30, 25, 20, 15, 10],
-                                backgroundColor: [
-                                    'rgba(50, 50, 50, 0.7)',
-                                    'rgba(100, 100, 100, 0.7)',
-                                    'rgba(150, 150, 150, 0.7)',
-                                    'rgba(200, 200, 200, 0.7)',
-                                    'rgba(220, 220, 220, 0.7)'
-                                ],
-                                borderColor: [
-                                    'rgba(50, 50, 50, 1)',
-                                    'rgba(100, 100, 100, 1)',
-                                    'rgba(150, 150, 150, 1)',
-                                    'rgba(200, 200, 200, 1)',
-                                    'rgba(220, 220, 220, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: { color: '#374151' }
-                                },
-                                title: {
-                                    display: true,
-                                    text: '主な使用ツール・スキル',
-                                    font: { size: 16 },
-                                    color: '#1F2937'
-                                }
-                            },
-                            animation: {
-                                animateScale: true,
-                                animateRotate: true
-                            }
-                        }
-                    });
-                } catch (e) {
-                    console.error("Chart.js initialization failed:", e);
-                    if (ctxSkills.parentElement) {
-                         ctxSkills.parentElement.innerHTML = "<p class='text-red-500 text-center'>グラフの表示に失敗しました。</p>";
+            // --- Data Section Charts ---
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#374151' } // text-gray-700
+                    },
+                    title: {
+                        display: true,
+                        font: { size: 16 },
+                        color: '#1F2937' // text-gray-800
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            };
+            const grayscaleColors = [
+                'rgba(75, 75, 75, 0.8)',   // Darker Gray
+                'rgba(120, 120, 120, 0.8)',// Medium Gray
+                'rgba(165, 165, 165, 0.8)',// Light Gray
+                'rgba(210, 210, 210, 0.8)' // Lighter Gray
+            ];
+            const grayscaleBorders = [
+                'rgba(75, 75, 75, 1)',
+                'rgba(120, 120, 120, 1)',
+                'rgba(165, 165, 165, 1)',
+                'rgba(210, 210, 210, 1)'
+            ];
+
+            const ctxRequestRatio = document.getElementById('requestRatioChart');
+            if (ctxRequestRatio) {
+                new Chart(ctxRequestRatio, {
+                    type: 'pie',
+                    data: {
+                        labels: ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'その他'],
+                        datasets: [{
+                            label: '依頼内容の割合',
+                            data: [9, 9, 3, 2],
+                            backgroundColor: grayscaleColors,
+                            borderColor: grayscaleBorders,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: '依頼内容の割合' } } }
+                });
+            }
+
+            const ctxCgUsage = document.getElementById('cgUsageChart');
+            if (ctxCgUsage) {
+                new Chart(ctxCgUsage, {
+                    type: 'pie',
+                    data: {
+                        labels: ['フル3D', '中程度', '一部・無し'],
+                        datasets: [{
+                            label: 'MVでの3DCG使用度合い',
+                            data: [5, 9, 6],
+                            backgroundColor: grayscaleColors.slice(0,3), // Use first 3 colors
+                            borderColor: grayscaleBorders.slice(0,3),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'MVでの3DCG使用度合い' } } }
+                });
+            }
+
+            // --- History Section ---
+            const historyData = [
+                { artist: 'Sera。', title: 'セプテントリオー', date: '2024/12/28', type: 'オリジナル楽曲MV制作' },
+                { artist: 'ユキ YUKI', title: 'ジェヘナ', date: '2024/12/16', type: '歌ってみたMV制作' },
+                { artist: 'shikisai', title: 'シャワールーム・ファンタジー', date: '2024/12/14', type: 'CG制作' },
+                { artist: '紫ヶ内ムゲイ＆ChumuNote', title: 'Episode X', date: '2024/12/14', type: '歌ってみたMV制作' },
+                { artist: 'shikisai', title: 'ニューワタシ革命', date: '2024/11/11', type: 'オリジナル楽曲MV制作' },
+                { artist: 'memex', title: 'アストロノーツ・テレキャスター', date: '2024/11/10', type: 'オリジナル楽曲MV制作' },
+                { artist: 'ユキ YUKI', title: '食虫植物', date: '2024/09/21', type: '歌ってみたMV制作' }
+            ].sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending (most recent first)
+
+
+            const historyListContainer = document.getElementById('history-list-container');
+            const toggleHistoryButton = document.getElementById('toggle-history-button');
+            const itemsToShowInitially = 3;
+            let historyExpanded = false;
+
+            function renderHistory() {
+                if (!historyListContainer) return;
+                historyListContainer.innerHTML = '';
+                const itemsToRender = historyExpanded ? historyData : historyData.slice(0, itemsToShowInitially);
+
+                itemsToRender.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'history-item';
+                    itemDiv.innerHTML = `
+                        <div class="flex-grow">
+                            <p class="title">${item.title}</p>
+                            <p class="artist">${item.artist}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="date">${item.date}</p>
+                            <p class="type">${item.type}</p>
+                        </div>
+                    `;
+                    historyListContainer.appendChild(itemDiv);
+                });
+
+                if (toggleHistoryButton) {
+                    if (historyData.length <= itemsToShowInitially) {
+                        toggleHistoryButton.style.display = 'none';
+                    } else {
+                        toggleHistoryButton.style.display = 'inline-block';
+                        toggleHistoryButton.textContent = historyExpanded ? '一部表示する' : 'もっと見る';
                     }
                 }
             }
+
+            if (toggleHistoryButton) {
+                toggleHistoryButton.addEventListener('click', () => {
+                    historyExpanded = !historyExpanded;
+                    renderHistory();
+                });
+            }
+            renderHistory(); // Initial render
+
         });
     </script>
 
