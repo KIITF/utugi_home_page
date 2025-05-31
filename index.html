@@ -420,87 +420,18 @@
                         mediaElement = document.createElement('video');
                         mediaElement.src = mediaPath;
                         mediaElement.muted = true; 
-                        mediaElement.preload = 'metadata'; 
-                        mediaElement.setAttribute('playsinline', ''); // For iOS inline play
-
-                        // Custom properties for managing state
-                        mediaElement.longPressTimeoutId = null;
-                        mediaElement.isMouseDown = false;
-                        mediaElement.isLoopingByLongPress = false;
-                        mediaElement.longPressJustActivated = false;
-
+                        mediaElement.preload = 'auto'; // Changed to 'auto' for better hover play experience
+                        mediaElement.setAttribute('playsinline', ''); 
 
                         mediaElement.addEventListener('mouseover', () => {
-                            if (!mediaElement.isLoopingByLongPress) {
-                                mediaElement.play().catch(e => console.warn("Video play on hover failed:", e));
-                            }
+                            mediaElement.loop = true; // Enable loop on hover
+                            mediaElement.play().catch(e => console.warn("Video play on hover failed:", e));
                         });
                         mediaElement.addEventListener('mouseout', () => {
-                            if (!mediaElement.isLoopingByLongPress) {
-                                mediaElement.pause();
-                            }
-                        });
-
-                        mediaElement.addEventListener('mousedown', (e) => {
-                            mediaElement.isMouseDown = true;
-                            mediaElement.longPressJustActivated = false; // Reset this flag
-
-                            if (mediaElement.isLoopingByLongPress) {
-                                // If already looping, this mousedown (part of a click) will stop it.
-                                // The click on the <a> tag will then navigate.
-                                mediaElement.loop = false;
-                                mediaElement.isLoopingByLongPress = false;
-                                mediaElement.pause(); 
-                                clearTimeout(mediaElement.longPressTimeoutId);
-                                return; // Let the click proceed to the <a> tag
-                            }
-
-                            mediaElement.longPressTimeoutId = setTimeout(() => {
-                                if (mediaElement.isMouseDown) { // Check if mouse is still down
-                                    mediaElement.isLoopingByLongPress = true;
-                                    mediaElement.loop = true;
-                                    mediaElement.play().catch(e => console.warn("Video play on long press failed:", e));
-                                    mediaElement.longPressJustActivated = true; // Flag that this action was a long press
-                                }
-                            }, 700); // 700ms for long press
-                        });
-
-                        mediaElement.addEventListener('mouseup', () => {
-                            mediaElement.isMouseDown = false;
-                            clearTimeout(mediaElement.longPressTimeoutId);
+                            mediaElement.loop = false; // Disable loop on mouse out
+                            mediaElement.pause();
                         });
                         
-                        mediaElement.addEventListener('touchstart', (e) => { // Basic touch support for long press
-                            mediaElement.isMouseDown = true; // Use isMouseDown for touch as well
-                            mediaElement.longPressJustActivated = false;
-
-                            if (mediaElement.isLoopingByLongPress) {
-                                mediaElement.loop = false;
-                                mediaElement.isLoopingByLongPress = false;
-                                mediaElement.pause();
-                                clearTimeout(mediaElement.longPressTimeoutId);
-                                return;
-                            }
-                            mediaElement.longPressTimeoutId = setTimeout(() => {
-                                if (mediaElement.isMouseDown) {
-                                    mediaElement.isLoopingByLongPress = true;
-                                    mediaElement.loop = true;
-                                    mediaElement.play().catch(e => console.warn("Video play on long press failed:", e));
-                                    mediaElement.longPressJustActivated = true;
-                                }
-                            }, 700);
-                        }, { passive: true });
-
-                        mediaElement.addEventListener('touchend', () => {
-                            mediaElement.isMouseDown = false;
-                            clearTimeout(mediaElement.longPressTimeoutId);
-                        });
-                         mediaElement.addEventListener('touchcancel', () => {
-                            mediaElement.isMouseDown = false;
-                            clearTimeout(mediaElement.longPressTimeoutId);
-                        });
-
-
                         mediaElement.onerror = function() {
                             this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
                         };
@@ -508,15 +439,6 @@
                     
                     if (mediaElement) {
                         link.appendChild(mediaElement);
-                        // Prevent click on link if long press just activated loop for video
-                        if (itemData.type === 'video') {
-                            link.addEventListener('click', (e) => {
-                                if (mediaElement.longPressJustActivated) {
-                                    e.preventDefault();
-                                    mediaElement.longPressJustActivated = false; // Reset flag
-                                }
-                            });
-                        }
                         itemWrapper.appendChild(link);
                         container.appendChild(itemWrapper);
                     }
@@ -564,7 +486,7 @@
                 currentTabIndex = tabButtons.findIndex(button => button.classList.contains(activeTabClass));
                 if (currentTabIndex === -1) { 
                      currentTabIndex = 0;
-                     if(tabButtons[currentTabIndex]) { // Ensure first tab exists
+                     if(tabButtons[currentTabIndex]) { 
                         updateTabs(currentTabIndex);
                      }
                 }
