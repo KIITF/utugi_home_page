@@ -196,8 +196,6 @@
         .data-area-block:last-child {
             margin-bottom: 0;
         }
-
-
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -327,7 +325,7 @@
             </div>
         </section>
 
-        <section id="data" class="py-12 sm:py-20 px-4 sm:px-6 bg-white"> {/* Removed min-h-screen from Data section for more natural flow */}
+        <section id="data" class="py-12 sm:py-20 px-4 sm:px-6 bg-white"> 
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -339,13 +337,13 @@
                 </div>
 
                 <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="relative h-72 sm:h-96"> {/* Adjusted height for better proportion */}
+                    <div class="relative h-72 sm:h-96"> 
                         <canvas id="requestRatioChart"></canvas>
                     </div>
                 </div>
 
                 <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="relative h-72 sm:h-96"> {/* Adjusted height for better proportion */}
+                    <div class="relative h-72 sm:h-96"> 
                         <canvas id="cgUsageChart"></canvas>
                     </div>
                 </div>
@@ -579,76 +577,101 @@
             }
 
             // --- Data Section Charts ---
+            // Lighter green theme colors
+            const lightGreenThemeColors = [
+                'rgba(167, 201, 176, 0.7)', // #A7C9B0 - Soft Sage/Mint
+                'rgba(193, 217, 199, 0.7)', // #C1D9C7 - Paler Sage/Mint
+                'rgba(218, 232, 221, 0.7)', // #DAE8DD - Very Pale Green
+                'rgba(140, 180, 150, 0.7)'  // #8CB496 - Gentle Medium-Light Green
+            ];
+            const lightGreenThemeBorders = [
+                'rgba(167, 201, 176, 1)',
+                'rgba(193, 217, 199, 1)',
+                'rgba(218, 232, 221, 1)',
+                'rgba(140, 180, 150, 1)'
+            ];
+
             const commonChartOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'bottom',
-                        labels: { color: '#374151' } // text-gray-700
+                        labels: { color: '#374151' } 
                     },
                     title: {
                         display: true,
                         font: { size: 16 },
-                        color: '#1F2937' // text-gray-800
+                        color: '#1F2937' 
                     }
                 },
-                animation: { // Ensure animation is on for initial display
+                animation: { 
                     animateScale: true,
                     animateRotate: true,
-                    duration: 1000 // Optional: control animation speed
+                    duration: 1000 
                 }
             };
-            // Green theme colors (subtle and stylish)
-            const greenThemeColors = [
-                'rgba(107, 142, 116, 0.8)', // #6B8E74 - Dusty Green
-                'rgba(156, 175, 136, 0.8)', // #9CAF88 - Olive Greenish
-                'rgba(183, 201, 170, 0.8)', // #B7C9AA - Pale Green
-                'rgba(210, 223, 202, 0.8)'  // #D2DFCA - Very Pale Green
-            ];
-            const greenThemeBorders = [
-                'rgba(107, 142, 116, 1)',
-                'rgba(156, 175, 136, 1)',
-                'rgba(183, 201, 170, 1)',
-                'rgba(210, 223, 202, 1)'
-            ];
+            
+            // Chart configurations
+            const requestRatioChartConfig = {
+                type: 'pie',
+                data: {
+                    labels: ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'その他'],
+                    datasets: [{
+                        label: '依頼内容の割合',
+                        data: [9, 9, 3, 2],
+                        backgroundColor: lightGreenThemeColors,
+                        borderColor: lightGreenThemeBorders,
+                        borderWidth: 1
+                    }]
+                },
+                options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: '依頼内容の割合' } } }
+            };
 
+            const cgUsageChartConfig = {
+                type: 'pie',
+                data: {
+                    labels: ['フル3D', '中程度', '一部・無し'],
+                    datasets: [{
+                        label: 'MVでの3DCG使用度合い',
+                        data: [5, 9, 6],
+                        backgroundColor: lightGreenThemeColors.slice(0,3), 
+                        borderColor: lightGreenThemeBorders.slice(0,3),
+                        borderWidth: 1
+                    }]
+                },
+                options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'MVでの3DCG使用度合い' } } }
+            };
+
+            // Intersection Observer for charts
+            let requestRatioChartInstance = null;
+            let cgUsageChartInstance = null;
+
+            const chartObserverCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const canvasId = entry.target.id;
+                        if (canvasId === 'requestRatioChart' && !requestRatioChartInstance) {
+                            requestRatioChartInstance = new Chart(entry.target, requestRatioChartConfig);
+                        } else if (canvasId === 'cgUsageChart' && !cgUsageChartInstance) {
+                            cgUsageChartInstance = new Chart(entry.target, cgUsageChartConfig);
+                        }
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            };
+
+            const chartObserver = new IntersectionObserver(chartObserverCallback, {
+                root: null, 
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
 
             const ctxRequestRatio = document.getElementById('requestRatioChart');
-            if (ctxRequestRatio) {
-                new Chart(ctxRequestRatio, {
-                    type: 'pie',
-                    data: {
-                        labels: ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'その他'],
-                        datasets: [{
-                            label: '依頼内容の割合',
-                            data: [9, 9, 3, 2],
-                            backgroundColor: greenThemeColors,
-                            borderColor: greenThemeBorders,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: '依頼内容の割合' } } }
-                });
-            }
-
             const ctxCgUsage = document.getElementById('cgUsageChart');
-            if (ctxCgUsage) {
-                new Chart(ctxCgUsage, {
-                    type: 'pie',
-                    data: {
-                        labels: ['フル3D', '中程度', '一部・無し'],
-                        datasets: [{
-                            label: 'MVでの3DCG使用度合い',
-                            data: [5, 9, 6],
-                            backgroundColor: greenThemeColors.slice(0,3), 
-                            borderColor: greenThemeBorders.slice(0,3),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'MVでの3DCG使用度合い' } } }
-                });
-            }
+
+            if (ctxRequestRatio) chartObserver.observe(ctxRequestRatio);
+            if (ctxCgUsage) chartObserver.observe(ctxCgUsage);
+
 
             // --- History Section ---
             const historyData = [
