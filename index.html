@@ -72,13 +72,18 @@
         }
 
         /* Gallery Content Area Styling */
+        /* Gallery Content Area Styling */
         .gallery-content-area {
-            padding: 1.5rem; 
-            margin-top: 1rem; 
-            background-color: #F9FAFB; 
-            border-radius: 0.5rem; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
-            position: relative; 
+            padding: 1.5rem;
+            margin-top: 1rem;
+            /* background-color: #F9FAFB; */ /* 背景色をコメントアウトまたは削除 */
+            background-image: url('images/wall_base.png'); /* 背景画像を指定 */
+            background-size: cover;          /* 表示エリアを覆うように調整 */
+            background-position: center;     /* 画像を中央に配置 */
+            background-repeat: no-repeat;    /* 画像の繰り返しを無効に */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
         }
 
         /* Gallery Item Styling */
@@ -305,8 +310,7 @@
             </div>
         </section>
 
-        <!-- <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-14 bg-white"> -->
-        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-14 bg-white" style="background-image: url('images/wall_base.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
             <div class="container mx-auto max-w-5xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
