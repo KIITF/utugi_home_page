@@ -185,11 +185,24 @@
             margin-right: 0;
         }
 
+        /* Data section individual area styling */
+        .data-area-block {
+            background-color: #F9FAFB; /* bg-gray-50 */
+            padding: 1.5rem; /* p-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            margin-bottom: 2rem; /* mb-8 */
+        }
+        .data-area-block:last-child {
+            margin-bottom: 0;
+        }
+
+
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6"> {/* Header height updated to h-24 (6rem) */}
+    <header class="bg-black text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-6">
         <div class="text-lg sm:text-xl font-bold">
             <a href="#">空木 / utugi</a>
         </div>
@@ -203,7 +216,7 @@
         </nav>
     </header>
 
-    <main class="pt-24"> {/* Padding top updated to 6rem */}
+    <main class="pt-24">
 
         <section id="profile" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
             <div class="container mx-auto max-w-4xl">
@@ -314,7 +327,7 @@
             </div>
         </section>
 
-        <section id="data" class="min-h-screen bg-white py-12 sm:py-20 px-4 sm:px-6">
+        <section id="data" class="py-12 sm:py-20 px-4 sm:px-6 bg-white"> {/* Removed min-h-screen from Data section for more natural flow */}
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -324,16 +337,20 @@
                     <p class="text-gray-600 text-base sm:text-lg mt-2">実績記録</p>
                     <span class="section-title-line mt-4 sm:mt-6"></span>
                 </div>
-                <div class="max-w-3xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                        <div class="relative h-64 sm:h-80">
-                            <canvas id="requestRatioChart"></canvas>
-                        </div>
-                        <div class="relative h-64 sm:h-80">
-                            <canvas id="cgUsageChart"></canvas>
-                        </div>
-                    </div>
 
+                <div class="data-area-block max-w-3xl mx-auto">
+                    <div class="relative h-72 sm:h-96"> {/* Adjusted height for better proportion */}
+                        <canvas id="requestRatioChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="data-area-block max-w-3xl mx-auto">
+                    <div class="relative h-72 sm:h-96"> {/* Adjusted height for better proportion */}
+                        <canvas id="cgUsageChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="data-area-block max-w-3xl mx-auto">
                     <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
                     <div id="history-list-container" class="space-y-2">
                         </div>
@@ -576,23 +593,26 @@
                         color: '#1F2937' // text-gray-800
                     }
                 },
-                animation: {
+                animation: { // Ensure animation is on for initial display
                     animateScale: true,
-                    animateRotate: true
+                    animateRotate: true,
+                    duration: 1000 // Optional: control animation speed
                 }
             };
-            const grayscaleColors = [
-                'rgba(75, 75, 75, 0.8)',   // Darker Gray
-                'rgba(120, 120, 120, 0.8)',// Medium Gray
-                'rgba(165, 165, 165, 0.8)',// Light Gray
-                'rgba(210, 210, 210, 0.8)' // Lighter Gray
+            // Green theme colors (subtle and stylish)
+            const greenThemeColors = [
+                'rgba(107, 142, 116, 0.8)', // #6B8E74 - Dusty Green
+                'rgba(156, 175, 136, 0.8)', // #9CAF88 - Olive Greenish
+                'rgba(183, 201, 170, 0.8)', // #B7C9AA - Pale Green
+                'rgba(210, 223, 202, 0.8)'  // #D2DFCA - Very Pale Green
             ];
-            const grayscaleBorders = [
-                'rgba(75, 75, 75, 1)',
-                'rgba(120, 120, 120, 1)',
-                'rgba(165, 165, 165, 1)',
-                'rgba(210, 210, 210, 1)'
+            const greenThemeBorders = [
+                'rgba(107, 142, 116, 1)',
+                'rgba(156, 175, 136, 1)',
+                'rgba(183, 201, 170, 1)',
+                'rgba(210, 223, 202, 1)'
             ];
+
 
             const ctxRequestRatio = document.getElementById('requestRatioChart');
             if (ctxRequestRatio) {
@@ -603,8 +623,8 @@
                         datasets: [{
                             label: '依頼内容の割合',
                             data: [9, 9, 3, 2],
-                            backgroundColor: grayscaleColors,
-                            borderColor: grayscaleBorders,
+                            backgroundColor: greenThemeColors,
+                            borderColor: greenThemeBorders,
                             borderWidth: 1
                         }]
                     },
@@ -621,8 +641,8 @@
                         datasets: [{
                             label: 'MVでの3DCG使用度合い',
                             data: [5, 9, 6],
-                            backgroundColor: grayscaleColors.slice(0,3), // Use first 3 colors
-                            borderColor: grayscaleBorders.slice(0,3),
+                            backgroundColor: greenThemeColors.slice(0,3), 
+                            borderColor: greenThemeBorders.slice(0,3),
                             borderWidth: 1
                         }]
                     },
@@ -639,7 +659,7 @@
                 { artist: 'shikisai', title: 'ニューワタシ革命', date: '2024/11/11', type: 'オリジナル楽曲MV制作' },
                 { artist: 'memex', title: 'アストロノーツ・テレキャスター', date: '2024/11/10', type: 'オリジナル楽曲MV制作' },
                 { artist: 'ユキ YUKI', title: '食虫植物', date: '2024/09/21', type: '歌ってみたMV制作' }
-            ].sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending (most recent first)
+            ].sort((a, b) => new Date(b.date) - new Date(a.date)); 
 
 
             const historyListContainer = document.getElementById('history-list-container');
@@ -684,7 +704,7 @@
                     renderHistory();
                 });
             }
-            renderHistory(); // Initial render
+            renderHistory(); 
 
         });
     </script>
