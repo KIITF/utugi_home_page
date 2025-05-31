@@ -146,6 +146,15 @@
         section[id] {
             scroll-margin-top: 4rem; 
         }
+
+        /* Custom style for gallery tab content titles on sm screens and up */
+        @media (min-width: 640px) {
+            .gallery-content-area .tab-content h3 {
+                font-family: 'Californian FB', serif; /* Added serif fallback */
+                font-size: 3.5rem;
+                line-height: 6rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -207,15 +216,12 @@
                 <div class="gallery-content-area">
                     <div id="logo-content" class="tab-content active">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
-                        <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">指定されたグリッドレイアウトによるロゴ作品の展示例です。</p>
                         <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                             </div>
-                        <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
-                    </div>
+                        </div>
 
                     <div id="lyric-content" class="tab-content">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Lyric Motion</h3>
-                        <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">リリックモーションの作品を3x5グリッドで表示します。</p>
                         <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+1" alt="リリックモーション 1の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+2" alt="リリックモーション 2の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
@@ -233,20 +239,16 @@
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+14" alt="リリックモーション 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=Lyric+15" alt="リリックモーション 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
-                    </div>
+                        </div>
 
                     <div id="shape-content" class="tab-content">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
-                        <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">シェイプモーションの作品を3x5グリッドで表示します。</p>
                         <div id="shape-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                             </div>
-                        <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
-                    </div>
+                        </div>
 
                     <div id="3dcg-content" class="tab-content">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">3DCG</h3>
-                        <p class="text-center text-gray-600 mb-8 text-sm sm:text-base">3DCGの作品を3x5グリッドで表示します。</p>
                         <div class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+1" alt="3DCG 1の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+2" alt="3DCG 2の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
@@ -264,8 +266,7 @@
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+14" alt="3DCG 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+15" alt="3DCG 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-6 text-center">※ 上記は指定されたグリッド配置のデモです。実際の画像と差し替えてください。</p>
-                    </div>
+                        </div>
 
                     <div class="gallery-nav-arrows">
                         <button id="gallery-prev-button" class="gallery-arrow-button" aria-label="Previous Tab">
@@ -390,7 +391,7 @@
             function populateGallery(containerId, itemsData) {
                 const container = document.getElementById(containerId);
                 if (!container) {
-                    console.error(`Container with id "${containerId}" not found.`);
+                    // console.error(`Container with id "${containerId}" not found.`); // Keep for debugging if needed
                     return;
                 }
                 container.innerHTML = ''; 
