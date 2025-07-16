@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>すべての実績履歴 - 空木/utugi HP</title>
+    <link rel="icon" href="resources/images/utugi_icon_favicon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本フォント設定とスムーズスクロール */
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f3f4f6; /* bg-gray-100 */
+            color: #374151; /* text-gray-800 */
+        }
+        /* セクション区切り線のスタイル */
+        .section-title-line {
+            display: block;
+            width: 80%;
+            height: 1px;
+            background-color: #D1D5DB; /* Tailwind gray-300 */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Unified Section Title Styling */
+        .section-main-title .first-letter {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 4rem;
+            line-height: 1;
+            color: inherit;
+            font-weight: inherit;
+        }
+        .section-main-title .rest-of-title {
+            font-size: inherit;
+            line-height: inherit;
+            vertical-align: baseline;
+            color: inherit;
+            font-weight: inherit;
+        }
+        /* History list styling */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0; /* py-3 */
+            border-bottom: 1px solid #E5E7EB;
+            align-items: center; /* 垂直方向中央揃え */
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-item .title {
+            font-weight: 500;
+            color: #1F2937; /* text-gray-900 */
+            font-size: 1.125rem; /* text-lg */
+        }
+        .history-item .artist {
+            color: #6B7280; /* text-gray-500 */
+            font-size: 0.875rem; /* text-sm */
+        }
+        .history-item .date, .history-item .type {
+            font-size: 0.875rem; /* text-sm */
+            color: #4B5563; /* text-gray-600 */
+            white-space: nowrap;
+            text-align: right;
+        }
+        .history-item > div {
+            margin-right: 1rem;
+        }
+        .history-item > div:last-child {
+            margin-right: 0;
+        }
+        /* Data section individual area styling (for the block containing the history list) */
+        .data-area-block {
+            background-color: #F9FAFB;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: #10B981; /* emerald-500 */
+            color: white;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #059669; /* emerald-600 */
+        }
+        .back-button svg {
+            margin-right: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+        }
+        /* Hamburger Menu Styling (copied from index.html) */
+        .mobile-menu {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 6rem; /* Below header */
+            left: 0;
+            right: 0;
+            background-color: black; /* Match header */
+            padding: 1rem 0;
+            z-index: 40; /* Below header's z-index */
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid #374151; /* gray-700 for separator */
+        }
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+        .mobile-menu a:hover {
+            background-color: #1F2937; /* gray-800 for hover */
+        }
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+            margin: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-gray-900 text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14">
+        <div class="text-lg sm:text-xl font-bold">
+            <a href="index.html">空木/utugi</a>
+        </div>
+        <nav class="hidden sm:block">
+            <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
+                <li><a href="index.html#profile" class="hover:text-gray-300 px-2 py-1 rounded-md">About</a></li>
+                <li><a href="index.html#gallery" class="hover:text-gray-300 px-2 py-1 rounded-md">Gallery</a></li>
+                <li><a href="#top" class="hover:text-gray-300 px-2 py-1 rounded-md">Data</a></li>
+                <li><a href="index.html#contact" class="hover:text-gray-300 px-2 py-1 rounded-md">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="sm:hidden">
+            <button id="hamburger-button" class="text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+    <!-- Mobile Menu - Initially hidden -->
+    <nav id="mobile-menu-nav" class="mobile-menu">
+        <a href="index.html#profile" class="mobile-menu-link">About</a>
+        <a href="index.html#gallery" class="mobile-menu-link">Gallery</a>
+        <a href="#top" class="mobile-menu-link">Data</a>
+        <a href="index.html#contact" class="mobile-menu-link">Contact</a>
+    </nav>
+
+    <main class="pt-24 py-12 sm:py-20 px-4 sm:px-14">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12 sm:mb-16">
+                <span class="section-title-line mb-4 sm:mb-6"></span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
+                    <span class="first-letter">H</span><span class="rest-of-title">istory</span>
+                </h2>
+                <p class="text-gray-600 text-base sm:text-lg mt-2">すべての実績記録</p>
+                <span class="section-title-line mt-4 sm:mt-6"></span>
+            </div>
+
+            <div class="data-area-block max-w-3xl mx-auto">
+                <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">すべての実績</h3>
+                <div id="full-history-list-container" class="space-y-2">
+                    <!-- CSVから読み込まれたすべての履歴データがここに表示されます -->
+                </div>
+                <div class="text-center mt-8">
+                    <a href="index.html#data" class="back-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        トップページに戻る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+        <div class="footer-sns-icons flex justify-center space-x-4 mb-4">
+            <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク">
+                <img src="resources/images/X_icon.png" alt="X icon" onerror="this.style.display='none'">
+            </a>
+            <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク">
+                <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
+            </a>
+        </div>
+        <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ハンバーガーメニューの切り替え
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mobileMenu = document.getElementById('mobile-menu-nav');
+            const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+
+            if (hamburgerButton && mobileMenu) {
+                hamburgerButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('active');
+                });
+                // リンクがクリックされたらメニューを閉じる
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('active');
+                    });
+                });
+            }
+
+            const fullHistoryListContainer = document.getElementById('full-history-list-container');
+
+            // 履歴リストをレンダリングする関数 (全件表示用)
+            function renderFullHistory(historyData) {
+                if (!fullHistoryListContainer) return;
+                fullHistoryListContainer.innerHTML = ''; // 既存の内容をクリア
+
+                historyData.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'history-item';
+                    itemDiv.innerHTML = `
+                        <div class="flex-grow">
+                            <p class="title">${item.title}</p>
+                            <p class="artist">${item.artist}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="date">${item.date}</p>
+                            <p class="type">${item.type}</p>
+                        </div>
+                    `;
+                    fullHistoryListContainer.appendChild(itemDiv);
+                });
+            }
+
+            // CSVデータをパースし、履歴リストを更新する関数 (このページではチャートは不要)
+            function parseCsvForHistory(csvText) {
+                const lines = csvText.trim().split('\n');
+                const dataRows = lines.slice(1); // ヘッダー行をスキップ
+                const parsedData = [];
+
+                dataRows.forEach(line => {
+                    const values = line.split(',');
+                    // CSVの列数に合わせて調整 (依頼主, 曲名等, 公開日, 依頼内容, CG使用度合い(E), リンク, ..., CG使用度合い(K))
+                    // CSVのデータ構造に合わせて、必要な列をすべて読み込むようにします
+                    if (values.length >= 10) { // K列まであることを確認 (インデックス9まで)
+                        parsedData.push({
+                            client: values[0] ? values[0].trim() : '',
+                            title: values[1] ? values[1].trim() : '',
+                            releaseDate: values[2] ? values[2].trim() : '',
+                            requestContent: values[3] ? values[3].trim() : '',
+                            cgUsageCol4: values[4] ? values[4].trim() : '', // Column E (index 4)
+                            link: values[5] ? values[5].trim() : '',
+                            cgUsageCol9: values[9] ? values[9].trim() : '' // Column K (index 9)
+                        });
+                    }
+                });
+
+                // 履歴リスト用のデータを準備してソート (新しい日付が先頭に来るように)
+                const allHistoryData = parsedData.map(item => ({
+                    artist: item.client,
+                    title: item.title,
+                    date: item.releaseDate,
+                    type: item.requestContent
+                })).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                renderFullHistory(allHistoryData); // 全件表示をレンダリング
+            }
+
+            // CSVデータをロードする関数
+            async function loadCsvData() {
+                try {
+                    const response = await fetch('utugi_works.csv');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const csvText = await response.text();
+                    parseCsvForHistory(csvText);
+                } catch (error) {
+                    console.error('CSVデータの読み込みまたはパース中にエラーが発生しました:', error);
+                    // エラーメッセージをUIに表示
+                    const mainContent = document.querySelector('main .container');
+                    if (mainContent) {
+                        const errorMessage = document.createElement('p');
+                        errorMessage.className = 'text-center text-red-500 mt-4';
+                        errorMessage.textContent = '実績データの表示に失敗しました。CSVファイルが正しく読み込まれているか確認してください。';
+                        mainContent.appendChild(errorMessage);
+                    }
+                }
+            }
+
+            // ページロード時にCSVデータをロード
+            loadCsvData();
+        });
+    </script>
+
+</body>
+</html>
