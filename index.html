@@ -43,22 +43,22 @@
 
         /* Gallery Tab Styling */
         .gallery-tab-button {
-            padding: 0.5rem 1rem; 
-            margin: 0.25rem; 
-            font-size: 0.875rem; 
-            color: #6B7280; 
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            font-size: 0.875rem;
+            color: #6B7280;
             background-color: transparent;
             border: 2px solid transparent;
-            border-radius: 0.375rem; 
+            border-radius: 0.375rem;
             transition: all 0.3s ease;
             cursor: pointer;
         }
         .gallery-tab-button:hover {
-            color: #1F2937; 
+            color: #1F2937;
         }
         .gallery-tab-button.active-tab {
-            color: #10B981; 
-            font-weight: 600; 
+            color: #10B981;
+            font-weight: 600;
             border-bottom: 2px solid #10B981;
             border-radius: 0;
         }
@@ -67,7 +67,7 @@
             display: block;
             width: 100%;
             height: 1px;
-            background-color: #E5E7EB; 
+            background-color: #E5E7EB;
             margin-top: 0.5rem;
         }
 
@@ -83,27 +83,24 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             position: relative;
 
-            /* ↓↓↓ 追加するスタイル ↓↓↓ */
-
             max-width: 90%; /* または親要素に対する割合で指定も可能です */
-            margin-left: auto;  /* 中央揃え */
-            margin-right: auto; /* 中央揃え */
+            margin-left: auto;
+            margin-right: auto;
         }
-        
 
         /* Gallery Item Styling */
         .gallery-item {
-            border: 1px solid #E5E7EB; 
-            display: block; 
-            font-size: 0.75rem; 
+            border: 1px solid #E5E7EB;
+            display: block;
+            font-size: 0.75rem;
             text-align: center;
             overflow: hidden;
-            background-color: #FFFFFF; 
-            border-radius: 0.375rem; 
+            background-color: #FFFFFF;
+            border-radius: 0.375rem;
             transition: transform 0.2s ease-in-out;
-            position: relative; 
+            position: relative;
         }
-         .gallery-item a, .gallery-item img, .gallery-item video { 
+        .gallery-item a, .gallery-item img, .gallery-item video {
             display: block;
             width: 100%;
             height: 100%;
@@ -115,21 +112,20 @@
             object-fit: cover;
         }
 
-
         /* Gallery Navigation Arrows Styling */
         .gallery-nav-arrows {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1.5rem; 
-            padding: 0.5rem 1rem; 
+            margin-top: 1.5rem;
+            padding: 0.5rem 1rem;
         }
         .gallery-arrow-button {
-            background-color: #E5E7EB; 
-            color: #374151; 
+            background-color: #E5E7EB;
+            color: #374151;
             border: none;
-            padding: 0.75rem; 
-            border-radius: 50%; 
+            padding: 0.75rem;
+            border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease;
             display: flex;
@@ -137,12 +133,12 @@
             justify-content: center;
         }
         .gallery-arrow-button:hover {
-            background-color: #D1D5DB; 
-            color: #1F2937; 
+            background-color: #D1D5DB;
+            color: #1F2937;
         }
         .gallery-arrow-button svg {
-            width: 1.25rem; 
-            height: 1.25rem; 
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
         /* タブコンテンツの表示・非表示 */
@@ -156,7 +152,7 @@
 
         /* ヘッダーの高さ分のオフセット */
         section[id] {
-            scroll-margin-top: 6rem; 
+            scroll-margin-top: 6rem;
         }
 
         /* Custom style for gallery tab content titles on sm screens and up */
@@ -170,8 +166,8 @@
                 -webkit-text-stroke-color: black;
             }
             .sm\:px-14 { /* Custom class for 3.5rem padding */
-                 padding-left: 3.5rem;
-                 padding-right: 3.5rem;
+                padding-left: 3.5rem;
+                padding-right: 3.5rem;
             }
         }
         /* History list styling */
@@ -179,26 +175,26 @@
             display: flex;
             justify-content: space-between;
             padding: 0.5rem 0;
-            border-bottom: 1px solid #E5E7EB; 
+            border-bottom: 1px solid #E5E7EB;
         }
         .history-item:last-child {
             border-bottom: none;
         }
         .history-item .title {
-            font-weight: 500; 
-            color: #374151; 
+            font-weight: 500;
+            color: #374151;
         }
         .history-item .artist {
-            color: #6B7280; 
-            font-size: 0.875rem; 
+            color: #6B7280;
+            font-size: 0.875rem;
         }
-         .history-item .date, .history-item .type {
-            font-size: 0.875rem; 
-            color: #4B5563; 
+        .history-item .date, .history-item .type {
+            font-size: 0.875rem;
+            color: #4B5563;
             white-space: nowrap;
         }
         .history-item > div {
-             margin-right: 1rem;
+            margin-right: 1rem;
         }
         .history-item > div:last-child {
             margin-right: 0;
@@ -206,18 +202,18 @@
 
         /* Data section individual area styling */
         .data-area-block {
-            background-color: #F9FAFB; 
-            padding: 1.5rem; 
-            border-radius: 0.5rem; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
-            margin-bottom: 2rem; 
+            background-color: #F9FAFB;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
         }
         .data-area-block:last-child {
             margin-bottom: 0;
         }
         /* Footer SNS icons */
         .footer-sns-icons img {
-            width: 40px; 
+            width: 40px;
             height: 24px;
             transition: opacity 0.3s ease;
             object-fit: contain;
@@ -264,7 +260,7 @@
 
     <header class="bg-gray-900 text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14">
         <div class="text-lg sm:text-xl font-bold">
-            <a href="#">空木/utugi</a> 
+            <a href="#">空木/utugi</a>
         </div>
         <nav class="hidden sm:block">
             <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
@@ -282,7 +278,7 @@
             </button>
         </div>
     </header>
-    <!-- {/* Mobile Menu - Initially hidden */} -->
+    <!-- Mobile Menu - Initially hidden -->
     <nav id="mobile-menu-nav" class="mobile-menu">
         <a href="#profile" class="mobile-menu-link">About</a>
         <a href="#gallery" class="mobile-menu-link">Gallery</a>
@@ -384,8 +380,8 @@
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+11" alt="3DCG 11の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+12" alt="3DCG 12の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                             <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+13" alt="3DCG 13の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
-                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+14" alt="3DCG 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
-                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+15" alt="3DCG 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+14" alt="リリックモーション 14の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
+                            <div class="gallery-item"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><img src="https://placehold.co/200x200/FFFFFF/1F2937?text=3DCG+15" alt="リリックモーション 15の画像" onerror="this.onerror=null;this.src='https://placehold.co/200x200/E5E7EB/374151?text=Error';"></a></div>
                         </div>
                     </div>
 
@@ -394,8 +390,6 @@
                         <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                         </div>
                     </div>
-
-                        
 
 
                     <div class="gallery-nav-arrows">
@@ -410,11 +404,11 @@
                             </svg>
                         </button>
                     </div>
-                </div> 
+                </div>
             </div>
         </section>
 
-        <section id="data" class="py-12 sm:py-20 px-4 sm:px-14 bg-white"> 
+        <section id="data" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
             <div class="container mx-auto max-w-4xl">
                 <div class="text-center mb-12 sm:mb-16">
                     <span class="section-title-line mb-4 sm:mb-6"></span>
@@ -426,25 +420,26 @@
                 </div>
 
                 <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="relative h-72 sm:h-96"> 
+                    <div class="relative h-72 sm:h-96">
                         <canvas id="requestRatioChart"></canvas>
                     </div>
                 </div>
 
                 <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="relative h-72 sm:h-96"> 
+                    <div class="relative h-72 sm:h-96">
                         <canvas id="cgUsageChart"></canvas>
                     </div>
                 </div>
-                
+
                 <div class="data-area-block max-w-3xl mx-auto">
                     <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
                     <div id="history-list-container" class="space-y-2">
-                        </div>
+                    </div>
                     <div class="text-center mt-6">
-                        <button id="toggle-history-button" class="text-emerald-600 hover:text-emerald-700 font-medium">
-                            もっと見る
-                        </button>
+                        <!-- 「もっと見る」ボタンを新しいページへのリンクに変更 -->
+                        <a href="history.html" id="toggle-history-button" class="text-emerald-600 hover:text-emerald-700 font-medium">
+                            すべての実績を見る
+                        </a>
                     </div>
                 </div>
             </div>
@@ -458,7 +453,7 @@
                         <span class="first-letter">C</span><span class="rest-of-title">ontact</span>
                     </h2>
                     <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
-                    
+
                     <span class="section-title-line mt-4 sm:mt-6"></span>
                 </div>
                 <p class="text-center text-gray-500 mt-1">受付状態 : <span class="text-red-600 font-semibold">要相談</span> (2025.04.20更新)</p>
@@ -524,12 +519,12 @@
                 <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
             </a>
         </div>
-        <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p> 
+        <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Hamburger Menu Toggle
+            // ハンバーガーメニューの切り替え
             const hamburgerButton = document.getElementById('hamburger-button');
             const mobileMenu = document.getElementById('mobile-menu-nav');
             const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
@@ -538,7 +533,7 @@
                 hamburgerButton.addEventListener('click', function() {
                     mobileMenu.classList.toggle('active');
                 });
-                // Close menu when a link is clicked
+                // リンクがクリックされたらメニューを閉じる
                 mobileMenuLinks.forEach(link => {
                     link.addEventListener('click', () => {
                         mobileMenu.classList.remove('active');
@@ -546,8 +541,7 @@
                 });
             }
 
-
-            // --- Gallery Item Data ---
+            // --- ギャラリーアイテムデータ ---
             const logoDesignItemsData = [
                 { type: 'image', fileName: 'cappuccino.png', altText: 'カプチーノの画像', link: 'https://www.youtube.com/watch?v=4EI2920QK3c', cells: [1, 2], pathPrefix: 'resources/logo/' },
                 { type: 'image', fileName: 'c_plant_yuki.png', altText: '雪と植物の画像', link: 'https://www.youtube.com/watch?v=yLbaExt0H0A', cells: [3, 8], pathPrefix: 'resources/logo/' },
@@ -568,7 +562,7 @@
                 { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 3', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [14, 15], pathPrefix: 'resources/shape_motion/' }
             ];
 
-            // --- Helper function to get grid cell classes ---
+            // --- グリッドセルクラスを取得するヘルパー関数 ---
             function getGridPositionClasses(cells) {
                 const numRows = 3;
                 const numCols = 5;
@@ -589,18 +583,18 @@
                 return `col-start-${minCol} col-span-${colSpan} row-start-${minRow} row-span-${rowSpan}`;
             }
 
-            // --- Generic function to create and append gallery items ---
+            // --- ギャラリーアイテムを作成して追加する汎用関数 ---
             function populateGallery(containerId, itemsData) {
                 const container = document.getElementById(containerId);
                 if (!container) {
                     return;
                 }
-                container.innerHTML = ''; 
+                container.innerHTML = '';
 
                 itemsData.forEach(itemData => {
                     const itemWrapper = document.createElement('div');
                     itemWrapper.className = `gallery-item ${getGridPositionClasses(itemData.cells)}`;
-                    
+
                     const link = document.createElement('a');
                     link.href = itemData.link;
                     link.target = '_blank';
@@ -614,30 +608,30 @@
                         mediaElement.src = mediaPath;
                         mediaElement.alt = itemData.altText;
                         mediaElement.onerror = function() {
-                            this.onerror = null; 
+                            this.onerror = null;
                             this.src = `https://placehold.co/${itemWrapper.offsetWidth || 200}x${itemWrapper.offsetHeight || 200}/FFFFFF/1F2937?text=${encodeURIComponent(itemData.fileName)}`;
                         };
                     } else if (itemData.type === 'video') {
                         mediaElement = document.createElement('video');
                         mediaElement.src = mediaPath;
-                        mediaElement.muted = true; 
-                        mediaElement.preload = 'auto'; 
-                        mediaElement.setAttribute('playsinline', ''); 
+                        mediaElement.muted = true;
+                        mediaElement.preload = 'auto';
+                        mediaElement.setAttribute('playsinline', '');
 
                         mediaElement.addEventListener('mouseover', () => {
-                            mediaElement.loop = true; 
+                            mediaElement.loop = true;
                             mediaElement.play().catch(e => console.warn("Video play on hover failed:", e));
                         });
                         mediaElement.addEventListener('mouseout', () => {
-                            mediaElement.loop = false; 
+                            mediaElement.loop = false;
                             mediaElement.pause();
                         });
-                        
+
                         mediaElement.onerror = function() {
                             this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
                         };
                     }
-                    
+
                     if (mediaElement) {
                         link.appendChild(mediaElement);
                         itemWrapper.appendChild(link);
@@ -649,13 +643,13 @@
             populateGallery('logo-grid-items-container', logoDesignItemsData);
             populateGallery('shape-grid-items-container', shapeMotionItemsData);
 
-
+            // ギャラリータブ切り替えロジック
             const tabButtonContainer = document.getElementById('gallery-tab-buttons-container');
             const tabButtons = tabButtonContainer ? Array.from(tabButtonContainer.querySelectorAll('.gallery-tab-button')) : [];
             const tabContents = document.querySelectorAll('.tab-content');
             const prevButton = document.getElementById('gallery-prev-button');
             const nextButton = document.getElementById('gallery-next-button');
-            
+
             const activeTabClass = 'active-tab';
             const activeContentClass = 'active';
             let currentTabIndex = 0;
@@ -664,8 +658,7 @@
                 if (tabButtons.length === 0 || tabContents.length === 0) return;
                 if (newIndex < 0 || newIndex >= tabButtons.length) return;
 
-
-                if (tabButtons[currentTabIndex]) { 
+                if (tabButtons[currentTabIndex]) {
                     tabButtons[currentTabIndex].classList.remove(activeTabClass);
                     const currentTabId = tabButtons[currentTabIndex].dataset.tab;
                     const currentContent = document.getElementById(currentTabId + '-content');
@@ -675,7 +668,7 @@
                 }
 
                 currentTabIndex = newIndex;
-                if (tabButtons[currentTabIndex]) { 
+                if (tabButtons[currentTabIndex]) {
                     tabButtons[currentTabIndex].classList.add(activeTabClass);
                     const newTabId = tabButtons[currentTabIndex].dataset.tab;
                     const newContent = document.getElementById(newTabId + '-content');
@@ -687,11 +680,11 @@
 
             if (tabButtons.length > 0) {
                 currentTabIndex = tabButtons.findIndex(button => button.classList.contains(activeTabClass));
-                if (currentTabIndex === -1) { 
-                     currentTabIndex = 0;
-                     if(tabButtons[currentTabIndex]) { 
+                if (currentTabIndex === -1) {
+                    currentTabIndex = 0;
+                    if(tabButtons[currentTabIndex]) {
                         updateTabs(currentTabIndex);
-                     }
+                    }
                 }
 
                 tabButtons.forEach((button, index) => {
@@ -704,7 +697,7 @@
                     prevButton.addEventListener('click', function() {
                         let newIndex = currentTabIndex - 1;
                         if (newIndex < 0) {
-                            newIndex = tabButtons.length - 1; 
+                            newIndex = tabButtons.length - 1;
                         }
                         updateTabs(newIndex);
                     });
@@ -714,19 +707,19 @@
                     nextButton.addEventListener('click', function() {
                         let newIndex = currentTabIndex + 1;
                         if (newIndex >= tabButtons.length) {
-                            newIndex = 0; 
+                            newIndex = 0;
                         }
                         updateTabs(newIndex);
                     });
                 }
             }
 
-            // --- Data Section Charts ---
+            // --- データセクションのチャートと履歴 (CSVから動的に読み込む) ---
             const lightGreenThemeColors = [
-                'rgba(193, 217, 199, 0.8)', 
-                'rgba(218, 232, 221, 0.8)', 
-                'rgba(167, 201, 176, 0.7)', 
-                'rgba(229, 239, 233, 0.8)'  
+                'rgba(193, 217, 199, 0.8)',
+                'rgba(218, 232, 221, 0.8)',
+                'rgba(167, 201, 176, 0.7)',
+                'rgba(229, 239, 233, 0.8)'
             ];
             const lightGreenThemeBorders = [
                 'rgba(193, 217, 199, 1)',
@@ -743,27 +736,17 @@
                         position: 'bottom',
                         labels: { color: '#374151' }
                     },
-                    title: { // これはグラフ全体のタイトルであり、ツールチップのタイトルではありません
+                    title: {
                         display: true,
                         font: { size: 16 },
                         color: '#1F2937'
                     },
                     tooltip: {
                         callbacks: {
-                            // pie/doughnutチャートでは、ツールチップのタイトルはデフォルトで
-                            // セグメントのラベル（例: 'オリジナル楽曲MV制作'）になります。
-                            // このため、titleコールバックを明示的に設定する必要はありません。
-
                             label: function(context) {
-                                // このコールバックはツールチップの「body」部分の各行を生成します。
-                                // ユーザーが「bodyいらない」と指定し、数値も不要であるため、
-                                // 空の文字列を返すことでこの行を非表示にします。
-                                return '';
+                                return ''; // ツールチップのボディ部分を非表示にする
                             }
                         }
-                        // もし、残った行（タイトル行）の隣にある色の四角いマーク（カラースウォッチ）も
-                        // 非表示にしたい場合は、以下の行のコメントを解除してください。
-                        // displayColors: false
                     }
                 },
                 animation: {
@@ -772,14 +755,14 @@
                     duration: 1500
                 }
             };
-            
+
             const requestRatioChartConfig = {
                 type: 'pie',
                 data: {
                     labels: ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'その他'],
                     datasets: [{
                         label: '依頼内容の割合',
-                        data: [9, 9, 3, 2],
+                        data: [], // CSVからロード後に設定
                         backgroundColor: lightGreenThemeColors,
                         borderColor: lightGreenThemeBorders,
                         borderWidth: 1
@@ -794,8 +777,8 @@
                     labels: ['フル3D', '中程度', '一部・無し'],
                     datasets: [{
                         label: 'MVでの3DCG使用度合い',
-                        data: [5, 9, 6],
-                        backgroundColor: lightGreenThemeColors.slice(0,3), 
+                        data: [], // CSVからロード後に設定
+                        backgroundColor: lightGreenThemeColors.slice(0,3),
                         borderColor: lightGreenThemeBorders.slice(0,3),
                         borderWidth: 1
                     }]
@@ -805,53 +788,19 @@
 
             let requestRatioChartInstance = null;
             let cgUsageChartInstance = null;
-
-            const chartObserverCallback = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const canvasId = entry.target.id;
-                        if (canvasId === 'requestRatioChart' && !requestRatioChartInstance) {
-                            requestRatioChartInstance = new Chart(entry.target, requestRatioChartConfig);
-                        } else if (canvasId === 'cgUsageChart' && !cgUsageChartInstance) {
-                            cgUsageChartInstance = new Chart(entry.target, cgUsageChartConfig);
-                        }
-                        observer.unobserve(entry.target); 
-                    }
-                });
-            };
-
-            const chartObserverOptions = {
-                root: null, 
-                threshold: 0.8 // Trigger when 80% of the element is visible
-            };
-            const chartObserver = new IntersectionObserver(chartObserverCallback, chartObserverOptions);
-
-            const ctxRequestRatio = document.getElementById('requestRatioChart');
-            const ctxCgUsage = document.getElementById('cgUsageChart');
-
-            if (ctxRequestRatio) chartObserver.observe(ctxRequestRatio);
-            if (ctxCgUsage) chartObserver.observe(ctxCgUsage);
-
-            const historyData = [
-                { artist: 'Sera。', title: 'セプテントリオー', date: '2024/12/28', type: 'オリジナル楽曲MV制作' },
-                { artist: 'ユキ YUKI', title: 'ジェヘナ', date: '2024/12/16', type: '歌ってみたMV制作' },
-                { artist: 'shikisai', title: 'シャワールーム・ファンタジー', date: '2024/12/14', type: 'CG制作' },
-                { artist: '紫ヶ内ムゲイ＆ChumuNote', title: 'Episode X', date: '2024/12/14', type: '歌ってみたMV制作' },
-                { artist: 'shikisai', title: 'ニューワタシ革命', date: '2024/11/11', type: 'オリジナル楽曲MV制作' },
-                { artist: 'memex', title: 'アストロノーツ・テレキャスター', date: '2024/11/10', type: 'オリジナル楽曲MV制作' },
-                { artist: 'ユキ YUKI', title: '食虫植物', date: '2024/09/21', type: '歌ってみたMV制作' }
-            ].sort((a, b) => new Date(b.date) - new Date(a.date)); 
-
+            let allHistoryData = []; // CSVから読み込んだ全履歴データを格納する変数
+            // let historyExpanded = false; // history.htmlに移動するため削除
 
             const historyListContainer = document.getElementById('history-list-container');
-            const toggleHistoryButton = document.getElementById('toggle-history-button');
+            // const toggleHistoryButton = document.getElementById('toggle-history-button'); // aタグに変更したため削除
             const itemsToShowInitially = 3;
-            let historyExpanded = false;
 
+            // 履歴リストをレンダリングする関数
             function renderHistory() {
                 if (!historyListContainer) return;
                 historyListContainer.innerHTML = '';
-                const itemsToRender = historyExpanded ? historyData : historyData.slice(0, itemsToShowInitially);
+                // index.htmlでは常に最初のitemsToShowInitially件のみ表示
+                const itemsToRender = allHistoryData.slice(0, itemsToShowInitially);
 
                 itemsToRender.forEach(item => {
                     const itemDiv = document.createElement('div');
@@ -869,24 +818,152 @@
                     historyListContainer.appendChild(itemDiv);
                 });
 
-                if (toggleHistoryButton) {
-                    if (historyData.length <= itemsToShowInitially) {
-                        toggleHistoryButton.style.display = 'none';
+                // 「もっと見る」ボタン（aタグ）の表示/非表示は不要になるため削除
+                // if (toggleHistoryButton) {
+                //     if (allHistoryData.length <= itemsToShowInitially) {
+                //         toggleHistoryButton.style.display = 'none';
+                //     } else {
+                //         toggleHistoryButton.style.display = 'inline-block';
+                //         toggleHistoryButton.textContent = historyExpanded ? '一部表示する' : 'もっと見る';
+                //     }
+                // }
+            }
+
+            // CSVデータをパースし、チャートと履歴リストを更新する関数
+            function parseCsvAndRenderCharts(csvText) {
+                const lines = csvText.trim().split('\n');
+                // ヘッダー行をスキップ
+                const dataRows = lines.slice(1);
+                const parsedData = [];
+
+                dataRows.forEach(line => {
+                    const values = line.split(',');
+                    // CSVの列数に合わせて調整 (依頼主, 曲名等, 公開日, 依頼内容, CG使用度合い(E), リンク, ..., CG使用度合い(K))
+                    if (values.length >= 10) { // 最低限必要な列があることを確認 (K列まで必要ならインデックス9まであるので10個の要素が必要)
+                        parsedData.push({
+                            client: values[0] ? values[0].trim() : '',
+                            title: values[1] ? values[1].trim() : '',
+                            releaseDate: values[2] ? values[2].trim() : '',
+                            requestContent: values[3] ? values[3].trim() : '',
+                            cgUsageCol4: values[4] ? values[4].trim() : '', // Column E (index 4)
+                            link: values[5] ? values[5].trim() : '',
+                            cgUsageCol9: values[9] ? values[9].trim() : '' // Column K (index 9)
+                        });
+                    }
+                });
+
+                // 依頼内容の集計
+                const requestCounts = {
+                    'オリジナル楽曲MV制作': 0,
+                    '歌ってみたMV制作': 0,
+                    'ショートムービー制作': 0,
+                    'その他': 0,
+                    'CG制作': 0 // CG制作もカウント対象に追加
+                };
+                // CG使用度合いの集計
+                const cgUsageCounts = {
+                    'フル3D': 0,
+                    '中程度': 0,
+                    '一部・無し': 0
+                };
+
+                parsedData.forEach(item => {
+                    // 依頼内容のカウント
+                    if (requestCounts.hasOwnProperty(item.requestContent)) {
+                        requestCounts[item.requestContent]++;
                     } else {
-                        toggleHistoryButton.style.display = 'inline-block';
-                        toggleHistoryButton.textContent = historyExpanded ? '一部表示する' : 'もっと見る';
+                        requestCounts['その他']++; // 定義されていない依頼内容は「その他」に分類
+                    }
+
+                    // CG使用度合いのカウント (Column Kを優先、なければColumn E)
+                    let finalCgUsage = item.cgUsageCol9 || item.cgUsageCol4;
+                    // 依頼内容が「CG制作」でCG使用度合いが空の場合、仮に「フル3D」とする
+                    if (item.requestContent === 'CG制作' && !finalCgUsage) {
+                        finalCgUsage = 'フル3D';
+                    }
+
+                    if (finalCgUsage === 'フル3D' || finalCgUsage === 'フルCG') { // 'フルCG'も'フル3D'として扱う
+                        cgUsageCounts['フル3D']++;
+                    } else if (finalCgUsage === '中程度') {
+                        cgUsageCounts['中程度']++;
+                    } else if (finalCgUsage === '一部・無し') {
+                        cgUsageCounts['一部・無し']++;
+                    }
+                });
+
+                // Chart.jsのデータを更新
+                requestRatioChartConfig.data.datasets[0].data = [
+                    requestCounts['オリジナル楽曲MV制作'],
+                    requestCounts['歌ってみたMV制作'],
+                    requestCounts['ショートムービー制作'],
+                    requestCounts['CG制作'], // CG制作のデータを追加
+                    requestCounts['その他']
+                ];
+                // ラベルも更新（CG制作を追加）
+                requestRatioChartConfig.data.labels = ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'CG制作', 'その他'];
+
+
+                cgUsageChartConfig.data.datasets[0].data = [
+                    cgUsageCounts['フル3D'],
+                    cgUsageCounts['中程度'],
+                    cgUsageCounts['一部・無し']
+                ];
+
+                // グラフを初期化または更新
+                if (requestRatioChartInstance) requestRatioChartInstance.destroy();
+                if (cgUsageChartInstance) cgUsageChartInstance.destroy();
+
+                const ctxRequestRatio = document.getElementById('requestRatioChart');
+                const ctxCgUsage = document.getElementById('cgUsageChart');
+
+                if (ctxRequestRatio) {
+                    requestRatioChartInstance = new Chart(ctxRequestRatio, requestRatioChartConfig);
+                } else {
+                    console.warn("requestRatioChart canvas element not found.");
+                }
+                if (ctxCgUsage) {
+                    cgUsageChartInstance = new Chart(ctxCgUsage, cgUsageChartConfig);
+                } else {
+                    console.warn("cgUsageChart canvas element not found.");
+                }
+
+                // 履歴リスト用のデータを準備してソート (新しい日付が先頭に来るように)
+                allHistoryData = parsedData.map(item => ({
+                    artist: item.client,
+                    title: item.title,
+                    date: item.releaseDate,
+                    type: item.requestContent
+                })).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                renderHistory(); // 履歴リストをレンダリング
+            }
+
+            // CSVデータをロードする関数
+            async function loadCsvData() {
+                try {
+                    const response = await fetch('utugi_works.csv');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const csvText = await response.text();
+                    parseCsvAndRenderCharts(csvText);
+                } catch (error) {
+                    console.error('CSVデータの読み込みまたはパース中にエラーが発生しました:', error);
+                    // エラーメッセージをUIに表示
+                    const dataSection = document.getElementById('data');
+                    if (dataSection) {
+                        const errorMessage = document.createElement('p');
+                        errorMessage.className = 'text-center text-red-500 mt-4';
+                        errorMessage.textContent = 'データ表示に失敗しました。CSVファイルが正しく読み込まれているか確認してください。';
+                        dataSection.querySelector('.container').appendChild(errorMessage);
                     }
                 }
             }
 
-            if (toggleHistoryButton) {
-                toggleHistoryButton.addEventListener('click', () => {
-                    historyExpanded = !historyExpanded;
-                    renderHistory();
-                });
-            }
-            renderHistory(); 
+            // 履歴リストの表示切り替えボタンのイベントリスナーは削除し、aタグになったため不要
 
+            // ページロード時にCSVデータをロード
+            loadCsvData();
         });
     </script>
 
