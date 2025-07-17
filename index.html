@@ -13,11 +13,6 @@
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
             scroll-behavior: smooth;
-            margin: 0; /* bodyのデフォルトマージンをリセット */
-            padding: 0; /* bodyのデフォルトパディングをリセット */
-            min-height: 100vh; /* 少なくともビューポートの高さにする */
-            display: flex;
-            flex-direction: column;
         }
 
         /* セクション区切り線のスタイル */
@@ -48,18 +43,15 @@
 
         /* Gallery Tab Styling */
         .gallery-tab-button {
-            padding: 0.5rem 0.75rem; /* パディングを少し減らす */
-            margin: 0.125rem; /* マージンを少し減らす */
-            font-size: 0.75rem; /* フォントサイズを小さくする */
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            font-size: 0.875rem;
             color: #6B7280;
             background-color: transparent;
             border: 2px solid transparent;
             border-radius: 0.375rem;
             transition: all 0.3s ease;
             cursor: pointer;
-            width: 100%; /* タブを縦並びにするため幅を100%に */
-            text-align: left; /* テキストを左寄せに */
-            white-space: nowrap; /* テキストの折り返しを防ぐ */
         }
         .gallery-tab-button:hover {
             color: #1F2937;
@@ -67,17 +59,22 @@
         .gallery-tab-button.active-tab {
             color: #10B981;
             font-weight: 600;
-            border-left: 2px solid #10B981; /* 左側にアクティブな線を表示 */
-            border-bottom: none; /* 下線のスタイルを削除 */
+            border-bottom: 2px solid #10B981;
             border-radius: 0;
-            background-color: #f0fdf4; /* アクティブなタブの背景色 */
         }
-        /* tabs-container-bottom-line は不要になるため削除 */
+        .tabs-container-bottom-line::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: #E5E7EB;
+            margin-top: 0.5rem;
+        }
 
         /* Gallery Content Area Styling */
         .gallery-content-area {
             padding: 1.5rem;
-            margin-top: 0;
+            margin-top: 1rem;
             background-image: url('resources/images/wall_base.png'); /* 既存の背景画像設定 */
             background-size: cover;
             background-position: center;
@@ -85,9 +82,10 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             position: relative;
-            flex-grow: 1; /* 親要素の残りのスペースを埋める */
-            max-height: calc(100vh - 15rem); /* 画面の高さに合わせてコンテンツが収まるように */
-            overflow-y: auto; /* コンテンツがはみ出す場合にスクロールバーを表示 */
+
+            max-width: 90%; /* または親要素に対する割合で指定も可能です */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Gallery Item Styling */
@@ -101,17 +99,17 @@
             border-radius: 0.375rem;
             transition: transform 0.2s ease-in-out;
             position: relative;
-            /* グリッドアイテムの高さを均一にするため、aspect-ratioを設定 */
-            aspect-ratio: 4/3; /* 画像が4:3の比率になるように調整 */
         }
         .gallery-item a, .gallery-item img, .gallery-item video {
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 画像がコンテナを埋めるように調整 */
         }
         .gallery-item:hover {
             transform: scale(1.03);
+        }
+        .gallery-item img, .gallery-item video {
+            object-fit: cover;
         }
 
         /* Gallery Navigation Arrows Styling */
@@ -146,7 +144,7 @@
         /* タブコンテンツの表示・非表示 */
         .tab-content {
             display: none;
-            margin-bottom: 0;
+            margin-bottom: 10%;
         }
         .tab-content.active {
             display: block;
@@ -256,57 +254,6 @@
             margin: 40px;
         }
 
-        /* 新しいギャラリーレイアウトのためのスタイル */
-        .gallery-container-flex {
-            display: flex;
-            flex-direction: column; /* 小さい画面では縦並び */
-            align-items: stretch; /* 幅いっぱいに広げる */
-            gap: 1.5rem; /* タブとコンテンツ間のギャップ */
-        }
-
-        @media (min-width: 640px) { /* smブレークポイント */
-            .gallery-container-flex {
-                flex-direction: row; /* 大きい画面では横並び */
-                align-items: flex-start; /* タブとコンテンツを上部に揃える */
-            }
-            .gallery-tab-buttons-vertical {
-                flex: 0 0 12%; /* 大きい画面でのタブの幅を12%に設定 */
-                min-width: 6rem; /* 最小幅を設定して、小さくなりすぎないようにする */
-                display: flex;
-                flex-direction: column;
-                padding-top: 1rem; /* コンテンツエリアのパディングに合わせる */
-                background-color: #F9FAFB; /* タブコンテナの背景色 */
-                border-radius: 0.5rem;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                margin-right: 1.5rem; /* タブとコンテンツ間の右マージンを調整 */
-            }
-            .gallery-tab-button {
-                width: auto; /* 垂直方向の幅を自動調整 */
-                text-align: left;
-                padding-left: 1.5rem; /* 左パディングを増やす */
-                padding-right: 1.5rem; /* 右パディングを増やす */
-                margin: 0; /* マージンをリセット */
-                border-radius: 0; /* 角丸をリセット */
-                border: none; /* ボーダーを削除 */
-                border-left: 2px solid transparent; /* アクティブ表示用に左ボーダー */
-            }
-            .gallery-tab-button.active-tab {
-                border-left: 2px solid #10B981;
-                background-color: #f0fdf4;
-            }
-            .gallery-content-area {
-                flex-grow: 1; /* 残りのスペースを占有 */
-                max-width: none; /* 最大幅の制限を解除 */
-                margin: 0; /* マージンをリセット */
-            }
-            .tabs-container-bottom-line::after {
-                display: none; /* 縦レイアウトでは不要 */
-            }
-            /* グリッドアイテムの列数をレスポンシブに調整 */
-            .grid-responsive-cols {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 最小120pxで自動調整 */
-            }
-        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -326,7 +273,7 @@
         <div class="sm:hidden">
             <button id="hamburger-button" class="text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
         </div>
@@ -340,7 +287,7 @@
     </nav>
 
 
-    <main class="pt-24 flex-grow">
+    <main class="pt-24">
 
         <section id="profile" class="relative flex items-center justify-center min-h-screen overflow-hidden">
             <div class="absolute inset-0">
@@ -358,10 +305,10 @@
                     </p>
                     <div class="flex space-x-4">
                         <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク" class="group">
-                            <img src="resources/images/X_icon.png" alt="X icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.onerror=null; this.src='https://placehold.co/40x24/E5E7EB/374151?text=X';">
+                            <img src="resources/images/X_icon.png" alt="X icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.style.display='none'">
                         </a>
                         <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク" class="group">
-                            <img src="resources/images/youtube_icon.png" alt="YouTube icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.onerror=null; this.src='https://placehold.co/40x24/E5E7EB/374151?text=YT';">
+                            <img src="resources/images/youtube_icon.png" alt="YouTube icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.style.display='none'">
                         </a>
                     </div>
                 </div>
@@ -379,54 +326,56 @@
                     <span class="section-title-line mt-4 sm:mt-6"></span>
                 </div>
 
-                <!-- ギャラリーのタブとコンテンツを囲む新しいflexコンテナ -->
-                <div class="gallery-container-flex">
-                    <!-- タブボタンコンテナを縦並び用に変更 -->
-                    <div id="gallery-tab-buttons-container" class="gallery-tab-buttons-vertical">
+                <div class="mb-6 tabs-container-bottom-line">
+                    <div id="gallery-tab-buttons-container" class="flex flex-wrap justify-center">
+                        
                         <button data-tab="lyric" class="gallery-tab-button active-tab">Lyric Motion</button>
                         <button data-tab="3dcg" class="gallery-tab-button">3DCG</button>
                         <button data-tab="shape" class="gallery-tab-button">Shape Motion</button>
                         <button data-tab="logo" class="gallery-tab-button">Logo Designs</button>
                     </div>
+                </div>
 
-                    <div class="gallery-content-area">
-                        <div id="lyric-content" class="tab-content active">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Lyric Motion</h3>
-                            <div id="lyric-grid-items-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-7 w-full h-full grid-responsive-cols">
-                            </div>
+                <div class="gallery-content-area">
+
+                    
+
+                    <div id="lyric-content" class="tab-content active">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Lyric Motion</h3>
+                        <div id="lyric-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                         </div>
+                    </div>
 
-                        <div id="3dcg-content" class="tab-content">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">3DCG</h3>
-                            <div id="3dcg-grid-items-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-7 w-full h-full grid-responsive-cols">
-                            </div>
+                    <div id="3dcg-content" class="tab-content">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">3DCG</h3>
+                        <div id="3dcg-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                         </div>
+                    </div>
 
-                        <div id="shape-content" class="tab-content">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
-                            <div id="shape-grid-items-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-7 w-full h-full grid-responsive-cols">
-                            </div>
+                    <div id="shape-content" class="tab-content">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
+                        <div id="shape-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                         </div>
-
-                        <div id="logo-content" class="tab-content">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
-                            <div id="logo-grid-items-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-7 w-full h-full grid-responsive-cols">
-                            </div>
+                    </div>
+                    
+                    <div id="logo-content" class="tab-content">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
+                        <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                         </div>
+                    </div>
 
 
-                        <div class="gallery-nav-arrows">
-                            <button id="gallery-prev-button" class="gallery-arrow-button" aria-label="Previous Tab">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                                </svg>
-                            </button>
-                            <button id="gallery-next-button" class="gallery-arrow-button" aria-label="Next Tab">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                                </svg>
-                            </button>
-                        </div>
+                    <div class="gallery-nav-arrows">
+                        <button id="gallery-prev-button" class="gallery-arrow-button" aria-label="Previous Tab">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+                        <button id="gallery-next-button" class="gallery-arrow-button" aria-label="Next Tab">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -444,15 +393,18 @@
                 </div>
 
                 <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="text-center mb-6">
-                        <a href="https://www.youtube.com/playlist?list=PLbNq05L8kMQtjO3HJi5AIhOHNKyNDGAkP" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="-ml-0.5 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            携わった動画 (YouTubeプレイリスト)
-                        </a>
+                    <div class="relative h-72 sm:h-96">
+                        <canvas id="requestRatioChart"></canvas>
                     </div>
+                </div>
+
+                <div class="data-area-block max-w-3xl mx-auto">
+                    <div class="relative h-72 sm:h-96">
+                        <canvas id="cgUsageChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="data-area-block max-w-3xl mx-auto">
                     <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
                     <div id="history-list-container" class="space-y-2">
                     </div>
@@ -534,10 +486,10 @@
     <footer class="bg-gray-900 text-gray-400 py-8 text-center">
         <div class="footer-sns-icons flex justify-center space-x-4 mb-4">
             <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク">
-                <img src="resources/images/X_icon.png" alt="X icon" onerror="this.onerror=null; this.src='https://placehold.co/40x24/E5E7EB/374151?text=X';">
+                <img src="resources/images/X_icon.png" alt="X icon" onerror="this.style.display='none'">
             </a>
             <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク">
-                <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.onerror=null; this.src='https://placehold.co/40x24/E5E7EB/374151?text=YT';">
+                <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
             </a>
         </div>
         <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
@@ -598,6 +550,8 @@
                 { type: 'video', fileName: 'open_ur.mp4', altText: 'Pastel Video', link: 'https://www.nicovideo.jp/watch/sm44778773', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
                 { type: 'video', fileName: 'septentrio.mp4', altText: 'Kawaii Video 3', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
           ];
+
+            
 
             // --- グリッドセルクラスを取得するヘルパー関数 ---
             function getGridPositionClasses(cells) {
@@ -682,7 +636,6 @@
             populateGallery('3dcg-grid-items-container', cgItemsData);
             populateGallery('lyric-grid-items-container', lyricMotionItemsData);
 
-
             // ギャラリータブ切り替えロジック
             const tabButtonContainer = document.getElementById('gallery-tab-buttons-container');
             const tabButtons = tabButtonContainer ? Array.from(tabButtonContainer.querySelectorAll('.gallery-tab-button')) : [];
@@ -698,7 +651,6 @@
                 if (tabButtons.length === 0 || tabContents.length === 0) return;
                 if (newIndex < 0 || newIndex >= tabButtons.length) return;
 
-                // 現在アクティブなタブとコンテンツを非アクティブにする
                 if (tabButtons[currentTabIndex]) {
                     tabButtons[currentTabIndex].classList.remove(activeTabClass);
                     const currentTabId = tabButtons[currentTabIndex].dataset.tab;
@@ -708,7 +660,6 @@
                     }
                 }
 
-                // 新しいタブとコンテンツをアクティブにする
                 currentTabIndex = newIndex;
                 if (tabButtons[currentTabIndex]) {
                     tabButtons[currentTabIndex].classList.add(activeTabClass);
@@ -721,14 +672,13 @@
             }
 
             if (tabButtons.length > 0) {
-                // 初期アクティブタブを設定 (Lyric Motionが最初になるように)
-                const initialActiveTab = document.querySelector('.gallery-tab-button[data-tab="lyric"]');
-                if (initialActiveTab) {
-                    currentTabIndex = tabButtons.indexOf(initialActiveTab);
-                } else {
-                    currentTabIndex = 0; // デフォルトで最初のタブ
+                currentTabIndex = tabButtons.findIndex(button => button.classList.contains(activeTabClass));
+                if (currentTabIndex === -1) {
+                    currentTabIndex = 0;
+                    if(tabButtons[currentTabIndex]) {
+                        updateTabs(currentTabIndex);
+                    }
                 }
-                updateTabs(currentTabIndex); // 初期表示を更新
 
                 tabButtons.forEach((button, index) => {
                     button.addEventListener('click', function () {
@@ -882,7 +832,7 @@
                 dataRows.forEach(line => {
                     const values = line.split(',');
                     // CSVの列数に合わせて調整 (依頼主, 曲名等, 公開日, 依頼内容, CG使用度合い(E), リンク, ..., CG使用度合い(K))
-                    if (values.length >= 10 && values[2] && values[2].trim() !== '') { // 公開日が空でないデータのみ使用
+                    if (values.length >= 10) { // 最低限必要な列があることを確認 (K列まで必要ならインデックス9まであるので10個の要素が必要)
                         parsedData.push({
                             client: values[0] ? values[0].trim() : '',
                             title: values[1] ? values[1].trim() : '',
