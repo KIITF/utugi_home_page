@@ -86,6 +86,8 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             position: relative;
             flex-grow: 1; /* 親要素の残りのスペースを埋める */
+            max-height: calc(100vh - 15rem); /* 画面の高さに合わせてコンテンツが収まるように */
+            overflow-y: auto; /* コンテンツがはみ出す場合にスクロールバーを表示 */
         }
 
         /* Gallery Item Styling */
@@ -268,7 +270,7 @@
                 align-items: flex-start; /* タブとコンテンツを上部に揃える */
             }
             .gallery-tab-buttons-vertical {
-                flex: 0 0 10%; /* 大きい画面でのタブの幅を10%に設定 */
+                flex: 0 0 12%; /* 大きい画面でのタブの幅を12%に設定 */
                 min-width: 6rem; /* 最小幅を設定して、小さくなりすぎないようにする */
                 display: flex;
                 flex-direction: column;
@@ -324,7 +326,7 @@
         <div class="sm:hidden">
             <button id="hamburger-button" class="text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
         </div>
