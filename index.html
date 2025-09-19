@@ -15,6 +15,13 @@
             scroll-behavior: smooth;
         }
 
+        /* ▼▼▼ 追加 ▼▼▼ */
+        /* ローディング画面 */
+        #loading-overlay {
+            transition: opacity 0.5s ease-out;
+        }
+        /* ▲▲▲ 追加 ▲▲▲ */
+
         /* セクション区切り線のスタイル */
         .section-title-line {
             display: block;
@@ -142,6 +149,7 @@
             height: 1.25rem;
         }
 
+        /* ▼▼▼ 変更 ▼▼▼ */
         .gallery-item-title-display {
             background-color: #FFFFFF; /* white */
             color: #1F2937; /* gray-800 */
@@ -162,6 +170,7 @@
             min-width: 240px;
             pointer-events: none; /* ホバー時にタイトルが表示されても下のボタンが押せるように */
         }
+        /* ▲▲▲ 変更 ▲▲▲ */
 
         /* タブコンテンツの表示・非表示 */
         .tab-content {
@@ -276,52 +285,24 @@
             margin: 40px;
         }
 
-        /* Loading Screen styles */
-        #loading-screen {
-            position: fixed;
-            inset: 0;
-            background-color: #111827; /* gray-900 */
-            display: flex;
-            flex-direction: column; /* Center items vertically */
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-        }
-        #loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        .loader {
-            border: 8px solid #4B5563; /* gray-600 */
-            border-top: 8px solid #10B981; /* emerald-500 */
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1.5s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        #page-content {
-            opacity: 0;
-            transition: opacity 0.5s ease-in;
-        }
-        #page-content.loaded {
-            opacity: 1;
-        }
-
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <div id="loading-screen">
-        <div class="loader"></div>
-        <p id="loading-percentage" class="text-white text-lg mt-4">0%</p>
+    <!-- ▼▼▼ 追加 ▼▼▼ -->
+    <!-- ローディング画面 -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 z-[100] flex flex-col items-center justify-center">
+        <div class="text-white text-2xl mb-4 font-semibold">Loading...</div>
+        <div class="w-11/12 sm:w-1/2 max-w-md bg-gray-700 rounded-full h-4">
+            <div id="loading-progress-bar" class="bg-emerald-500 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div id="loading-percentage" class="text-white text-lg mt-4">0%</div>
     </div>
+    <!-- ▲▲▲ 追加 ▲▲▲ -->
 
-    <div id="page-content">
+    <!-- ▼▼▼ 変更 ▼▼▼ -->
+    <!-- メインコンテンツをラップ -->
+    <div id="main-content" style="visibility: hidden;">
         <header class="bg-gray-900 text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14">
             <div class="text-lg sm:text-xl font-bold">
                 <a href="#">空木/utugi</a>
@@ -360,8 +341,8 @@
                 <div class="relative z-10 text-center text-white -translate-y-1/4">
                     <div class="flex flex-col items-center">
                         <img src="resources/images/utugi_icon.png" alt="空木/utugi アイコン"
-                            class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-0 shadow-md"
-                            onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/374151?text=Icon';">
+                             class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-0 shadow-md"
+                             onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/374151?text=Icon';">
                         <h1 class="text-4xl sm:text-5xl font-bold mb-2 mt-10">空木/utugi</h1>
                         <p class="text-xl text-emerald-300 font-semibold mb-4 mt-4">映像クリエーター</p>
                         <p class="text-gray-200 leading-relaxed max-w-xl mx-auto mb-6">
@@ -560,64 +541,83 @@
             <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
         </footer>
     </div>
+    <!-- ▲▲▲ 変更 ▲▲▲ -->
 
+    <!-- ▼▼▼ 変更 ▼▼▼ -->
     <script>
-        function monitorLoading() {
-            const loadingScreen = document.getElementById('loading-screen');
-            const pageContent = document.getElementById('page-content');
-            const percentageElement = document.getElementById('loading-percentage');
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- ローディング画面の制御 ---
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const progressBar = document.getElementById('loading-progress-bar');
+        const percentageText = document.getElementById('loading-percentage');
+        const mainContent = document.getElementById('main-content');
 
-            const images = Array.from(document.getElementsByTagName('img'));
-            const videos = Array.from(document.getElementsByTagName('video'));
-            // Filter out images inside the footer to not wait for them
-            const assets = [...images, ...videos].filter(asset => !asset.closest('footer'));
-            const totalAssets = assets.length;
-            let loadedAssets = 0;
+        // 読み込み中はスクロールを禁止
+        document.body.style.overflow = 'hidden';
 
-            if (totalAssets === 0) {
-                showPage();
-                return;
-            }
+        // 読み込むべき画像と動画をすべて取得 (src属性がないものやプレースホルダーは除外)
+        const assets = Array.from(document.querySelectorAll('img, video')).filter(el => {
+            const src = el.src || el.currentSrc;
+            return src && !src.includes('placehold.co');
+        });
 
-            function assetLoaded() {
-                loadedAssets++;
-                const percentage = Math.round((loadedAssets / totalAssets) * 100);
-                if (percentageElement) {
-                    percentageElement.textContent = `${percentage}%`;
-                }
-                if (loadedAssets === totalAssets) {
-                    // Use a small timeout to ensure the 100% is visible before fading out
-                    setTimeout(showPage, 300);
-                }
-            }
+        let loadedCount = 0;
+        const totalAssets = assets.length;
 
-            function showPage() {
-                if (loadingScreen && pageContent) {
-                    loadingScreen.classList.add('hidden');
-                    pageContent.classList.add('loaded');
-                }
-            }
-
-            assets.forEach(asset => {
-                if (asset.tagName === 'IMG') {
-                    if (asset.complete) {
-                        assetLoaded();
-                    } else {
-                        asset.addEventListener('load', assetLoaded);
-                        asset.addEventListener('error', assetLoaded); // Count errors as "loaded" to not get stuck
-                    }
-                } else if (asset.tagName === 'VIDEO') {
-                    if (asset.readyState >= 3) { // HAVE_FUTURE_DATA
-                        assetLoaded();
-                    } else {
-                        asset.addEventListener('loadeddata', assetLoaded);
-                        asset.addEventListener('error', assetLoaded);
-                    }
-                }
-            });
+        // 読み込むアセットがない場合は即時表示
+        if (totalAssets === 0) {
+            hideLoadingScreenAndInit();
+            return;
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        // アセットが1つ読み込まれるたびに呼ばれる関数
+        function assetLoaded() {
+            loadedCount++;
+            const percentage = totalAssets > 0 ? Math.round((loadedCount / totalAssets) * 100) : 100;
+            progressBar.style.width = percentage + '%';
+            percentageText.textContent = percentage + '%';
+
+            // すべてのアセットが読み込まれたらローディング画面を非表示にする
+            if (loadedCount >= totalAssets) {
+                setTimeout(hideLoadingScreenAndInit, 300); // 100%表示を少し見せるため遅延
+            }
+        }
+
+        // ローディング画面を非表示にし、サイトの初期化処理を呼び出す関数
+        function hideLoadingScreenAndInit() {
+            loadingOverlay.style.opacity = '0';
+            loadingOverlay.addEventListener('transitionend', () => {
+                loadingOverlay.style.display = 'none';
+            });
+
+            // メインコンテンツを表示し、スクロールを許可
+            mainContent.style.visibility = 'visible';
+            document.body.style.overflow = 'auto';
+
+            initializeApp(); // サイトのメインの初期化処理
+        }
+
+        // 各アセットにロード完了イベントリスナーを設定
+        assets.forEach(asset => {
+            if (asset.tagName.toLowerCase() === 'img') {
+                if (asset.complete) {
+                    assetLoaded();
+                } else {
+                    asset.onload = assetLoaded;
+                    asset.onerror = assetLoaded; // エラーでも読み込み完了として扱う
+                }
+            } else if (asset.tagName.toLowerCase() === 'video') {
+                if (asset.readyState >= 3) { // HAVE_FUTURE_DATA
+                    assetLoaded();
+                } else {
+                    asset.oncanplaythrough = assetLoaded;
+                    asset.onerror = assetLoaded; // エラーでも読み込み完了として扱う
+                }
+            }
+        });
+
+        // --- サイトのメインの初期化処理 ---
+        function initializeApp() {
             // メニューの切り替え
             const hamburgerButton = document.getElementById('hamburger-button');
             const mobileMenu = document.getElementById('mobile-menu-nav');
@@ -627,7 +627,6 @@
                 hamburgerButton.addEventListener('click', function() {
                     mobileMenu.classList.toggle('active');
                 });
-                // リンクがクリックされたらメニューを閉じる
                 mobileMenuLinks.forEach(link => {
                     link.addEventListener('click', () => {
                         mobileMenu.classList.remove('active');
@@ -636,54 +635,34 @@
             }
 
             // --- ギャラリーアイテムデータ ---
-
-
-            // const shapeMotionItemsData = [
-            //     { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 6], pathPrefix: 'resources/shape_motion/' },
-            //     { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 1', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [2, 3], pathPrefix: 'resources/shape_motion/' },
-            //     { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 2', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [7, 8], pathPrefix: 'resources/shape_motion/' },
-            //     { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 2', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [4, 5, 9, 10], pathPrefix: 'resources/shape_motion/' },
-            //     { type: 'video', fileName: 'pastel.mp4', altText: 'Pastel Video', link: 'https://www.nicovideo.jp/watch/sm44778773', cells: [11, 12], pathPrefix: 'resources/shape_motion/' },
-            //     { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 3', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [13], pathPrefix: 'resources/shape_motion/' },
-            //     { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 3', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [14, 15], pathPrefix: 'resources/shape_motion/' }
-            // ];
-
             const cgItemsData = [
-                { type: 'video', fileName: 'kanzen.mp4', altText: '完全放棄宣言', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 2], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'pastel.mp4', altText: 'パステルレイン', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [3, 4, 5, 8, 9, 10], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection Fire', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [6, 7, 11, 12], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'tukikage.mp4', altText: '月影', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [13, 14], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'yumeikaga.mp4', altText: '夢以下', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [15], pathPrefix: 'resources/3dcg/' }
+                { type: 'video', fileName: 'kanzen.mp4', altText: '完全解答Q.E.D / Lidlic', link: 'https://www.youtube.com/watch?v=Akv1yrCguv4', cells: [1, 2], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'pastel.mp4', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [3, 4, 5, 8, 9, 10], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぐ', link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 11, 12], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'tukikage.mp4', altText: '月影見し海 / urumeiwashi', link: 'https://www.youtube.com/watch?v=mGBy8PUflyI', cells: [13, 14], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'yumeikaga.mp4', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [15], pathPrefix: 'resources/3dcg/' }
             ];
-
             const lyricMotionItemsData = [
-                { type: 'video', fileName: 'hell.mp4', altText: 'HELL!', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノーツ', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオン', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [5], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection Fire', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'open_ur.mp4', altText: 'オープンワールド・アポカリプス', link: 'https://www.nicovideo.jp/watch/sm44778773', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'utakata_shima.mp4', altText: '泡沫の島', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
+                { type: 'video', fileName: 'hell.mp4', altText: 'ヘルライクヘヴン（自主制作）', link: 'https://x.com/utugi313/status/1932152663325688065', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノーツ・テレキャスター / memex', link: 'https://www.youtube.com/watch?v=0inHMl2SktY', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオー / Sera。 ', link: 'https://www.youtube.com/watch?v=_UKNvO-7ROo', cells: [5], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぐ', link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'open_ur.mp4', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'utakata_shima.mp4', altText: 'ウタカタララバイ / 島爺（cover）', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
             ];
-
             const logoDesignItemsData = [
-                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢以下 ロゴ', link: 'https://www.youtube.com/watch?v=4EI2920QK3c', cells: [1, 2], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'c_plant_yuki.png', altText: 'C.Plant 雪 ロゴ', link: 'https://www.youtube.com/watch?v=yLbaExt0H0A', cells: [3, 8], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢以下 ロゴ (再)', link: 'https://www.youtube.com/watch?v=4EI2920QK3c', cells: [4, 5], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'open_ur.png', altText: 'オープンワールド・アポカリプス ロゴ', link: 'https://youtube.com', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'pastel.jpg', altText: 'パステルレイン ロゴ', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [9, 10], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'EpisodeX.png', altText: 'EpisodeX ロゴ', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [13, 14], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'unravel.png', altText: 'Unravel ロゴ', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [15], pathPrefix: 'resources/logo/' }
+                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [1, 2], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'c_plant_yuki.png', altText: '食虫植物 / ユキ YUKI（cover）', link: 'https://www.youtube.com/watch?v=yLbaExt0H0A', cells: [3, 8], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'mieterudake.png', altText: '見えてるだけ / szri', link: 'https://www.youtube.com/watch?v=i-qSBGMxeuA', cells: [4, 5], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'open_ur.jpg', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'pastel.jpg', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [9, 10], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'EpisodeX.png', altText: 'Episode X / 紫ヶ内ムゲイ＆ChumuNote（cover）', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [13, 14], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'unravel.png', altText: 'unravel / 音ノ乃のの（cover）', link: 'https://www.youtube.com/watch?v=u5RRk9DZs3M', cells: [15], pathPrefix: 'resources/logo/' }
             ];
 
-
-            
-
-            // --- グリッドセルクラスを取得するヘルパー関数 ---
             function getGridPositionClasses(cells) {
-                const numRows = 3;
-                const numCols = 5;
+                const numRows = 3, numCols = 5;
                 let minRow = numRows + 1, maxRow = 0, minCol = numCols + 1, maxCol = 0;
-
                 cells.forEach(cellNumber => {
                     const row = Math.floor((cellNumber - 1) / numCols) + 1;
                     const col = ((cellNumber - 1) % numCols) + 1;
@@ -692,33 +671,22 @@
                     if (col < minCol) minCol = col;
                     if (col > maxCol) maxCol = col;
                 });
-
-                const rowSpan = maxRow - minRow + 1;
-                const colSpan = maxCol - minCol + 1;
-
-                return `col-start-${minCol} col-span-${colSpan} row-start-${minRow} row-span-${rowSpan}`;
+                return `col-start-${minCol} col-span-${maxCol - minCol + 1} row-start-${minRow} row-span-${maxRow - minRow + 1}`;
             }
 
-            // --- ギャラリーアイテムを作成して追加する汎用関数 ---
             function populateGallery(containerId, itemsData) {
                 const container = document.getElementById(containerId);
-                if (!container) {
-                    return;
-                }
+                if (!container) return;
                 container.innerHTML = '';
-
                 itemsData.forEach(itemData => {
                     const itemWrapper = document.createElement('div');
                     itemWrapper.className = `gallery-item ${getGridPositionClasses(itemData.cells)}`;
-
                     const link = document.createElement('a');
                     link.href = itemData.link;
                     link.target = '_blank';
                     link.rel = 'noopener noreferrer';
-
                     let mediaElement;
                     const mediaPath = `${itemData.pathPrefix}${itemData.fileName}`;
-
                     if (itemData.type === 'image') {
                         mediaElement = document.createElement('img');
                         mediaElement.src = mediaPath;
@@ -730,25 +698,16 @@
                     } else if (itemData.type === 'video') {
                         mediaElement = document.createElement('video');
                         mediaElement.src = mediaPath;
-                        mediaElement.alt = itemData.altText; // videoにもaltを追加
+                        mediaElement.alt = itemData.altText;
                         mediaElement.muted = true;
                         mediaElement.preload = 'auto';
                         mediaElement.setAttribute('playsinline', '');
-
-                        mediaElement.addEventListener('mouseover', () => {
-                            mediaElement.loop = true;
-                            mediaElement.play().catch(e => console.warn("Video play on hover failed:", e));
-                        });
-                        mediaElement.addEventListener('mouseout', () => {
-                            mediaElement.loop = false;
-                            mediaElement.pause();
-                        });
-
+                        mediaElement.addEventListener('mouseover', () => { mediaElement.loop = true; mediaElement.play().catch(e => {}); });
+                        mediaElement.addEventListener('mouseout', () => { mediaElement.loop = false; mediaElement.pause(); });
                         mediaElement.onerror = function() {
                             this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
                         };
                     }
-
                     if (mediaElement) {
                         link.appendChild(mediaElement);
                         itemWrapper.appendChild(link);
@@ -758,14 +717,11 @@
             }
 
             populateGallery('logo-grid-items-container', logoDesignItemsData);
-            //populateGallery('shape-grid-items-container', shapeMotionItemsData);
             populateGallery('3dcg-grid-items-container', cgItemsData);
             populateGallery('lyric-grid-items-container', lyricMotionItemsData);
 
-            // --- ギャラリーアイテムのホバーでタイトルを表示 ---
             const allGalleryItems = document.querySelectorAll('.gallery-item');
             const titleDisplayElement = document.getElementById('gallery-item-title-display');
-
             if (allGalleryItems.length > 0 && titleDisplayElement) {
                 allGalleryItems.forEach(item => {
                     item.addEventListener('mouseenter', () => {
@@ -776,7 +732,6 @@
                             titleDisplayElement.style.visibility = 'visible';
                         }
                     });
-
                     item.addEventListener('mouseleave', () => {
                         titleDisplayElement.style.opacity = '0';
                         titleDisplayElement.style.visibility = 'hidden';
@@ -784,117 +739,38 @@
                 });
             }
 
-            // ギャラリータブ切り替えロジック
-            const tabButtonContainer = document.getElementById('gallery-tab-buttons-container');
-            const tabButtons = tabButtonContainer ? Array.from(tabButtonContainer.querySelectorAll('.gallery-tab-button')) : [];
-            const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = Array.from(document.querySelectorAll('.gallery-tab-button'));
             const prevButton = document.getElementById('gallery-prev-button');
             const nextButton = document.getElementById('gallery-next-button');
-
-            const activeTabClass = 'active-tab';
-            const activeContentClass = 'active';
-            let currentTabIndex = 0;
+            let currentTabIndex = tabButtons.findIndex(button => button.classList.contains('active-tab'));
+            currentTabIndex = currentTabIndex === -1 ? 0 : currentTabIndex;
 
             function updateTabs(newIndex) {
-                if (tabButtons.length === 0 || tabContents.length === 0) return;
                 if (newIndex < 0 || newIndex >= tabButtons.length) return;
-
-                if (tabButtons[currentTabIndex]) {
-                    tabButtons[currentTabIndex].classList.remove(activeTabClass);
-                    const currentTabId = tabButtons[currentTabIndex].dataset.tab;
-                    const currentContent = document.getElementById(currentTabId + '-content');
-                    if (currentContent) {
-                        currentContent.classList.remove(activeContentClass);
-                    }
-                }
-
+                const oldTabId = tabButtons[currentTabIndex].dataset.tab;
+                document.getElementById(oldTabId + '-content').classList.remove('active');
+                tabButtons[currentTabIndex].classList.remove('active-tab');
                 currentTabIndex = newIndex;
-                if (tabButtons[currentTabIndex]) {
-                    tabButtons[currentTabIndex].classList.add(activeTabClass);
-                    const newTabId = tabButtons[currentTabIndex].dataset.tab;
-                    const newContent = document.getElementById(newTabId + '-content');
-                    if (newContent) {
-                        newContent.classList.add(activeContentClass);
-                    }
-                }
+                const newTabId = tabButtons[currentTabIndex].dataset.tab;
+                document.getElementById(newTabId + '-content').classList.add('active');
+                tabButtons[currentTabIndex].classList.add('active-tab');
             }
 
-            if (tabButtons.length > 0) {
-                currentTabIndex = tabButtons.findIndex(button => button.classList.contains(activeTabClass));
-                if (currentTabIndex === -1) {
-                    currentTabIndex = 0;
-                    if(tabButtons[currentTabIndex]) {
-                        updateTabs(currentTabIndex);
-                    }
-                }
+            tabButtons.forEach((button, index) => button.addEventListener('click', () => updateTabs(index)));
+            prevButton.addEventListener('click', () => updateTabs((currentTabIndex - 1 + tabButtons.length) % tabButtons.length));
+            nextButton.addEventListener('click', () => updateTabs((currentTabIndex + 1) % tabButtons.length));
+            if(tabButtons[currentTabIndex]) updateTabs(currentTabIndex);
 
-                tabButtons.forEach((button, index) => {
-                    button.addEventListener('click', function () {
-                        updateTabs(index);
-                    });
-                });
-
-                if (prevButton) {
-                    prevButton.addEventListener('click', function() {
-                        let newIndex = currentTabIndex - 1;
-                        if (newIndex < 0) {
-                            newIndex = tabButtons.length - 1;
-                        }
-                        updateTabs(newIndex);
-                    });
-                }
-
-                if (nextButton) {
-                    nextButton.addEventListener('click', function() {
-                        let newIndex = currentTabIndex + 1;
-                        if (newIndex >= tabButtons.length) {
-                            newIndex = 0;
-                        }
-                        updateTabs(newIndex);
-                    });
-                }
-            }
-
-            // --- データセクションのチャートと履歴 (CSVから動的に読み込む) ---
-            const lightGreenThemeColors = [
-                'rgba(193, 217, 199, 0.8)',
-                'rgba(218, 232, 221, 0.8)',
-                'rgba(167, 201, 176, 0.7)',
-                'rgba(229, 239, 233, 0.8)'
-            ];
-            const lightGreenThemeBorders = [
-                'rgba(193, 217, 199, 1)',
-                'rgba(218, 232, 221, 1)',
-                'rgba(167, 201, 176, 1)',
-                'rgba(229, 239, 233, 1)'
-            ];
-
+            const lightGreenThemeColors = ['rgba(193, 217, 199, 0.8)', 'rgba(218, 232, 221, 0.8)', 'rgba(167, 201, 176, 0.7)', 'rgba(141, 185, 153, 0.8)', 'rgba(229, 239, 233, 0.8)'];
+            const lightGreenThemeBorders = ['rgba(193, 217, 199, 1)', 'rgba(218, 232, 221, 1)', 'rgba(167, 201, 176, 1)', 'rgba(141, 185, 153, 1)', 'rgba(229, 239, 233, 1)'];
             const commonChartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: '#374151' }
-                    },
-                    title: {
-                        display: true,
-                        font: { size: 16 },
-                        color: '#1F2937'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return ''; // ツールチップのボディ部分を非表示にする
-                            }
-                        }
-                    }
+                    legend: { position: 'bottom', labels: { color: '#374151' }},
+                    title: { display: true, font: { size: 16 }, color: '#1F2937' },
+                    tooltip: { callbacks: { label: context => '' } }
                 },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 1500
-                }
+                animation: { animateScale: true, animateRotate: true, duration: 1500 }
             };
 
             const requestRatioChartConfig = {
@@ -902,8 +778,7 @@
                 data: {
                     labels: ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'その他'],
                     datasets: [{
-                        label: '依頼内容の割合',
-                        data: [], // CSVからロード後に設定
+                        label: '依頼内容の割合', data: [],
                         backgroundColor: lightGreenThemeColors,
                         borderColor: lightGreenThemeBorders,
                         borderWidth: 1
@@ -912,205 +787,84 @@
                 options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: '依頼内容の割合' } } }
             };
 
-            const cgUsageChartConfig = {
-                type: 'pie',
-                data: {
-                    labels: ['フル3D', '中程度', '一部・無し'],
-                    datasets: [{
-                        label: 'MVでの3DCG使用度合い',
-                        data: [], // CSVからロード後に設定
-                        backgroundColor: lightGreenThemeColors.slice(0,3),
-                        borderColor: lightGreenThemeBorders.slice(0,3),
-                        borderWidth: 1
-                    }]
-                },
-                options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'MVでの3DCG使用度合い' } } }
-            };
-
             let requestRatioChartInstance = null;
-            let cgUsageChartInstance = null;
-            let allHistoryData = []; // CSVから読み込んだ全履歴データを格納する変数
-            // let historyExpanded = false; // history.htmlに移動するため削除
+            let allHistoryData = [];
 
-            const historyListContainer = document.getElementById('history-list-container');
-            // const toggleHistoryButton = document.getElementById('toggle-history-button'); // aタグに変更したため削除
-            const itemsToShowInitially = 3;
-
-            // 履歴リストをレンダリングする関数
             function renderHistory() {
+                const historyListContainer = document.getElementById('history-list-container');
                 if (!historyListContainer) return;
                 historyListContainer.innerHTML = '';
-                // index.htmlでは常に最初のitemsToShowInitially件のみ表示
-                const itemsToRender = allHistoryData.slice(0, itemsToShowInitially);
-
+                const itemsToRender = allHistoryData.slice(0, 3);
                 itemsToRender.forEach(item => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'history-item';
-                    itemDiv.innerHTML = `
-                        <div class="flex-grow">
-                            <p class="title">${item.title}</p>
-                            <p class="artist">${item.artist}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="date">${item.date}</p>
-                            <p class="type">${item.type}</p>
-                        </div>
-                    `;
+                    itemDiv.innerHTML = `<div class="flex-grow"><p class="title">${item.title}</p><p class="artist">${item.artist}</p></div><div class="text-right"><p class="date">${item.date}</p><p class="type">${item.type}</p></div>`;
                     historyListContainer.appendChild(itemDiv);
                 });
-
-                // 「もっと見る」ボタン（aタグ）の表示/非表示は不要になるため削除
-                // if (toggleHistoryButton) {
-                //     if (allHistoryData.length <= itemsToShowInitially) {
-                //         toggleHistoryButton.style.display = 'none';
-                //     } else {
-                //         toggleHistoryButton.style.display = 'inline-block';
-                //         toggleHistoryButton.textContent = historyExpanded ? '一部表示する' : 'もっと見る';
-                //     }
-                // }
             }
 
-            // CSVデータをパースし、チャートと履歴リストを更新する関数
             function parseCsvAndRenderCharts(csvText) {
                 const lines = csvText.trim().split('\n');
-                // ヘッダー行をスキップ
                 const dataRows = lines.slice(1);
-                const parsedData = [];
-
-                dataRows.forEach(line => {
+                const parsedData = dataRows.map(line => {
                     const values = line.split(',');
-                    // CSVの列数に合わせて調整 (依頼主, 曲名等, 公開日, 依頼内容, CG使用度合い(E), リンク, ..., CG使用度合い(K))
-                    if (values.length >= 10) { // 最低限必要な列があることを確認 (K列まで必要ならインデックス9まであるので10個の要素が必要)
-                        parsedData.push({
-                            client: values[0] ? values[0].trim() : '',
-                            title: values[1] ? values[1].trim() : '',
-                            releaseDate: values[2] ? values[2].trim() : '',
-                            requestContent: values[3] ? values[3].trim() : '',
-                            cgUsageCol4: values[4] ? values[4].trim() : '', // Column E (index 4)
-                            link: values[5] ? values[5].trim() : '',
-                            cgUsageCol9: values[9] ? values[9].trim() : '' // Column K (index 9)
-                        });
-                    }
-                });
+                    return values.length >= 10 ? {
+                        client: (values[0] || '').trim(), title: (values[1] || '').trim(),
+                        releaseDate: (values[2] || '').trim(), requestContent: (values[3] || '').trim(),
+                        cgUsageCol4: (values[4] || '').trim(), link: (values[5] || '').trim(),
+                        cgUsageCol9: (values[9] || '').trim()
+                    } : null;
+                }).filter(Boolean);
 
-                // 依頼内容の集計
-                const requestCounts = {
-                    'オリジナル楽曲MV制作': 0,
-                    '歌ってみたMV制作': 0,
-                    'ショートムービー制作': 0,
-                    'その他': 0,
-                    'CG制作': 0 // CG制作もカウント対象に追加
-                };
-                // CG使用度合いの集計
-                const cgUsageCounts = {
-                    'フル3D': 0,
-                    '中程度': 0,
-                    '一部・無し': 0
-                };
-
+                const requestCounts = { 'オリジナル楽曲MV制作': 0, '歌ってみたMV制作': 0, 'ショートムービー制作': 0, 'その他': 0};
                 parsedData.forEach(item => {
-                    // 依頼内容のカウント
                     if (requestCounts.hasOwnProperty(item.requestContent)) {
                         requestCounts[item.requestContent]++;
-                    } else {
-                        requestCounts['その他']++; // 定義されていない依頼内容は「その他」に分類
-                    }
-
-                    // CG使用度合いのカウント (Column Kを優先、なければColumn E)
-                    let finalCgUsage = item.cgUsageCol9 || item.cgUsageCol4;
-                    // 依頼内容が「CG制作」でCG使用度合いが空の場合、仮に「フル3D」とする
-                    if (item.requestContent === 'CG制作' && !finalCgUsage) {
-                        finalCgUsage = 'フル3D';
-                    }
-
-                    if (finalCgUsage === 'フル3D' || finalCgUsage === 'フルCG') { // 'フルCG'も'フル3D'として扱う
-                        cgUsageCounts['フル3D']++;
-                    } else if (finalCgUsage === '中程度') {
-                        cgUsageCounts['中程度']++;
-                    } else if (finalCgUsage === '一部・無し') {
-                        cgUsageCounts['一部・無し']++;
-                    }
+                    } else { requestCounts['その他']++; }
                 });
 
-                // Chart.jsのデータを更新
-                requestRatioChartConfig.data.datasets[0].data = [
-                    requestCounts['オリジナル楽曲MV制作'],
-                    requestCounts['歌ってみたMV制作'],
-                    requestCounts['ショートムービー制作'],
-                    requestCounts['CG制作'], // CG制作のデータを追加
-                    requestCounts['その他']
-                ];
-                // ラベルも更新（CG制作を追加）
-                requestRatioChartConfig.data.labels = ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'CG制作', 'その他'];
-
-
-                cgUsageChartConfig.data.datasets[0].data = [
-                    cgUsageCounts['フル3D'],
-                    cgUsageCounts['中程度'],
-                    cgUsageCounts['一部・無し']
-                ];
-
-                // グラフを初期化または更新
-                if (requestRatioChartInstance) requestRatioChartInstance.destroy();
-                if (cgUsageChartInstance) cgUsageChartInstance.destroy();
-
-                const ctxRequestRatio = document.getElementById('requestRatioChart');
-                const ctxCgUsage = document.getElementById('cgUsageChart');
-
-                if (ctxRequestRatio) {
-                    requestRatioChartInstance = new Chart(ctxRequestRatio, requestRatioChartConfig);
-                } else {
-                    console.warn("requestRatioChart canvas element not found.");
-                }
-                if (ctxCgUsage) {
-                    cgUsageChartInstance = new Chart(ctxCgUsage, cgUsageChartConfig);
-                } else {
-                    console.warn("cgUsageChart canvas element not found.");
+                const requestChartCanvas = document.getElementById('requestRatioChart');
+                if (requestChartCanvas) {
+                    const observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting) {
+                            if (requestRatioChartInstance) requestRatioChartInstance.destroy();
+                            const requestData = [requestCounts['オリジナル楽曲MV制作'], requestCounts['歌ってみたMV制作'], requestCounts['ショートムービー制作'], requestCounts['その他']];
+                            requestRatioChartConfig.data.datasets[0].data = requestData;
+                            requestRatioChartInstance = new Chart(requestChartCanvas, requestRatioChartConfig);
+                            observer.disconnect();
+                        }
+                    }, { threshold: 0.5 });
+                    observer.observe(requestChartCanvas);
                 }
 
-                // 履歴リスト用のデータを準備してソート (新しい日付が先頭に来るように)
                 allHistoryData = parsedData.map(item => ({
-                    artist: item.client,
-                    title: item.title,
-                    date: item.releaseDate,
-                    type: item.requestContent
+                    artist: item.client, title: item.title, date: item.releaseDate, type: item.requestContent
                 })).sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                renderHistory(); // 履歴リストをレンダリング
+                renderHistory();
             }
 
-            // CSVデータをロードする関数
             async function loadCsvData() {
                 try {
                     const response = await fetch('utugi_works - _.csv');
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const csvText = await response.text();
                     parseCsvAndRenderCharts(csvText);
                 } catch (error) {
                     console.error('CSVデータの読み込みまたはパース中にエラーが発生しました:', error);
-                    // エラーメッセージをUIに表示
                     const dataSection = document.getElementById('data');
                     if (dataSection) {
                         const errorMessage = document.createElement('p');
                         errorMessage.className = 'text-center text-red-500 mt-4';
-                        errorMessage.textContent = 'データ表示に失敗しました。CSVファイルが正しく読み込まれているか確認してください。';
+                        errorMessage.textContent = 'データ表示に失敗しました。';
                         dataSection.querySelector('.container').appendChild(errorMessage);
                     }
                 }
             }
 
-            // 履歴リストの表示切り替えボタンのイベントリスナーは削除し、aタグになったため不要
-
-            // ページロード時にCSVデータをロード
             loadCsvData();
-            
-            // ページの全アセットの読み込みを監視
-            monitorLoading();
-        });
+        }
+    });
     </script>
-
+    <!-- ▲▲▲ 変更 ▲▲▲ -->
 </body>
 </html>
-
