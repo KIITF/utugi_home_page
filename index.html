@@ -589,78 +589,6 @@
         </footer>
     </div>
     <script>
-        // --- Modal elements ---
-        const confirmationModal = document.getElementById('confirmation-modal');
-        const submitConfirmButton = document.getElementById('submit-confirm-button');
-        const cancelButton = document.getElementById('cancel-button');
-
-        // --- Form elements ---
-        const contactForm = document.getElementById('contact-form');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const detailsInput = document.getElementById('consultation-details');
-        const budgetInput = document.getElementById('budget');
-        const cgUsageInput = document.getElementById('cg-usage');
-        const deliveryDateInput = document.getElementById('delivery-date');
-        const songLengthInput = document.getElementById('song-length');
-        const referenceInput = document.getElementById('reference');
-        const otherNotesInput = document.getElementById('other-notes');
-        const subjectInput = document.getElementById('email-subject');
-
-        // --- Confirmation display spans ---
-        const confirmName = document.getElementById('confirm-name');
-        const confirmEmail = document.getElementById('confirm-email');
-        const confirmDetails = document.getElementById('confirm-consultation-details');
-        const confirmBudget = document.getElementById('confirm-budget');
-        const confirmCgUsage = document.getElementById('confirm-cg-usage');
-        const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
-        const confirmSongLength = document.getElementById('confirm-song-length');
-        const confirmReference = document.getElementById('confirm-reference');
-        const confirmOtherNotes = document.getElementById('confirm-other-notes');
-
-        // フォームの 'submit' イベントをリッスン
-        contactForm.addEventListener('submit', function(event) {
-            // デフォルトのフォーム送信を阻止
-            event.preventDefault();
-
-            // フォームのバリデーションをチェック。無効ならブラウザのメッセージを表示
-            if (!contactForm.checkValidity()) {
-                contactForm.reportValidity();
-                return;
-            }
-
-            // 件名を設定
-            const name = nameInput.value;
-            const budget = budgetInput.value;
-            subjectInput.value = `【${name || '名前未入力'}, ${budget || '予算未入力'}】ホームページから依頼が入りました。`;
-
-            // モーダルに入力内容を表示
-            confirmName.textContent = nameInput.value || '未入力';
-            confirmEmail.textContent = emailInput.value || '未入力';
-            confirmDetails.textContent = detailsInput.value || '未入力';
-            confirmBudget.textContent = budgetInput.value || '未入力';
-            confirmCgUsage.textContent = cgUsageInput.options[cgUsageInput.selectedIndex].text || '未選択';
-            confirmDeliveryDate.textContent = deliveryDateInput.value || '未入力';
-            confirmSongLength.textContent = songLengthInput.value || '未入力';
-            confirmReference.textContent = referenceInput.value || '未入力';
-            confirmOtherNotes.textContent = otherNotesInput.value || '未入力';
-
-            // モーダルを表示
-            confirmationModal.classList.remove('hidden');
-        });
-
-        // 確認モーダルの「送信する」ボタンのクリックイベント
-        submitConfirmButton.addEventListener('click', function() {
-            // フォームを実際に送信
-            contactForm.submit();
-        });
-
-        // 確認モーダルの「修正する」ボタンのクリックイベント
-        cancelButton.addEventListener('click', function() {
-            // モーダルを非表示
-            confirmationModal.classList.add('hidden');
-        });
-
     document.addEventListener('DOMContentLoaded', function () {
         // --- ローディング画面の制御 ---
         const loadingOverlay = document.getElementById('loading-overlay');
@@ -749,6 +677,63 @@
                     });
                 });
             }
+
+            // --- お問い合わせフォームと確認モーダルのロジック ---
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const submitConfirmButton = document.getElementById('submit-confirm-button');
+            const cancelButton = document.getElementById('cancel-button');
+            const contactForm = document.getElementById('contact-form');
+
+            if (contactForm && confirmationModal) {
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const detailsInput = document.getElementById('consultation-details');
+                const budgetInput = document.getElementById('budget');
+                const cgUsageInput = document.getElementById('cg-usage');
+                const deliveryDateInput = document.getElementById('delivery-date');
+                const songLengthInput = document.getElementById('song-length');
+                const referenceInput = document.getElementById('reference');
+                const otherNotesInput = document.getElementById('other-notes');
+                const subjectInput = document.getElementById('email-subject');
+
+                const confirmName = document.getElementById('confirm-name');
+                const confirmEmail = document.getElementById('confirm-email');
+                const confirmDetails = document.getElementById('confirm-consultation-details');
+                const confirmBudget = document.getElementById('confirm-budget');
+                const confirmCgUsage = document.getElementById('confirm-cg-usage');
+                const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
+                const confirmSongLength = document.getElementById('confirm-song-length');
+                const confirmReference = document.getElementById('confirm-reference');
+                const confirmOtherNotes = document.getElementById('confirm-other-notes');
+
+                contactForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    if (!contactForm.checkValidity()) {
+                        contactForm.reportValidity();
+                        return;
+                    }
+                    subjectInput.value = `【${nameInput.value || '名前未入力'}, ${budgetInput.value || '予算未入力'}】ホームページから依頼が入りました。`;
+                    confirmName.textContent = nameInput.value || '未入力';
+                    confirmEmail.textContent = emailInput.value || '未入力';
+                    confirmDetails.textContent = detailsInput.value || '未入力';
+                    confirmBudget.textContent = budgetInput.value || '未入力';
+                    confirmCgUsage.textContent = cgUsageInput.options[cgUsageInput.selectedIndex].text || '未選択';
+                    confirmDeliveryDate.textContent = deliveryDateInput.value || '未入力';
+                    confirmSongLength.textContent = songLengthInput.value || '未入力';
+                    confirmReference.textContent = referenceInput.value || '未入力';
+                    confirmOtherNotes.textContent = otherNotesInput.value || '未入力';
+                    confirmationModal.classList.remove('hidden');
+                });
+
+                submitConfirmButton.addEventListener('click', function() {
+                    contactForm.submit();
+                });
+
+                cancelButton.addEventListener('click', function() {
+                    confirmationModal.classList.add('hidden');
+                });
+            }
+
 
             // --- ギャラリーアイテムデータ ---
             const cgItemsData = [
@@ -983,3 +968,4 @@
     </script>
 </body>
 </html>
+
