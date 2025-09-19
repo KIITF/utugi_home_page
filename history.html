@@ -55,6 +55,11 @@
             color: #1F2937; /* text-gray-900 */
             font-size: 1.125rem; /* text-lg */
         }
+        /* Add hover effect for links */
+        .history-item a.title:hover {
+            text-decoration: underline;
+            color: #1D4ED8; /* blue-700 */
+        }
         .history-item .artist {
             color: #6B7280; /* text-gray-500 */
             font-size: 0.875rem; /* text-sm */
@@ -246,9 +251,15 @@
                 historyData.forEach(item => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'history-item';
+
+                    // リンクが存在する場合はaタグを、存在しない場合はpタグを生成
+                    const titleElement = item.link
+                        ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="title">${item.title}</a>`
+                        : `<p class="title">${item.title}</p>`;
+
                     itemDiv.innerHTML = `
                         <div class="flex-grow">
-                            <p class="title">${item.title}</p>
+                            ${titleElement}
                             <p class="artist">${item.artist}</p>
                         </div>
                         <div class="text-right">
@@ -269,15 +280,14 @@
                 dataRows.forEach(line => {
                     const values = line.split(',');
                     // 公開日 (values[2]) が存在し、空でないデータのみを使用
-                    if (values.length >= 10 && values[2] && values[2].trim() !== '') {
+                    if (values.length >= 6 && values[2] && values[2].trim() !== '') {
                         parsedData.push({
                             client: values[0] ? values[0].trim() : '',
                             title: values[1] ? values[1].trim() : '',
                             releaseDate: values[2] ? values[2].trim() : '',
                             requestContent: values[3] ? values[3].trim() : '',
                             cgUsageCol4: values[4] ? values[4].trim() : '', // Column E (index 4)
-                            link: values[5] ? values[5].trim() : '',
-                            cgUsageCol9: values[9] ? values[9].trim() : '' // Column K (index 9)
+                            link: values[5] ? values[5].trim() : '', // Column F (index 5)
                         });
                     }
                 });
@@ -287,7 +297,8 @@
                     artist: item.client,
                     title: item.title,
                     date: item.releaseDate,
-                    type: item.requestContent
+                    type: item.requestContent,
+                    link: item.link // linkプロパティを追加
                 })).sort((a, b) => new Date(b.date) - new Date(a.date));
 
                 renderFullHistory(allHistoryData); // 全件表示をレンダリング
@@ -296,7 +307,7 @@
             // CSVデータをロードする関数
             async function loadCsvData() {
                 try {
-                    const response = await fetch('utugi_works.csv');
+                    const response = await fetch('utugi_works - _.csv');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
