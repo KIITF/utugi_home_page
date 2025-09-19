@@ -464,82 +464,116 @@
                 </div>
             </section>
 
-            <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-14">
-        <div class="container mx-auto max-w-4xl">
-            <div class="text-center mb-12 sm:mb-16">
-                <span class="section-title-line mb-4 sm:mb-6"></span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
-                    <span class="first-letter">C</span><span class="rest-of-title">ontact</span>
-                </h2>
-                <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
-                <span class="section-title-line mt-4 sm:mt-6"></span>
-            </div>
-            <p class="text-center text-gray-500 mt-1">受付状態 : <span class="text-red-600 font-semibold">要相談</span> (2025.04.20更新)</p>
-            <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                <p class="text-gray-700 text-center mb-6">ご依頼はXのDM、またはメール(utugi0313@gmail.com)でも受け付けております。</p>
-                
-                <!-- 
-                  【設定箇所】
-                  actionのURLを、Formspreeで取得したものに書き換えてください。
-                  例: action="https://formspree.io/f/xxxxxxxx"
-                -->
-                <form id="contact-form" action="https://formspree.io/f/xovngezz" method="POST">
-                    
-                    <!-- Formspreeが件名として使用するための非表示フィールド -->
-                    <input type="hidden" name="_subject" id="email-subject">
-                    
-                    <!-- メール本文の最初に表示される見出し（Formspree用） -->
-                    <input type="hidden" name="依頼内容詳細" value="---">
+           <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-14">
+                <div class="container mx-auto max-w-4xl">
+                    <div class="text-center mb-12 sm:mb-16">
+                        <span class="section-title-line mb-4 sm:mb-6"></span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
+                            <span class="first-letter">C</span><span class="rest-of-title">ontact</span>
+                        </h2>
+                        <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
+                        <span class="section-title-line mt-4 sm:mt-6"></span>
+                    </div>
+                    <p class="text-center text-gray-500 mt-1">受付状態 : <span class="text-red-600 font-semibold">要相談</span> (2025.04.20更新)</p>
+                    <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
+                        <p class="text-gray-700 text-center mb-6">ご依頼はXのDM、またはメール(utugi0313@gmail.com)でも受け付けております。</p>
+                        
+                        <!-- 
+                        【設定箇所】
+                        actionのURLを、Formspreeで取得したものに書き換えてください。
+                        例: action="https://formspree.io/f/xxxxxxxx"
+                        -->
+                        <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+                            
+                            <!-- Formspreeが件名として使用するための非表示フィールド -->
+                            <input type="hidden" name="_subject" id="email-subject">
+                            
+                            <!-- メール本文の最初に表示される見出し（Formspree用） -->
+                            <input type="hidden" name="依頼内容詳細" value="---">
 
 
-                    <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前 (Name)</label>
-                        <input type="text" name="依頼主" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            <div class="mb-4">
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前 (Name)</label>
+                                <input type="text" name="依頼主" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label>
+                                <input type="email" name="返信先メールアドレス" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="consultation-details" class="block text-sm font-medium text-gray-700 mb-1">ご依頼内容 (Consultation Details)</label>
+                                <textarea name="ご依頼内容" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="budget" class="block text-sm font-medium text-gray-700 mb-1">ご予算 (Budget)</label>
+                                <input type="text" name="ご予算" id="budget" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="cg-usage" class="block text-sm font-medium text-gray-700 mb-1">CGの使用度合い (CG Usage)</label>
+                                <select name="CGの使用度合い" id="cg-usage" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                    <option value="">選択してください</option>
+                                    <option value="フル3D (サビを含め曲全体で3DCGがメイン)">フル3D (サビを含め曲全体で3DCGがメイン)</option>
+                                    <option value="中程度">中程度</option>
+                                    <option value="一部・無し">一部・無し</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="delivery-date" class="block text-sm font-medium text-gray-700 mb-1">納期 (Delivery Date)</label>
+                                <input type="text" name="納期" id="delivery-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="song-length" class="block text-sm font-medium text-gray-700 mb-1">曲尺 (Song Length)</label>
+                                <input type="text" name="曲尺" id="song-length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">リファレンス (Reference)</label>
+                                <textarea name="リファレンス" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など。"></textarea>
+                            </div>
+                            <div class="mb-6">
+                                <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-1">その他 (Other Notes)</label>
+                                <textarea name="その他" id="other-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">送信</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label>
-                        <input type="email" name="返信先メールアドレス" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                </div>
+            </section>
+
+            <!-- Confirmation Modal -->
+            <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+                <div class="relative mx-auto p-6 sm:p-8 border w-full max-w-lg shadow-lg rounded-md bg-white">
+                    <div class="text-center">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900">入力内容の確認</h3>
+                        <div class="mt-4 px-2 sm:px-7 py-3 text-left space-y-3 text-gray-800" style="max-height: 50vh; overflow-y: auto;">
+                            <p><strong>お名前:</strong><br><span id="confirm-name" class="pl-2"></span></p>
+                            <p><strong>メールアドレス:</strong><br><span id="confirm-email" class="pl-2"></span></p>
+                            <p><strong>ご依頼内容:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-consultation-details"></span></p>
+                            <p><strong>ご予算:</strong><br><span id="confirm-budget" class="pl-2"></span></p>
+                            <p><strong>CGの使用度合い:</strong><br><span id="confirm-cg-usage" class="pl-2"></span></p>
+                            <p><strong>納期:</strong><br><span id="confirm-delivery-date" class="pl-2"></span></p>
+                            <p><strong>曲尺:</strong><br><span id="confirm-song-length" class="pl-2"></span></p>
+                            <p><strong>リファレンス:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-reference"></span></p>
+                            <p><strong>その他:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-other-notes"></span></p>
+                        </div>
+                        <div class="mt-6 border-t pt-4">
+                            <p class="text-sm text-gray-700 mb-4">
+                                上記の内容で送信します。よろしいですか？<br>
+                                送信内容を受け取り次第、入力していただいたメールアドレスにこちらからご連絡いたします。
+                            </p>
+                            <div class="items-center px-4 py-3">
+                                <button id="cancel-button" class="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 mr-0 sm:mr-2">
+                                    修正する
+                                </button>
+                                <button id="submit-confirm-button" class="w-full sm:w-auto px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800">
+                                    送信する
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-6">
-                        <label for="consultation-details" class="block text-sm font-medium text-gray-700 mb-1">ご依頼内容 (Consultation Details)</label>
-                        <textarea name="ご依頼内容" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
-                    </div>
-                    <div class="mb-4">
-                        <label for="budget" class="block text-sm font-medium text-gray-700 mb-1">ご予算 (Budget)</label>
-                        <input type="text" name="ご予算" id="budget" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="cg-usage" class="block text-sm font-medium text-gray-700 mb-1">CGの使用度合い (CG Usage)</label>
-                        <select name="CGの使用度合い" id="cg-usage" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                            <option value="">選択してください</option>
-                            <option value="フル3D (サビを含め曲全体で3DCGがメイン)">フル3D (サビを含め曲全体で3DCGがメイン)</option>
-                            <option value="中程度">中程度</option>
-                            <option value="一部・無し">一部・無し</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="delivery-date" class="block text-sm font-medium text-gray-700 mb-1">納期 (Delivery Date)</label>
-                        <input type="text" name="納期" id="delivery-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="song-length" class="block text-sm font-medium text-gray-700 mb-1">曲尺 (Song Length)</label>
-                        <input type="text" name="曲尺" id="song-length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">リファレンス (Reference)</label>
-                        <textarea name="リファレンス" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など。" required></textarea>
-                    </div>
-                    <div class="mb-6">
-                        <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-1">その他 (Other Notes)</label>
-                        <textarea name="その他" id="other-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">送信</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </section>
         </main>
 
         <footer class="bg-gray-900 text-gray-400 py-8 text-center">
@@ -555,23 +589,78 @@
         </footer>
     </div>
     <script>
-        // フォーム要素を取得
+        // --- Modal elements ---
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const submitConfirmButton = document.getElementById('submit-confirm-button');
+        const cancelButton = document.getElementById('cancel-button');
+
+        // --- Form elements ---
         const contactForm = document.getElementById('contact-form');
         const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const detailsInput = document.getElementById('consultation-details');
         const budgetInput = document.getElementById('budget');
+        const cgUsageInput = document.getElementById('cg-usage');
+        const deliveryDateInput = document.getElementById('delivery-date');
+        const songLengthInput = document.getElementById('song-length');
+        const referenceInput = document.getElementById('reference');
+        const otherNotesInput = document.getElementById('other-notes');
         const subjectInput = document.getElementById('email-subject');
 
-        // フォームが送信される直前に実行する処理
+        // --- Confirmation display spans ---
+        const confirmName = document.getElementById('confirm-name');
+        const confirmEmail = document.getElementById('confirm-email');
+        const confirmDetails = document.getElementById('confirm-consultation-details');
+        const confirmBudget = document.getElementById('confirm-budget');
+        const confirmCgUsage = document.getElementById('confirm-cg-usage');
+        const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
+        const confirmSongLength = document.getElementById('confirm-song-length');
+        const confirmReference = document.getElementById('confirm-reference');
+        const confirmOtherNotes = document.getElementById('confirm-other-notes');
+
+        // フォームの 'submit' イベントをリッスン
         contactForm.addEventListener('submit', function(event) {
-            // お名前とご予算のフィールドから値を取得
+            // デフォルトのフォーム送信を阻止
+            event.preventDefault();
+
+            // フォームのバリデーションをチェック。無効ならブラウザのメッセージを表示
+            if (!contactForm.checkValidity()) {
+                contactForm.reportValidity();
+                return;
+            }
+
+            // 件名を設定
             const name = nameInput.value;
             const budget = budgetInput.value;
-            
-            // ご要望の形式で件名を生成し、非表示のsubjectフィールドに設定
-            // これにより、受信するメールの件名が動的に変わります
-            subjectInput.value = `ホームページから依頼が入りました。【${name || '名前未入力'}, ${budget || '予算未入力'}】`;
+            subjectInput.value = `【${name || '名前未入力'}, ${budget || '予算未入力'}】ホームページから依頼が入りました。`;
+
+            // モーダルに入力内容を表示
+            confirmName.textContent = nameInput.value || '未入力';
+            confirmEmail.textContent = emailInput.value || '未入力';
+            confirmDetails.textContent = detailsInput.value || '未入力';
+            confirmBudget.textContent = budgetInput.value || '未入力';
+            confirmCgUsage.textContent = cgUsageInput.options[cgUsageInput.selectedIndex].text || '未選択';
+            confirmDeliveryDate.textContent = deliveryDateInput.value || '未入力';
+            confirmSongLength.textContent = songLengthInput.value || '未入力';
+            confirmReference.textContent = referenceInput.value || '未入力';
+            confirmOtherNotes.textContent = otherNotesInput.value || '未入力';
+
+            // モーダルを表示
+            confirmationModal.classList.remove('hidden');
         });
-        
+
+        // 確認モーダルの「送信する」ボタンのクリックイベント
+        submitConfirmButton.addEventListener('click', function() {
+            // フォームを実際に送信
+            contactForm.submit();
+        });
+
+        // 確認モーダルの「修正する」ボタンのクリックイベント
+        cancelButton.addEventListener('click', function() {
+            // モーダルを非表示
+            confirmationModal.classList.add('hidden');
+        });
+
     document.addEventListener('DOMContentLoaded', function () {
         // --- ローディング画面の制御 ---
         const loadingOverlay = document.getElementById('loading-overlay');
