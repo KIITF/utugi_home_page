@@ -606,9 +606,12 @@
             }
 
             // --- ギャラリーアイテムを作成して追加する汎用関数 ---
-            function populateGallery(containerId, itemsData) {
+            
+            function populateGallery(containerId, captionId, itemsData) {
                 const container = document.getElementById(containerId);
-                if (!container) {
+                const captionContainer = document.getElementById(captionId);
+                if (!container || !captionContainer) {
+                    console.error("必要なコンテナ要素が見つからない。");
                     return;
                 }
                 container.innerHTML = '';
@@ -617,14 +620,23 @@
                     const itemWrapper = document.createElement('div');
                     itemWrapper.className = `gallery-item ${getGridPositionClasses(itemData.cells)}`;
 
+                    // --- キャプション表示用のイベントリスナー ---
+                    // コンテナ(itemWrapper)に対して設定する
+                    itemWrapper.addEventListener('mouseover', () => {
+                        captionContainer.textContent = itemData.altText;
+                        captionContainer.classList.add('visible');
+                    });
+                    itemWrapper.addEventListener('mouseout', () => {
+                        captionContainer.classList.remove('visible');
+                    });
+                    
                     const link = document.createElement('a');
                     link.href = itemData.link;
                     link.target = '_blank';
                     link.rel = 'noopener noreferrer';
-                    link.title = itemData.altText;
 
                     let mediaElement;
-                    const mediaPath = `${itemData.pathPrefix}${itemData.fileName}`;
+                    const mediaPath = `${itemData.pathPrefix}${encodeURIComponent(itemData.fileName)}`;
 
                     if (itemData.type === 'image') {
                         mediaElement = document.createElement('img');
@@ -640,7 +652,9 @@
                         mediaElement.muted = true;
                         mediaElement.preload = 'auto';
                         mediaElement.setAttribute('playsinline', '');
-
+                        
+                        // --- 動画再生用のイベントリスナー ---
+                        // 動画(mediaElement)自身に設定する
                         mediaElement.addEventListener('mouseover', () => {
                             mediaElement.loop = true;
                             mediaElement.play().catch(e => console.warn("Video play on hover failed:", e));
@@ -654,6 +668,7 @@
                             this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
                         };
                     }
+                    // ▲▲▲ ここまで ▲▲▲
 
                     if (mediaElement) {
                         link.appendChild(mediaElement);
