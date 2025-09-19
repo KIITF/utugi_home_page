@@ -282,6 +282,7 @@
             inset: 0;
             background-color: #111827; /* gray-900 */
             display: flex;
+            flex-direction: column; /* Center items vertically */
             align-items: center;
             justify-content: center;
             z-index: 100;
@@ -317,6 +318,7 @@
 
     <div id="loading-screen">
         <div class="loader"></div>
+        <p id="loading-percentage" class="text-white text-lg mt-4">0%</p>
     </div>
 
     <div id="page-content">
@@ -560,6 +562,61 @@
     </div>
 
     <script>
+        function monitorLoading() {
+            const loadingScreen = document.getElementById('loading-screen');
+            const pageContent = document.getElementById('page-content');
+            const percentageElement = document.getElementById('loading-percentage');
+
+            const images = Array.from(document.getElementsByTagName('img'));
+            const videos = Array.from(document.getElementsByTagName('video'));
+            // Filter out images inside the footer to not wait for them
+            const assets = [...images, ...videos].filter(asset => !asset.closest('footer'));
+            const totalAssets = assets.length;
+            let loadedAssets = 0;
+
+            if (totalAssets === 0) {
+                showPage();
+                return;
+            }
+
+            function assetLoaded() {
+                loadedAssets++;
+                const percentage = Math.round((loadedAssets / totalAssets) * 100);
+                if (percentageElement) {
+                    percentageElement.textContent = `${percentage}%`;
+                }
+                if (loadedAssets === totalAssets) {
+                    // Use a small timeout to ensure the 100% is visible before fading out
+                    setTimeout(showPage, 300);
+                }
+            }
+
+            function showPage() {
+                if (loadingScreen && pageContent) {
+                    loadingScreen.classList.add('hidden');
+                    pageContent.classList.add('loaded');
+                }
+            }
+
+            assets.forEach(asset => {
+                if (asset.tagName === 'IMG') {
+                    if (asset.complete) {
+                        assetLoaded();
+                    } else {
+                        asset.addEventListener('load', assetLoaded);
+                        asset.addEventListener('error', assetLoaded); // Count errors as "loaded" to not get stuck
+                    }
+                } else if (asset.tagName === 'VIDEO') {
+                    if (asset.readyState >= 3) { // HAVE_FUTURE_DATA
+                        assetLoaded();
+                    } else {
+                        asset.addEventListener('loadeddata', assetLoaded);
+                        asset.addEventListener('error', assetLoaded);
+                    }
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             // メニューの切り替え
             const hamburgerButton = document.getElementById('hamburger-button');
@@ -1048,16 +1105,9 @@
 
             // ページロード時にCSVデータをロード
             loadCsvData();
-        });
-
-        window.addEventListener('load', () => {
-            const loadingScreen = document.getElementById('loading-screen');
-            const pageContent = document.getElementById('page-content');
-
-            if (loadingScreen && pageContent) {
-                loadingScreen.classList.add('hidden');
-                pageContent.classList.add('loaded');
-            }
+            
+            // ページの全アセットの読み込みを監視
+            monitorLoading();
         });
     </script>
 
