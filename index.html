@@ -142,7 +142,6 @@
             height: 1.25rem;
         }
 
-        /* ▼▼▼ 変更 ▼▼▼ */
         .gallery-item-title-display {
             background-color: #FFFFFF; /* white */
             color: #1F2937; /* gray-800 */
@@ -163,7 +162,6 @@
             min-width: 240px;
             pointer-events: none; /* ホバー時にタイトルが表示されても下のボタンが押せるように */
         }
-        /* ▲▲▲ 変更 ▲▲▲ */
 
         /* タブコンテンツの表示・非表示 */
         .tab-content {
@@ -278,247 +276,288 @@
             margin: 40px;
         }
 
+        /* Loading Screen styles */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #111827; /* gray-900 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            border: 8px solid #4B5563; /* gray-600 */
+            border-top: 8px solid #10B981; /* emerald-500 */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1.5s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #page-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        #page-content.loaded {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <header class="bg-gray-900 text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14">
-        <div class="text-lg sm:text-xl font-bold">
-            <a href="#">空木/utugi</a>
-        </div>
-        <nav class="hidden sm:block">
-            <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
-                <li><a href="#profile" class="hover:text-gray-300 px-2 py-1 rounded-md">About</a></li>
-                <li><a href="#gallery" class="hover:text-gray-300 px-2 py-1 rounded-md">Gallery</a></li>
-                <li><a href="#data" class="hover:text-gray-300 px-2 py-1 rounded-md">Data</a></li>
-                <li><a href="#contact" class="hover:text-gray-300 px-2 py-1 rounded-md">Contact</a></li>
-            </ul>
+    <div id="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <div id="page-content">
+        <header class="bg-gray-900 text-white h-24 fixed top-0 left-0 right-0 z-50 shadow-md flex items-center justify-between px-4 sm:px-14">
+            <div class="text-lg sm:text-xl font-bold">
+                <a href="#">空木/utugi</a>
+            </div>
+            <nav class="hidden sm:block">
+                <ul class="flex space-x-3 sm:space-x-4 text-sm sm:text-base">
+                    <li><a href="#profile" class="hover:text-gray-300 px-2 py-1 rounded-md">About</a></li>
+                    <li><a href="#gallery" class="hover:text-gray-300 px-2 py-1 rounded-md">Gallery</a></li>
+                    <li><a href="#data" class="hover:text-gray-300 px-2 py-1 rounded-md">Data</a></li>
+                    <li><a href="#contact" class="hover:text-gray-300 px-2 py-1 rounded-md">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="sm:hidden">
+                <button id="hamburger-button" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <!-- Mobile Menu - Initially hidden -->
+        <nav id="mobile-menu-nav" class="mobile-menu">
+            <a href="#profile" class="mobile-menu-link">About</a>
+            <a href="#gallery" class="mobile-menu-link">Gallery</a>
+            <a href="#data" class="mobile-menu-link">Data</a>
+            <a href="#contact" class="mobile-menu-link">Contact</a>
         </nav>
-        <div class="sm:hidden">
-            <button id="hamburger-button" class="text-white focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-        </div>
-    </header>
-    <!-- Mobile Menu - Initially hidden -->
-    <nav id="mobile-menu-nav" class="mobile-menu">
-        <a href="#profile" class="mobile-menu-link">About</a>
-        <a href="#gallery" class="mobile-menu-link">Gallery</a>
-        <a href="#data" class="mobile-menu-link">Data</a>
-        <a href="#contact" class="mobile-menu-link">Contact</a>
-    </nav>
 
 
-    <main class="pt-24">
+        <main class="pt-24">
 
-        <section id="profile" class="relative flex items-center justify-center min-h-screen overflow-hidden">
-            <div class="absolute inset-0">
-                <img src="resources/images/back_home.png" alt="背景画像" class="w-full h-full object-cover object-top">
-            </div>
-            <div class="relative z-10 text-center text-white -translate-y-1/4">
-                <div class="flex flex-col items-center">
-                    <img src="resources/images/utugi_icon.png" alt="空木/utugi アイコン"
-                        class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-0 shadow-md"
-                        onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/374151?text=Icon';">
-                    <h1 class="text-4xl sm:text-5xl font-bold mb-2 mt-10">空木/utugi</h1>
-                    <p class="text-xl text-emerald-300 font-semibold mb-4 mt-4">映像クリエーター</p>
-                    <p class="text-gray-200 leading-relaxed max-w-xl mx-auto mb-6">
-                        リリックモーション、3DCGを用いたMV制作が中心。
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク" class="group">
-                            <img src="resources/images/X_icon.png" alt="X icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.style.display='none'">
-                        </a>
-                        <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク" class="group">
-                            <img src="resources/images/youtube_icon.png" alt="YouTube icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.style.display='none'">
-                        </a>
+            <section id="profile" class="relative flex items-center justify-center min-h-screen overflow-hidden">
+                <div class="absolute inset-0">
+                    <img src="resources/images/back_home.png" alt="背景画像" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="relative z-10 text-center text-white -translate-y-1/4">
+                    <div class="flex flex-col items-center">
+                        <img src="resources/images/utugi_icon.png" alt="空木/utugi アイコン"
+                            class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-0 shadow-md"
+                            onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/374151?text=Icon';">
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-2 mt-10">空木/utugi</h1>
+                        <p class="text-xl text-emerald-300 font-semibold mb-4 mt-4">映像クリエーター</p>
+                        <p class="text-gray-200 leading-relaxed max-w-xl mx-auto mb-6">
+                            リリックモーション、3DCGを用いたMV制作が中心。
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク" class="group">
+                                <img src="resources/images/X_icon.png" alt="X icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.style.display='none'">
+                            </a>
+                            <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク" class="group">
+                                <img src="resources/images/youtube_icon.png" alt="YouTube icon" class="w-10 h-5 object-contain transition-opacity duration-300 group-hover:opacity-70" onerror="this.style.display='none'">
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
-            <div class="container mx-auto max-w-5xl">
-                <div class="text-center mb-12 sm:mb-16">
-                    <span class="section-title-line mb-4 sm:mb-6"></span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
-                        <span class="first-letter">G</span><span class="rest-of-title">allery</span>
-                    </h2>
-                    <p class="text-gray-600 text-base sm:text-lg mt-2">制作物</p>
-                    <span class="section-title-line mt-4 sm:mt-6"></span>
-                </div>
+            <section id="gallery" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
+                <div class="container mx-auto max-w-5xl">
+                    <div class="text-center mb-12 sm:mb-16">
+                        <span class="section-title-line mb-4 sm:mb-6"></span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
+                            <span class="first-letter">G</span><span class="rest-of-title">allery</span>
+                        </h2>
+                        <p class="text-gray-600 text-base sm:text-lg mt-2">制作物</p>
+                        <span class="section-title-line mt-4 sm:mt-6"></span>
+                    </div>
 
-                <div class="mb-6 tabs-container-bottom-line">
-                    <div id="gallery-tab-buttons-container" class="flex flex-wrap justify-center">
+                    <div class="mb-6 tabs-container-bottom-line">
+                        <div id="gallery-tab-buttons-container" class="flex flex-wrap justify-center">
+                            
+                            <button data-tab="lyric" class="gallery-tab-button active-tab">Lyric Motion</button>
+                            <button data-tab="3dcg" class="gallery-tab-button">3DCG</button>
+                            <!-- <button data-tab="shape" class="gallery-tab-button">Shape Motion</button> -->
+                            <button data-tab="logo" class="gallery-tab-button">Logo Designs</button>
+                        </div>
+                    </div>
+
+                    <div class="gallery-content-area">
+
                         
-                        <button data-tab="lyric" class="gallery-tab-button active-tab">Lyric Motion</button>
-                        <button data-tab="3dcg" class="gallery-tab-button">3DCG</button>
-                        <!-- <button data-tab="shape" class="gallery-tab-button">Shape Motion</button> -->
-                        <button data-tab="logo" class="gallery-tab-button">Logo Designs</button>
+
+                        <div id="lyric-content" class="tab-content active">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Lyric Motion</h3>
+                            <div id="lyric-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                            </div>
+                        </div>
+
+                        <div id="3dcg-content" class="tab-content">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">3DCG</h3>
+                            <div id="3dcg-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                            </div>
+                        </div>
+
+                        <!-- <div id="shape-content" class="tab-content">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
+                            <div id="shape-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                            </div>
+                        </div> -->
+                        
+                        <div id="logo-content" class="tab-content">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
+                            <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                            </div>
+                        </div>
+
+
+                        <div class="gallery-nav-arrows">
+                            <button id="gallery-prev-button" class="gallery-arrow-button" aria-label="Previous Tab">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                </svg>
+                            </button>
+                            <div id="gallery-item-title-display" class="gallery-item-title-display"></div>
+                            <button id="gallery-next-button" class="gallery-arrow-button" aria-label="Next Tab">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="gallery-content-area">
+            <section id="data" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
+                <div class="container mx-auto max-w-4xl">
+                    <div class="text-center mb-12 sm:mb-16">
+                        <span class="section-title-line mb-4 sm:mb-6"></span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
+                            <span class="first-letter">D</span><span class="rest-of-title">ata</span>
+                        </h2>
+                        <p class="text-gray-600 text-base sm:text-lg mt-2">実績記録</p>
+                        <span class="section-title-line mt-4 sm:mt-6"></span>
+                    </div>
 
-                    
-
-                    <div id="lyric-content" class="tab-content active">
-                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Lyric Motion</h3>
-                        <div id="lyric-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                    <div class="data-area-block max-w-3xl mx-auto">
+                        <div class="relative h-72 sm:h-96">
+                            <canvas id="requestRatioChart"></canvas>
                         </div>
                     </div>
 
-                    <div id="3dcg-content" class="tab-content">
-                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">3DCG</h3>
-                        <div id="3dcg-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                    <div class="data-area-block max-w-3xl mx-auto">
+                        <div class="relative h-72 sm:h-96">
+                            <canvas id="cgUsageChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- <div id="shape-content" class="tab-content">
-                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
-                        <div id="shape-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                    <div class="data-area-block max-w-3xl mx-auto">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
+                        <div id="history-list-container" class="space-y-2">
                         </div>
-                    </div> -->
-                    
-                    <div id="logo-content" class="tab-content">
-                        <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
-                        <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                        <div class="text-center mt-6">
+                            <!-- 「もっと見る」ボタンを新しいページへのリンクに変更 -->
+                            <a href="history.html" id="toggle-history-button" class="text-emerald-600 hover:text-emerald-700 font-medium">
+                                すべての実績を見る
+                            </a>
                         </div>
-                    </div>
-
-
-                    <div class="gallery-nav-arrows">
-                        <button id="gallery-prev-button" class="gallery-arrow-button" aria-label="Previous Tab">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
-                        </button>
-                        <div id="gallery-item-title-display" class="gallery-item-title-display"></div>
-                        <button id="gallery-next-button" class="gallery-arrow-button" aria-label="Next Tab">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
+            </section>
+
+            <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-14">
+                <div class="container mx-auto max-w-4xl">
+                    <div class="text-center mb-12 sm:mb-16">
+                        <span class="section-title-line mb-4 sm:mb-6"></span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
+                            <span class="first-letter">C</span><span class="rest-of-title">ontact</span>
+                        </h2>
+                        <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
+
+                        <span class="section-title-line mt-4 sm:mt-6"></span>
+                    </div>
+                    <p class="text-center text-gray-500 mt-1">受付状態 : <span class="text-red-600 font-semibold">要相談</span> (2025.04.20更新)</p>
+                    <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
+                        <p class="text-gray-700 text-center mb-6">ご依頼はXのDM、またはメール(utugi0313@gmail.com)でも受け付けております。</p>
+                        <form action="#" method="POST">
+                            <div class="mb-4">
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前 (Name)</label>
+                                <input type="text" name="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label>
+                                <input type="email" name="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="consultation-details" class="block text-sm font-medium text-gray-700 mb-1">ご依頼内容 (Consultation Details)</label>
+                                <textarea name="consultation-details" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="budget" class="block text-sm font-medium text-gray-700 mb-1">ご予算 (Budget)</label>
+                                <input type="text" name="budget" id="budget" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="cg-usage" class="block text-sm font-medium text-gray-700 mb-1">CGの使用度合い (CG Usage)</label>
+                                <select name="cg-usage" id="cg-usage" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                    <option value="">選択してください</option>
+                                    <option value="full-3d">フル3D (サビを含め曲全体で3DCGがメイン)</option>
+                                    <option value="medium">中程度</option>
+                                    <option value="partial-none">一部・無し</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="delivery-date" class="block text-sm font-medium text-gray-700 mb-1">納期 (Delivery Date)</label>
+                                <input type="text" name="delivery-date" id="delivery-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="song-length" class="block text-sm font-medium text-gray-700 mb-1">曲尺 (Song Length)</label>
+                                <input type="text" name="song-length" id="song-length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">リファレンス (Reference)</label>
+                                <textarea name="reference" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など。" required></textarea>
+                            </div>
+                            <div class="mb-6">
+                                <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-1">その他 (Other Notes)</label>
+                                <textarea name="other-notes" id="other-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">送信</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+            <div class="footer-sns-icons flex justify-center space-x-4 mb-4">
+                <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク">
+                    <img src="resources/images/X_icon.png" alt="X icon" onerror="this.style.display='none'">
+                </a>
+                <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク">
+                    <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
+                </a>
             </div>
-        </section>
-
-        <section id="data" class="py-12 sm:py-20 px-4 sm:px-14 bg-white">
-            <div class="container mx-auto max-w-4xl">
-                <div class="text-center mb-12 sm:mb-16">
-                    <span class="section-title-line mb-4 sm:mb-6"></span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
-                        <span class="first-letter">D</span><span class="rest-of-title">ata</span>
-                    </h2>
-                    <p class="text-gray-600 text-base sm:text-lg mt-2">実績記録</p>
-                    <span class="section-title-line mt-4 sm:mt-6"></span>
-                </div>
-
-                <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="relative h-72 sm:h-96">
-                        <canvas id="requestRatioChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- <div class="data-area-block max-w-3xl mx-auto">
-                    <div class="relative h-72 sm:h-96">
-                        <canvas id="cgUsageChart"></canvas>
-                    </div>
-                </div> -->
-
-                <div class="data-area-block max-w-3xl mx-auto">
-                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
-                    <div id="history-list-container" class="space-y-2">
-                    </div>
-                    <div class="text-center mt-6">
-                        <!-- 「もっと見る」ボタンを新しいページへのリンクに変更 -->
-                        <a href="history.html" id="toggle-history-button" class="text-emerald-600 hover:text-emerald-700 font-medium">
-                            すべての実績を見る
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="bg-white py-12 sm:py-20 px-4 sm:px-14">
-            <div class="container mx-auto max-w-4xl">
-                <div class="text-center mb-12 sm:mb-16">
-                    <span class="section-title-line mb-4 sm:mb-6"></span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
-                        <span class="first-letter">C</span><span class="rest-of-title">ontact</span>
-                    </h2>
-                    <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
-
-                    <span class="section-title-line mt-4 sm:mt-6"></span>
-                </div>
-                <p class="text-center text-gray-500 mt-1">受付状態 : <span class="text-red-600 font-semibold">要相談</span> (2025.04.20更新)</p>
-                <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                    <p class="text-gray-700 text-center mb-6">ご依頼はXのDM、またはメール(utugi0313@gmail.com)でも受け付けております。</p>
-                    <form action="#" method="POST">
-                        <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前 (Name)</label>
-                            <input type="text" name="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label>
-                            <input type="email" name="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                        </div>
-                        <div class="mb-6">
-                            <label for="consultation-details" class="block text-sm font-medium text-gray-700 mb-1">ご依頼内容 (Consultation Details)</label>
-                            <textarea name="consultation-details" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="budget" class="block text-sm font-medium text-gray-700 mb-1">ご予算 (Budget)</label>
-                            <input type="text" name="budget" id="budget" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="cg-usage" class="block text-sm font-medium text-gray-700 mb-1">CGの使用度合い (CG Usage)</label>
-                            <select name="cg-usage" id="cg-usage" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                                <option value="">選択してください</option>
-                                <option value="full-3d">フル3D (サビを含め曲全体で3DCGがメイン)</option>
-                                <option value="medium">中程度</option>
-                                <option value="partial-none">一部・無し</option>
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                            <label for="delivery-date" class="block text-sm font-medium text-gray-700 mb-1">納期 (Delivery Date)</label>
-                            <input type="text" name="delivery-date" id="delivery-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="song-length" class="block text-sm font-medium text-gray-700 mb-1">曲尺 (Song Length)</label>
-                            <input type="text" name="song-length" id="song-length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                        </div>
-                        <div class="mb-6">
-                            <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">リファレンス (Reference)</label>
-                            <textarea name="reference" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など。" required></textarea>
-                        </div>
-                        <div class="mb-6">
-                            <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-1">その他 (Other Notes)</label>
-                            <textarea name="other-notes" id="other-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">送信</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
-        <div class="footer-sns-icons flex justify-center space-x-4 mb-4">
-            <a href="https://x.com/utugi313" target="_blank" rel="noopener noreferrer" aria-label="X (旧Twitter)へのリンク">
-                <img src="resources/images/X_icon.png" alt="X icon" onerror="this.style.display='none'">
-            </a>
-            <a href="https://www.youtube.com/@utugi2421" target="_blank" rel="noopener noreferrer" aria-label="YouTubeへのリンク">
-                <img src="resources/images/youtube_icon.png" alt="YouTube icon" onerror="this.style.display='none'">
-            </a>
-        </div>
-        <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
-    </footer>
+            <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
+        </footer>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -553,30 +592,30 @@
             // ];
 
             const cgItemsData = [
-                { type: 'video', fileName: 'kanzen.mp4', altText: '完全解答Q.E.D / Lidlic', link: 'https://www.youtube.com/watch?v=Akv1yrCguv4', cells: [1, 2], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'pastel.mp4', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [3, 4, 5, 8, 9, 10], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぐ', link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 11, 12], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'tukikage.mp4', altText: '月影見し海 / urumeiwashi', link: 'https://www.youtube.com/watch?v=mGBy8PUflyI', cells: [13, 14], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'yumeikaga.mp4', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [15], pathPrefix: 'resources/3dcg/' }
+                { type: 'video', fileName: 'kanzen.mp4', altText: '完全放棄宣言', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 2], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'pastel.mp4', altText: 'パステルレイン', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [3, 4, 5, 8, 9, 10], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection Fire', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [6, 7, 11, 12], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'tukikage.mp4', altText: '月影', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [13, 14], pathPrefix: 'resources/3dcg/' },
+                { type: 'video', fileName: 'yumeikaga.mp4', altText: '夢以下', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [15], pathPrefix: 'resources/3dcg/' }
             ];
 
             const lyricMotionItemsData = [
-                { type: 'video', fileName: 'hell.mp4', altText: 'ヘルライクヘヴン（自主制作）', link: 'https://x.com/utugi313/status/1932152663325688065', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノーツ・テレキャスター / memex', link: 'https://www.youtube.com/watch?v=0inHMl2SktY', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオー / Sera。 ', link: 'https://www.youtube.com/watch?v=_UKNvO-7ROo', cells: [5], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぐ', link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'open_ur.mp4', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'utakata_shima.mp4', altText: 'ウタカタララバイ / 島爺（cover）', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
+                { type: 'video', fileName: 'hell.mp4', altText: 'HELL!', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノーツ', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオン', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [5], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection Fire', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'open_ur.mp4', altText: 'オープンワールド・アポカリプス', link: 'https://www.nicovideo.jp/watch/sm44778773', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'utakata_shima.mp4', altText: '泡沫の島', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
             ];
 
             const logoDesignItemsData = [
-                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [1, 2], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'c_plant_yuki.png', altText: '食虫植物 / ユキ YUKI（cover）', link: 'https://www.youtube.com/watch?v=yLbaExt0H0A', cells: [3, 8], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'mieterudake.png', altText: '見えてるだけ / szri', link: 'https://www.youtube.com/watch?v=i-qSBGMxeuA', cells: [4, 5], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'open_ur.jpg', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'pastel.jpg', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [9, 10], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'EpisodeX.png', altText: 'Episode X / 紫ヶ内ムゲイ＆ChumuNote（cover）', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [13, 14], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'unravel.png', altText: 'unravel / 音ノ乃のの（cover）', link: 'https://www.youtube.com/watch?v=u5RRk9DZs3M', cells: [15], pathPrefix: 'resources/logo/' }
+                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢以下 ロゴ', link: 'https://www.youtube.com/watch?v=4EI2920QK3c', cells: [1, 2], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'c_plant_yuki.png', altText: 'C.Plant 雪 ロゴ', link: 'https://www.youtube.com/watch?v=yLbaExt0H0A', cells: [3, 8], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢以下 ロゴ (再)', link: 'https://www.youtube.com/watch?v=4EI2920QK3c', cells: [4, 5], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'open_ur.png', altText: 'オープンワールド・アポカリプス ロゴ', link: 'https://youtube.com', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'pastel.jpg', altText: 'パステルレイン ロゴ', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [9, 10], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'EpisodeX.png', altText: 'EpisodeX ロゴ', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [13, 14], pathPrefix: 'resources/logo/' },
+                { type: 'image', fileName: 'unravel.png', altText: 'Unravel ロゴ', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [15], pathPrefix: 'resources/logo/' }
             ];
 
 
@@ -666,7 +705,6 @@
             populateGallery('3dcg-grid-items-container', cgItemsData);
             populateGallery('lyric-grid-items-container', lyricMotionItemsData);
 
-            // ▼▼▼ 変更 ▼▼▼
             // --- ギャラリーアイテムのホバーでタイトルを表示 ---
             const allGalleryItems = document.querySelectorAll('.gallery-item');
             const titleDisplayElement = document.getElementById('gallery-item-title-display');
@@ -688,7 +726,6 @@
                     });
                 });
             }
-            // ▲▲▲ 変更 ▲▲▲
 
             // ギャラリータブ切り替えロジック
             const tabButtonContainer = document.getElementById('gallery-tab-buttons-container');
@@ -988,7 +1025,7 @@
             // CSVデータをロードする関数
             async function loadCsvData() {
                 try {
-                    const response = await fetch('utugi_works - _.csv');
+                    const response = await fetch('utugi_works.csv');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -1011,6 +1048,16 @@
 
             // ページロード時にCSVデータをロード
             loadCsvData();
+        });
+
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const pageContent = document.getElementById('page-content');
+
+            if (loadingScreen && pageContent) {
+                loadingScreen.classList.add('hidden');
+                pageContent.classList.add('loaded');
+            }
         });
     </script>
 
