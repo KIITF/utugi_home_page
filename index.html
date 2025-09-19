@@ -331,7 +331,7 @@
                         
                         <button data-tab="lyric" class="gallery-tab-button active-tab">Lyric Motion</button>
                         <button data-tab="3dcg" class="gallery-tab-button">3DCG</button>
-                        <button data-tab="shape" class="gallery-tab-button">Shape Motion</button>
+                        <!-- <button data-tab="shape" class="gallery-tab-button">Shape Motion</button> -->
                         <button data-tab="logo" class="gallery-tab-button">Logo Designs</button>
                     </div>
                 </div>
@@ -352,11 +352,11 @@
                         </div>
                     </div>
 
-                    <div id="shape-content" class="tab-content">
+                    <!-- <div id="shape-content" class="tab-content">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
                         <div id="shape-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                         </div>
-                    </div>
+                    </div> -->
                     
                     <div id="logo-content" class="tab-content">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
@@ -525,15 +525,15 @@
                 { type: 'image', fileName: 'unravel.png', altText: 'EpisodeX 正方形の画像', link: 'https://www.youtube.com/watch?v=Co5J7dwh1l0', cells: [15], pathPrefix: 'resources/logo/' }
             ];
 
-            const shapeMotionItemsData = [
-                { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 6], pathPrefix: 'resources/shape_motion/' },
-                { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 1', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [2, 3], pathPrefix: 'resources/shape_motion/' },
-                { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 2', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [7, 8], pathPrefix: 'resources/shape_motion/' },
-                { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 2', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [4, 5, 9, 10], pathPrefix: 'resources/shape_motion/' },
-                { type: 'video', fileName: 'pastel.mp4', altText: 'Pastel Video', link: 'https://www.nicovideo.jp/watch/sm44778773', cells: [11, 12], pathPrefix: 'resources/shape_motion/' },
-                { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 3', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [13], pathPrefix: 'resources/shape_motion/' },
-                { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 3', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [14, 15], pathPrefix: 'resources/shape_motion/' }
-            ];
+            // const shapeMotionItemsData = [
+            //     { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 6], pathPrefix: 'resources/shape_motion/' },
+            //     { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 1', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [2, 3], pathPrefix: 'resources/shape_motion/' },
+            //     { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 2', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [7, 8], pathPrefix: 'resources/shape_motion/' },
+            //     { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 2', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [4, 5, 9, 10], pathPrefix: 'resources/shape_motion/' },
+            //     { type: 'video', fileName: 'pastel.mp4', altText: 'Pastel Video', link: 'https://www.nicovideo.jp/watch/sm44778773', cells: [11, 12], pathPrefix: 'resources/shape_motion/' },
+            //     { type: 'video', fileName: 'kawaii.mp4', altText: 'Kawaii Video 3', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [13], pathPrefix: 'resources/shape_motion/' },
+            //     { type: 'video', fileName: 'ego_rock.mp4', altText: 'Ego Rock Video 3', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [14, 15], pathPrefix: 'resources/shape_motion/' }
+            // ];
 
             const cgItemsData = [
                 { type: 'video', fileName: 'kanzen.mp4', altText: 'Ego Rock Video', link: 'https://youtu.be/D4bpqkqgy8c?si=naohsVlg72uTI6l-', cells: [1, 2], pathPrefix: 'resources/3dcg/' },
@@ -632,7 +632,7 @@
             }
 
             populateGallery('logo-grid-items-container', logoDesignItemsData);
-            populateGallery('shape-grid-items-container', shapeMotionItemsData);
+            //populateGallery('shape-grid-items-container', shapeMotionItemsData);
             populateGallery('3dcg-grid-items-container', cgItemsData);
             populateGallery('lyric-grid-items-container', lyricMotionItemsData);
 
