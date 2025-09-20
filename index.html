@@ -378,6 +378,7 @@
                             <button data-tab="3dcg" class="gallery-tab-button">3DCG</button>
                             <!-- <button data-tab="shape" class="gallery-tab-button">Shape Motion</button> -->
                             <button data-tab="logo" class="gallery-tab-button">Logo Designs</button>
+                            <button data-tab="independent" class="gallery-tab-button">自主制作</button>
                         </div>
                     </div>
 
@@ -397,15 +398,17 @@
                             </div>
                         </div>
 
-                        <!-- <div id="shape-content" class="tab-content">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Shape Motion</h3>
-                            <div id="shape-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
-                            </div>
-                        </div> -->
+                        
                         
                         <div id="logo-content" class="tab-content">
                             <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
                             <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                            </div>
+                        </div>
+
+                        <div id="independent-content" class="tab-content">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">自主制作</h3>
+                            <div id="independent-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
                             </div>
                         </div>
 
@@ -828,7 +831,7 @@
             populateGallery('logo-grid-items-container', logoDesignItemsData);
             populateGallery('3dcg-grid-items-container', cgItemsData);
             populateGallery('lyric-grid-items-container', lyricMotionItemsData);
-            populateGallery('logo-grid-items-container', independentProductionItemsData);
+            populateGallery('independent-grid-items-container', independentProductionItemsData);
 
             const allGalleryItems = document.querySelectorAll('.gallery-item');
             const titleDisplayElement = document.getElementById('gallery-item-title-display');
