@@ -480,10 +480,10 @@
                     <p class="text-center text-gray-500 mt-1">受付状態 : 
                         <!-- <span class="text-red-600 font-semibold">受付中</span> -->
                         <span class="text-red-600 font-semibold">受付中</span>
-                        <span class="font-semibold">(納期は12月下旬以降のみ)</span>
+                        <span class="font-semibold">(納期は最短12月下旬～)</span>
                         <!-- <span class="text-red-600 font-semibold">要相談</span> -->
                         <!-- <span class="text-red-600 font-semibold">停止中</span> -->
-                    (2025.10.29更新)</p>
+                    (2025.11.20更新)</p>
                     <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
                         <p class="text-gray-700 text-center mb-6">ご依頼はXのDM、またはメール(utugi0313@gmail.com)でも受け付けております。</p>
                         
@@ -557,13 +557,16 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-900">入力内容の確認</h3>
                         <div class="mt-4 px-2 sm:px-7 py-3 text-left space-y-3 text-gray-800" style="max-height: 50vh; overflow-y: auto;">
                             <p><strong>お名前:</strong><br><span id="confirm-name" class="pl-2"></span></p>
-                            <p><strong>メールアドレス:</strong><br><span id="confirm-email" class="pl-2"></span></p>
+                            
                             <p><strong>ご依頼内容:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-consultation-details"></span></p>
                             <p><strong>ご予算:</strong><br><span id="confirm-budget" class="pl-2"></span></p>
                             <p><strong>CGの使用度合い:</strong><br><span id="confirm-cg-usage" class="pl-2"></span></p>
                             <p><strong>納期:</strong><br><span id="confirm-delivery-date" class="pl-2"></span></p>
                             <p><strong>曲尺:</strong><br><span id="confirm-song-length" class="pl-2"></span></p>
                             <p><strong>リファレンス:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-reference"></span></p>
+                            
+                            <p><strong>メールアドレス:</strong><br><span id="confirm-email" class="pl-2"></span></p>
+                            <p><strong>活動アカウント（X, YouTube）:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-account"></span></p>
                             <p><strong>その他:</strong><br><span class="whitespace-pre-wrap bg-gray-100 p-2 rounded block" id="confirm-other-notes"></span></p>
                         </div>
                         <div class="mt-6 border-t pt-4">
@@ -695,24 +698,28 @@
 
             if (contactForm && confirmationModal) {
                 const nameInput = document.getElementById('name');
-                const emailInput = document.getElementById('email');
+                
                 const detailsInput = document.getElementById('consultation-details');
                 const budgetInput = document.getElementById('budget');
                 const cgUsageInput = document.getElementById('cg-usage');
                 const deliveryDateInput = document.getElementById('delivery-date');
                 const songLengthInput = document.getElementById('song-length');
                 const referenceInput = document.getElementById('reference');
+                const emailInput = document.getElementById('email');
+                const accountInput = document.getElementById('account');
                 const otherNotesInput = document.getElementById('other-notes');
                 const subjectInput = document.getElementById('email-subject');
 
                 const confirmName = document.getElementById('confirm-name');
-                const confirmEmail = document.getElementById('confirm-email');
+                
                 const confirmDetails = document.getElementById('confirm-consultation-details');
                 const confirmBudget = document.getElementById('confirm-budget');
                 const confirmCgUsage = document.getElementById('confirm-cg-usage');
                 const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
                 const confirmSongLength = document.getElementById('confirm-song-length');
                 const confirmReference = document.getElementById('confirm-reference');
+                const confirmEmail = document.getElementById('confirm-email');
+                const confirmAccount = document.getElementById('confirm-account');
                 const confirmOtherNotes = document.getElementById('confirm-other-notes');
 
                 contactForm.addEventListener('submit', function(event) {
@@ -723,13 +730,14 @@
                     }
                     subjectInput.value = `【${nameInput.value || '名前未入力'}, ${budgetInput.value || '予算未入力'}】ホームページから依頼が入りました。`;
                     confirmName.textContent = nameInput.value || '未入力';
-                    confirmEmail.textContent = emailInput.value || '未入力';
                     confirmDetails.textContent = detailsInput.value || '未入力';
                     confirmBudget.textContent = budgetInput.value || '未入力';
                     confirmCgUsage.textContent = cgUsageInput.options[cgUsageInput.selectedIndex].text || '未選択';
                     confirmDeliveryDate.textContent = deliveryDateInput.value || '未入力';
                     confirmSongLength.textContent = songLengthInput.value || '未入力';
                     confirmReference.textContent = referenceInput.value || '未入力';
+                    confirmEmail.textContent = emailInput.value || '未入力';
+                    confirmAccount.textContent = accountInput.value || '未入力';
                     confirmOtherNotes.textContent = otherNotesInput.value || '未入力';
                     confirmationModal.classList.remove('hidden');
                 });
