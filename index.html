@@ -500,15 +500,11 @@
                             <!-- メール本文の最初に表示される見出し（Formspree用） -->
                             <input type="hidden" name="依頼内容詳細" value="---">
 
-
                             <div class="mb-4">
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">お名前 (Name)</label>
                                 <input type="text" name="依頼主" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
                             </div>
-                            <div class="mb-4">
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label>
-                                <input type="email" name="返信先メールアドレス" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                            </div>
+                            
                             <div class="mb-6">
                                 <label for="consultation-details" class="block text-sm font-medium text-gray-700 mb-1">ご依頼内容 (Consultation Details)</label>
                                 <textarea name="ご依頼内容" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
@@ -537,6 +533,14 @@
                             <div class="mb-6">
                                 <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">リファレンス (Reference)</label>
                                 <textarea name="リファレンス" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など。"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label>
+                                <input type="email" name="返信先メールアドレス" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="account" class="block text-sm font-medium text-gray-700 mb-1">活動アカウント（X, YouTube）</label>
+                                <input type="text" name="活動アカウント" id="account" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="例: https://x.com/utugi313">
                             </div>
                             <div class="mb-6">
                                 <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-1">その他 (Other Notes)</label>
