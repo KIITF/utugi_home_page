@@ -398,8 +398,12 @@
                             </div>
                         </div>
 
-                        
-                        
+                        <div id="motion-graphics" class="tab-content">
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Motion Graphics</h3>
+                            <div id="graphics-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
+                            </div>
+                        </div>
+                       
                         <div id="logo-content" class="tab-content">
                             <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-center text-gray-700">Logo Designs</h3>
                             <div id="logo-grid-items-container" class="grid grid-cols-5 grid-rows-3 gap-2 sm:gap-7 mx-auto max-w-3xl aspect-[5/3]">
@@ -623,6 +627,16 @@
                 { type: 'video', fileName: 'open_ur.mp4', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
                 { type: 'video', fileName: 'utakata_shima.mp4', altText: 'ウタカタララバイ / 島爺（cover）', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
             ];
+
+            const MotionGraphicsItemsData = [
+                { type: 'video', fileName: 'hell.mp4', altText: '【二次創作】ヘルライクヘヴン / shikisai', link: 'https://www.youtube.com/watch?v=doOi2dS_Wrk', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノーツ・テレキャスター / memex', link: 'https://www.youtube.com/watch?v=0inHMl2SktY', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオー / Sera。 ', link: 'https://www.youtube.com/watch?v=_UKNvO-7ROo', cells: [5], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぐ', link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'open_ur.mp4', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
+                { type: 'video', fileName: 'utakata_shima.mp4', altText: 'ウタカタララバイ / 島爺（cover）', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
+            ];
+
             const logoDesignItemsData = [
                 { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [1, 2], pathPrefix: 'resources/logo/' },
                 { type: 'image', fileName: 'gen.png', altText: '眩 / ユアネス', link: 'https://www.youtube.com/watch?v=IvDIGdqnWbY', cells: [3, 8], pathPrefix: 'resources/logo/' },
@@ -853,8 +867,10 @@
             }
 
             // populateGallery('lyric-grid-items-container', lyricMotionItemsData);
-            populateGallery('logo-grid-items-container', logoDesignItemsData);
+            
             populateGallery('3dcg-grid-items-container', cgItemsData);
+            populateGallery('graphics-grid-items-container', MotionGraphicsItemsData);
+            populateGallery('logo-grid-items-container', logoDesignItemsData);
             populateGallery('independent-grid-items-container', independentProductionItemsData);
             
 
