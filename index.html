@@ -697,6 +697,11 @@
                         mediaElement.muted = true;
                         mediaElement.preload = 'auto';
                         mediaElement.setAttribute('playsinline', '');
+
+                        mediaElement.addEventListener('loadedmetadata', function() {
+                            this.currentTime = 0.2;
+                        }, { once: true });
+
                         mediaElement.addEventListener('mouseover', () => { mediaElement.loop = true; mediaElement.play().catch(e => {}); });
                         mediaElement.addEventListener('mouseout', () => { mediaElement.loop = false; mediaElement.pause(); });
                         mediaElement.onerror = function() {
