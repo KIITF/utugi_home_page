@@ -1,0 +1,444 @@
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOMContentLoaded - スクリプト開姁E);
+
+    // --- ギャラリーアイチE��チE�Eタ ---
+        const cgItemsData = [
+            { type: 'video', fileName: 'nurumayu.mp4', altText: 'Level 37、ぬるま湯と烏、E/ Sera、E, link: 'https://www.youtube.com/watch?v=me_tPVG_06E', cells: [1,2], pathPrefix: 'resources/3dcg/' },
+            { type: 'video', fileName: 'pastel.mp4', altText: 'パスチE�� / urumeiwashi�E�Eover�E�E, link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [3, 4, 5, 8, 9, 10], pathPrefix: 'resources/3dcg/' },
+            { type: 'video', fileName: 'cyan.mp4', altText: '総べてシアン / urumeiwashi�E�Eover�E�E, link: 'https://www.youtube.com/watch?v=jpvf1JqjGf4', cells: [6, 7, 11, 12], pathPrefix: 'resources/3dcg/' },
+            { type: 'video', fileName: 'tukikage.mp4', altText: '月影見し海 / urumeiwashi', link: 'https://www.youtube.com/watch?v=mGBy8PUflyI', cells: [13, 14], pathPrefix: 'resources/3dcg/' },
+            { type: 'video', fileName: 'yumeikaga.mp4', altText: '夢如佁E/ めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [15], pathPrefix: 'resources/3dcg/' }
+            
+        ];
+        const lyricMotionItemsData = [
+            { type: 'video', fileName: 'hell.mp4', altText: '【二次創作】�Eルライクヘヴン / shikisai', link: 'https://www.youtube.com/watch?v=doOi2dS_Wrk', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
+            { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノ�EチE�EチE��キャスター / memex', link: 'https://www.youtube.com/watch?v=0inHMl2SktY', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
+            { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオー / Sera、E', link: 'https://www.youtube.com/watch?v=_UKNvO-7ROo', cells: [5], pathPrefix: 'resources/lyric_motion/' },
+            { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぁE, link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
+            { type: 'video', fileName: 'open_ur.mp4', altText: 'Øpen Ur / Eye�E�E���E��EみめE, link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
+            { type: 'video', fileName: 'utakata_shima.mp4', altText: 'ウタカタララバイ / 島爺�E�Eover�E�E, link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
+        ];
+
+        const MotionGraphicsItemsData = [
+            { type: 'video', fileName: 'self_251010_design.mp4', altText: '【�E主制作、E025/10/10', link: 'https://x.com/utugi313/status/1976560485433819197?s=20', cells: [1, 6], pathPrefix: 'resources/motion_graphics/' },
+            { type: 'video', fileName: 'self_251026.mp4', altText: '【�E主制作、E025/10/26', link: 'https://x.com/utugi313/status/1982295977202786499?s=20', cells: [2, 3], pathPrefix: 'resources/motion_graphics/' },
+            { type: 'video', fileName: 'self_251103.mp4', altText: '【�E主制作、E025/11/03', link: 'https://x.com/utugi313/status/1985225430417178690?s=20', cells: [4, 5], pathPrefix: 'resources/motion_graphics/' },
+            { type: 'video', fileName: 'ego_rock.mp4', altText: '【二次創作】エゴロチE�� / すりぁE, link: 'https://www.youtube.com/watch?v=D4bpqkqgy8c', cells: [7, 8, 9, 12, 13, 14], pathPrefix: 'resources/motion_graphics/' },
+            { type: 'video', fileName: 'pastel.mp4', altText: 'パスチE�� / urumeiwashi�E�Eover�E�E, link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [11], pathPrefix: 'resources/motion_graphics/' },
+            { type: 'video', fileName: 'self_251015_night.mp4', altText: '【�E主制作、E025/10/15', link: 'https://x.com/utugi313/status/1978369480448147663?s=20', cells: [10, 15], pathPrefix: 'resources/motion_graphics/' }
+        ];
+
+        const logoDesignItemsData = [
+            { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢如佁E/ めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [1, 2], pathPrefix: 'resources/logo/' },
+            { type: 'image', fileName: 'gen.png', altText: '眩 / ユアネス', link: 'https://www.youtube.com/watch?v=IvDIGdqnWbY', cells: [3, 8], pathPrefix: 'resources/logo/' },
+            { type: 'image', fileName: 'mieterudake.png', altText: '見えてるだぁE/ szri', link: 'https://www.youtube.com/watch?v=i-qSBGMxeuA', cells: [4, 5], pathPrefix: 'resources/logo/' },
+            { type: 'image', fileName: 'open_ur.jpg', altText: 'Øpen Ur / Eye�E�E���E��EみめE, link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
+            { type: 'image', fileName: 'pastel.jpg', altText: 'パスチE�� / urumeiwashi�E�Eover�E�E, link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [9, 10], pathPrefix: 'resources/logo/' },
+            { type: 'image', fileName: 'nurumayu.png', altText: 'Level 37、ぬるま湯と烏、E/ Sera、E, link: 'https://www.youtube.com/watch?v=me_tPVG_06E', cells: [13, 14], pathPrefix: 'resources/logo/' },
+            { type: 'image', fileName: 'unravel.png', altText: 'unravel / 音ノ乁E�Eの�E�Eover�E�E, link: 'https://www.youtube.com/watch?v=u5RRk9DZs3M', cells: [15], pathPrefix: 'resources/logo/' }
+        ];
+        const independentProductionItemsData = [
+            { type: 'video', fileName: 'sizumu.mp4', altText: '【二次創作】沈沈沈沈沈沈… / Ruliea', link: 'https://www.youtube.com/watch?v=l9WJpH_DePI', cells: [1,2,3,6,7,8], pathPrefix: 'resources/fan_fiction/' },
+            { type: 'video', fileName: 'utsutsu.mp4', altText: '【二次創作】うつつと空の放送E/ 凍傷のエチE, link: 'https://www.youtube.com/watch?v=2PkiTNbfzeU', cells: [4,5], pathPrefix: 'resources/fan_fiction/' },
+            { type: 'video', fileName: 'goodbye.mp4', altText: '【二次創作】グチE��イ宣言 / Chinozo', link: 'https://www.youtube.com/watch?v=n9zThB7ibog', cells: [11, 12], pathPrefix: 'resources/fan_fiction/' },
+            { type: 'video', fileName: 'moumoku.mp4', altText: '【二次創作】盲目の怪物 / ひらぎ', link: 'https://www.youtube.com/watch?v=0Pli20EHCBw', cells: [9,10,14,15], pathPrefix: 'resources/fan_fiction/' },
+            { type: 'video', fileName: 'tomadoi.mp4', altText: '【二次創作】戸惑いチE��パシー / 花譁E, link: 'https://www.youtube.com/watch?v=uE0-bkGXWRs', cells: [13], pathPrefix: 'resources/fan_fiction/' }
+        ];
+
+        function getGridPositionClasses(cells) {
+            const numRows = 3, numCols = 5;
+            let minRow = numRows + 1, maxRow = 0, minCol = numCols + 1, maxCol = 0;
+            cells.forEach(cellNumber => {
+                const row = Math.floor((cellNumber - 1) / numCols) + 1;
+                const col = ((cellNumber - 1) % numCols) + 1;
+                if (row < minRow) minRow = row;
+                if (row > maxRow) maxRow = row;
+                if (col < minCol) minCol = col;
+                if (col > maxCol) maxCol = col;
+            });
+            return `col-start-${minCol} col-span-${maxCol - minCol + 1} row-start-${minRow} row-span-${maxRow - minRow + 1}`;
+        }
+
+        function populateGallery(containerId, itemsData) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            itemsData.forEach(itemData => {
+                const itemWrapper = document.createElement('div');
+                itemWrapper.className = `gallery-item ${getGridPositionClasses(itemData.cells)}`;
+                const link = document.createElement('a');
+                link.href = itemData.link;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                let mediaElement;
+                const mediaPath = `${itemData.pathPrefix}${itemData.fileName}`;
+                if (itemData.type === 'image') {
+                    mediaElement = document.createElement('img');
+                    mediaElement.src = mediaPath;
+                    mediaElement.alt = itemData.altText;
+                    mediaElement.onerror = function() {
+                        this.onerror = null;
+                        this.src = `https://placehold.co/${itemWrapper.offsetWidth || 200}x${itemWrapper.offsetHeight || 200}/FFFFFF/1F2937?text=${encodeURIComponent(itemData.fileName)}`;
+                    };
+                } else if (itemData.type === 'video') {
+                    mediaElement = document.createElement('video');
+                    mediaElement.src = mediaPath;
+                    mediaElement.alt = itemData.altText;
+                    mediaElement.muted = true;
+                    mediaElement.preload = 'auto';
+                    mediaElement.setAttribute('playsinline', '');
+
+                    mediaElement.addEventListener('loadedmetadata', function() {
+                        this.currentTime = 0.2;
+                    }, { once: true });
+
+                    mediaElement.addEventListener('mouseover', () => { mediaElement.loop = true; mediaElement.play().catch(e => {}); });
+                    mediaElement.addEventListener('mouseout', () => { mediaElement.loop = false; mediaElement.pause(); });
+                    mediaElement.onerror = function() {
+                        this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
+                    };
+                }
+                if (mediaElement) {
+                    link.appendChild(mediaElement);
+                    itemWrapper.appendChild(link);
+                    container.appendChild(itemWrapper);
+                }
+            });
+        }
+    
+        // すべてのギャラリーを最初に作�E
+        console.log('ギャラリー作�E開姁E);
+        populateGallery('lyric-grid-items-container', lyricMotionItemsData);
+        populateGallery('3dcg-grid-items-container', cgItemsData);
+        populateGallery('graphics-grid-items-container', MotionGraphicsItemsData);
+        populateGallery('logo-grid-items-container', logoDesignItemsData);
+        populateGallery('independent-grid-items-container', independentProductionItemsData);
+        console.log('ギャラリー作�E完亁E);
+
+
+    
+    // --- ローチE��ング画面の制御 ---
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const progressBar = document.getElementById('loading-progress-bar');
+    const percentageText = document.getElementById('loading-percentage');
+    const mainContent = document.getElementById('main-content');
+
+    console.log('ローチE��ング要素チェチE��:', {
+        loadingOverlay: !!loadingOverlay,
+        progressBar: !!progressBar,
+        percentageText: !!percentageText,
+        mainContent: !!mainContent
+    });
+
+    // 読み込み中はスクロールを禁止
+    document.body.style.overflow = 'hidden';
+
+    // DOM更新を征E��ため、少し遁E��してからアセチE��を取征E
+    setTimeout(() => {
+        console.log('アセチE��取得開姁E);
+        // 読み込むべき画像と動画をすべて取征E(src属性がなぁE��のめE�Eレースホルダーは除夁E
+        const assets = Array.from(document.querySelectorAll('img, video')).filter(el => {
+            const src = el.src || el.currentSrc;
+            return src && !src.includes('placehold.co');
+        });
+
+        console.log('取得したアセチE��数:', assets.length);
+        startLoadingProcess(assets);
+    }, 100);
+
+    function startLoadingProcess(assets) {
+
+    function startLoadingProcess(assets) {
+        console.log('startLoadingProcess開姁E);
+        let loadedCount = 0;
+        const totalAssets = assets.length;
+
+        // 読み込むアセチE��がなぁE��合�E即時表示
+        if (totalAssets === 0) {
+            console.log('アセチE��ぁE個�Eため即座に表示');
+            hideLoadingScreenAndInit();
+            return;
+        }
+
+        console.log('ローチE��ング処琁E��姁E- 総アセチE��数:', totalAssets);
+
+        // アセチE��ぁEつ読み込まれるた�Eに呼ばれる関数
+        function assetLoaded() {
+            loadedCount++;
+            const percentage = totalAssets > 0 ? Math.round((loadedCount / totalAssets) * 100) : 100;
+            progressBar.style.width = percentage + '%';
+            percentageText.textContent = percentage + '%';
+            console.log(`読み込み進捁E ${loadedCount}/${totalAssets} (${percentage}%)`);
+
+            // すべてのアセチE��が読み込まれたらローチE��ング画面を非表示にする
+            if (loadedCount >= totalAssets) {
+                console.log('全アセチE��読み込み完亁E);
+                setTimeout(hideLoadingScreenAndInit, 300); // 100%表示を少し見せるためE��延
+            }
+        }
+
+        // 吁E��セチE��にロード完亁E��ベントリスナ�Eを設宁E
+        assets.forEach(asset => {
+            if (asset.tagName.toLowerCase() === 'img') {
+                if (asset.complete) {
+                    assetLoaded();
+                } else {
+                    asset.onload = assetLoaded;
+                    asset.onerror = assetLoaded; // エラーでも読み込み完亁E��して扱ぁE
+                }
+            } else if (asset.tagName.toLowerCase() === 'video') {
+                if (asset.readyState >= 3) { // HAVE_FUTURE_DATA
+                    assetLoaded();
+                } else {
+                    asset.oncanplaythrough = assetLoaded;
+                    asset.onerror = assetLoaded; // エラーでも読み込み完亁E��して扱ぁE
+                }
+            }
+        });
+    }
+
+    // ローチE��ング画面を非表示にし、サイト�E初期化�E琁E��呼び出す関数
+    function hideLoadingScreenAndInit() {
+        loadingOverlay.style.opacity = '0';
+        loadingOverlay.addEventListener('transitionend', () => {
+            loadingOverlay.style.display = 'none';
+        });
+
+        // メインコンチE��チE��表示し、スクロールを許可
+        mainContent.style.visibility = 'visible';
+        document.body.style.overflow = 'auto';
+
+        initializeApp(); // サイト�Eメインの初期化�E琁E
+    }
+
+    // --- サイト�Eメインの初期化�E琁E---
+    function initializeApp() {
+        // メニューの刁E��替ぁE
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu-nav');
+        const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+
+        if (hamburgerButton && mobileMenu) {
+            hamburgerButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+            });
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+        }
+
+        // --- お問ぁE��わせフォームと確認モーダルのロジチE�� ---
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const submitConfirmButton = document.getElementById('submit-confirm-button');
+        const cancelButton = document.getElementById('cancel-button');
+        const contactForm = document.getElementById('contact-form');
+
+        if (contactForm && confirmationModal) {
+            const nameInput = document.getElementById('name');
+            
+            const detailsInput = document.getElementById('consultation-details');
+            const budgetInput = document.getElementById('budget');
+            const cgUsageInput = document.getElementById('cg-usage');
+            const deliveryDateInput = document.getElementById('delivery-date');
+            const songLengthInput = document.getElementById('song-length');
+            const referenceInput = document.getElementById('reference');
+            const emailInput = document.getElementById('email');
+            const accountInput = document.getElementById('account');
+            const otherNotesInput = document.getElementById('other-notes');
+            const subjectInput = document.getElementById('email-subject');
+
+            const confirmName = document.getElementById('confirm-name');
+            
+            const confirmDetails = document.getElementById('confirm-consultation-details');
+            const confirmBudget = document.getElementById('confirm-budget');
+            const confirmCgUsage = document.getElementById('confirm-cg-usage');
+            const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
+            const confirmSongLength = document.getElementById('confirm-song-length');
+            const confirmReference = document.getElementById('confirm-reference');
+            const confirmEmail = document.getElementById('confirm-email');
+            const confirmAccount = document.getElementById('confirm-account');
+            const confirmOtherNotes = document.getElementById('confirm-other-notes');
+
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                if (!contactForm.checkValidity()) {
+                    contactForm.reportValidity();
+                    return;
+                }
+                subjectInput.value = `、E{nameInput.value || '名前未入劁E}, ${budgetInput.value || '予算未入劁E}】�Eームペ�Eジから依頼が�Eりました。`;
+                confirmName.textContent = nameInput.value || '未入劁E;
+                confirmDetails.textContent = detailsInput.value || '未入劁E;
+                confirmBudget.textContent = budgetInput.value || '未入劁E;
+                confirmCgUsage.textContent = cgUsageInput.options[cgUsageInput.selectedIndex].text || '未選抁E;
+                confirmDeliveryDate.textContent = deliveryDateInput.value || '未入劁E;
+                confirmSongLength.textContent = songLengthInput.value || '未入劁E;
+                confirmReference.textContent = referenceInput.value || '未入劁E;
+                confirmEmail.textContent = emailInput.value || '未入劁E;
+                confirmAccount.textContent = accountInput.value || '未入劁E;
+                confirmOtherNotes.textContent = otherNotesInput.value || '未入劁E;
+                confirmationModal.classList.remove('hidden');
+            });
+
+            submitConfirmButton.addEventListener('click', function() {
+                contactForm.submit();
+            });
+
+            cancelButton.addEventListener('click', function() {
+                confirmationModal.classList.add('hidden');
+            });
+        }
+
+        // populateGallery('lyric-grid-items-container', lyricMotionItemsData);
+        
+        // populateGallery('3dcg-grid-items-container', cgItemsData);
+        // populateGallery('graphics-grid-items-container', MotionGraphicsItemsData);
+        // populateGallery('logo-grid-items-container', logoDesignItemsData);
+        // populateGallery('independent-grid-items-container', independentProductionItemsData);
+        
+
+        const allGalleryItems = document.querySelectorAll('.gallery-item');
+        const titleDisplayElement = document.getElementById('gallery-item-title-display');
+        if (allGalleryItems.length > 0 && titleDisplayElement) {
+            allGalleryItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const media = item.querySelector('img, video');
+                    if (media && media.alt) {
+                        titleDisplayElement.textContent = media.alt;
+                        titleDisplayElement.style.opacity = '1';
+                        titleDisplayElement.style.visibility = 'visible';
+                    }
+                });
+                item.addEventListener('mouseleave', () => {
+                    titleDisplayElement.style.opacity = '0';
+                    titleDisplayElement.style.visibility = 'hidden';
+                });
+            });
+        }
+
+        const tabButtons = Array.from(document.querySelectorAll('.gallery-tab-button'));
+        const prevButton = document.getElementById('gallery-prev-button');
+        const nextButton = document.getElementById('gallery-next-button');
+        let currentTabIndex = tabButtons.findIndex(button => button.classList.contains('active-tab'));
+        currentTabIndex = currentTabIndex === -1 ? 0 : currentTabIndex;
+
+        function updateTabs(newIndex) {
+            if (newIndex < 0 || newIndex >= tabButtons.length) return;
+            const oldTabId = tabButtons[currentTabIndex].dataset.tab;
+            document.getElementById(oldTabId + '-content').classList.remove('active');
+            tabButtons[currentTabIndex].classList.remove('active-tab');
+            currentTabIndex = newIndex;
+            const newTabId = tabButtons[currentTabIndex].dataset.tab;
+            document.getElementById(newTabId + '-content').classList.add('active');
+            tabButtons[currentTabIndex].classList.add('active-tab');
+        }
+
+        tabButtons.forEach((button, index) => button.addEventListener('click', () => updateTabs(index)));
+        prevButton.addEventListener('click', () => updateTabs((currentTabIndex - 1 + tabButtons.length) % tabButtons.length));
+        nextButton.addEventListener('click', () => updateTabs((currentTabIndex + 1) % tabButtons.length));
+        if(tabButtons[currentTabIndex]) updateTabs(currentTabIndex);
+
+        const lightGreenThemeColors = ['rgba(193, 217, 199, 0.8)', 'rgba(218, 232, 221, 0.8)', 'rgba(167, 201, 176, 0.7)', 'rgba(141, 185, 153, 0.8)', 'rgba(229, 239, 233, 0.8)'];
+        const lightGreenThemeBorders = ['rgba(193, 217, 199, 1)', 'rgba(218, 232, 221, 1)', 'rgba(167, 201, 176, 1)', 'rgba(141, 185, 153, 1)', 'rgba(229, 239, 233, 1)'];
+        const commonChartOptions = {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#374151' }},
+                title: { display: true, font: { size: 16 }, color: '#1F2937' },
+                tooltip: { callbacks: { label: context => '' } }
+            },
+            animation: { animateScale: true, animateRotate: true, duration: 1500 }
+        };
+
+        const requestRatioChartConfig = {
+            type: 'pie',
+            data: {
+                labels: ['オリジナル楽曲MV制佁E, '歌ってみたMV制佁E, 'ショートムービ�E制佁E, 'そ�E仁E],
+                datasets: [{
+                    label: '依頼冁E��の割吁E, data: [],
+                    backgroundColor: lightGreenThemeColors,
+                    borderColor: lightGreenThemeBorders,
+                    borderWidth: 1
+                }]
+            },
+            options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: '依頼冁E��の割吁E } } }
+        };
+
+        let requestRatioChartInstance = null;
+        let allHistoryData = [];
+
+        function renderHistory() {
+            const historyListContainer = document.getElementById('history-list-container');
+            if (!historyListContainer) return;
+            historyListContainer.innerHTML = '';
+            const itemsToRender = allHistoryData.slice(0, 3);
+            itemsToRender.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'history-item';
+                itemDiv.innerHTML = `<div class="flex-grow"><p class="title">${item.title}</p><p class="artist">${item.artist}</p></div><div class="text-right"><p class="date">${item.date}</p><p class="type">${item.type}</p></div>`;
+                historyListContainer.appendChild(itemDiv);
+            });
+        }
+
+        function parseCsvAndRenderCharts(csvText) {
+            const lines = csvText.trim().split('\n');
+            const dataRows = lines.slice(1);
+            const parsedData = dataRows.map(line => {
+                const values = line.split(',');
+                return values.length >= 10 ? {
+                    client: (values[0] || '').trim(), title: (values[1] || '').trim(),
+                    releaseDate: (values[2] || '').trim(), requestContent: (values[3] || '').trim(),
+                    cgUsageCol4: (values[4] || '').trim(), link: (values[5] || '').trim(),
+                    cgUsageCol9: (values[9] || '').trim()
+                } : null;
+            }).filter(Boolean);
+
+            const requestCounts = { 'オリジナル楽曲MV制佁E: 0, '歌ってみたMV制佁E: 0, 'ショートムービ�E制佁E: 0, 'そ�E仁E: 0};
+            parsedData.forEach(item => {
+                if (requestCounts.hasOwnProperty(item.requestContent)) {
+                    requestCounts[item.requestContent]++;
+                } else { requestCounts['そ�E仁E]++; }
+            });
+
+            const requestChartCanvas = document.getElementById('requestRatioChart');
+            if (requestChartCanvas) {
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        if (requestRatioChartInstance) requestRatioChartInstance.destroy();
+                        const requestData = [requestCounts['オリジナル楽曲MV制佁E], requestCounts['歌ってみたMV制佁E], requestCounts['ショートムービ�E制佁E], requestCounts['そ�E仁E]];
+                        requestRatioChartConfig.data.datasets[0].data = requestData;
+                        requestRatioChartInstance = new Chart(requestChartCanvas, requestRatioChartConfig);
+                        observer.disconnect();
+                    }
+                }, { threshold: 0.5 });
+                observer.observe(requestChartCanvas);
+            }
+
+            allHistoryData = parsedData.map(item => ({
+                artist: item.client, title: item.title, date: item.releaseDate, type: item.requestContent
+            })).sort((a, b) => new Date(b.date) - new Date(a.date));
+            renderHistory();
+        }
+
+        async function loadCsvData() {
+            try {
+                const response = await fetch('data/utugi_works.csv');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const csvText = await response.text();
+                parseCsvAndRenderCharts(csvText);
+            } catch (error) {
+                console.error('CSVチE�Eタの読み込みまた�Eパ�Eス中にエラーが発生しました:', error);
+                const dataSection = document.getElementById('data');
+                if (dataSection) {
+                    const errorMessage = document.createElement('p');
+                    errorMessage.className = 'text-center text-red-500 mt-4';
+                    errorMessage.textContent = 'チE�Eタ表示に失敗しました、E;
+                    dataSection.querySelector('.container').appendChild(errorMessage);
+                }
+            }
+        }
+
+        loadCsvData();
+    }
+});

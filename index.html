@@ -8,284 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* 基本フォント設定とスムーズスクロール */
-        body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        /* ▼▼▼ 追加 ▼▼▼ */
-        /* ローディング画面 */
-        #loading-overlay {
-            transition: opacity 0.5s ease-out;
-        }
-        /* ▲▲▲ 追加 ▲▲▲ */
-
-        /* セクション区切り線のスタイル */
-        .section-title-line {
-            display: block;
-            width: 80%;
-            height: 1px;
-            background-color: #D1D5DB; /* Tailwind gray-300 */
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Unified Section Title Styling */
-        .section-main-title .first-letter {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 4rem;
-            line-height: 1;
-            color: inherit;
-            font-weight: inherit;
-        }
-        .section-main-title .rest-of-title {
-            font-size: inherit;
-            line-height: inherit;
-            vertical-align: baseline;
-            color: inherit;
-            font-weight: inherit;
-        }
-
-        /* Gallery Tab Styling */
-        .gallery-tab-button {
-            padding: 0.5rem 1rem;
-            margin: 0.25rem;
-            font-size: 0.875rem;
-            color: #6B7280;
-            background-color: transparent;
-            border: 2px solid transparent;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .gallery-tab-button:hover {
-            color: #1F2937;
-        }
-        .gallery-tab-button.active-tab {
-            color: #10B981;
-            font-weight: 600;
-            border-bottom: 2px solid #10B981;
-            border-radius: 0;
-        }
-        .tabs-container-bottom-line::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #E5E7EB;
-            margin-top: 0.5rem;
-        }
-
-        /* Gallery Content Area Styling */
-        .gallery-content-area {
-            padding: 1.5rem;
-            margin-top: 1rem;
-            background-image: url('resources/images/wall_water.png'); /* 既存の背景画像設定 */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            position: relative;
-
-            max-width: 90%; /* または親要素に対する割合で指定も可能です */
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Gallery Item Styling */
-        .gallery-item {
-            border: 1px solid #E5E7EB;
-            display: block;
-            font-size: 0.75rem;
-            text-align: center;
-            overflow: hidden;
-            background-color: #FFFFFF;
-            border-radius: 0.375rem;
-            transition: transform 0.2s ease-in-out;
-            position: relative;
-        }
-        .gallery-item a, .gallery-item img, .gallery-item video {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-        .gallery-item:hover {
-            transform: scale(1.03);
-        }
-        .gallery-item img, .gallery-item video {
-            object-fit: cover;
-        }
-
-        /* Gallery Navigation Arrows Styling */
-        .gallery-nav-arrows {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.5rem;
-            padding: 0.5rem 1rem;
-            position: relative; /* Added for title positioning */
-        }
-        .gallery-arrow-button {
-            background-color: #E5E7EB;
-            color: #374151;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .gallery-arrow-button:hover {
-            background-color: #D1D5DB;
-            color: #1F2937;
-        }
-        .gallery-arrow-button svg {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-
-        /* ▼▼▼ 変更 ▼▼▼ */
-        .gallery-item-title-display {
-            background-color: #FFFFFF; /* white */
-            color: #1F2937; /* gray-800 */
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-align: center;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-            opacity: 0; /* Hidden by default */
-            visibility: hidden; /* Hidden by default */
-            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out; /* Add transition */
-            min-width: 240px;
-            pointer-events: none; /* ホバー時にタイトルが表示されても下のボタンが押せるように */
-        }
-        /* ▲▲▲ 変更 ▲▲▲ */
-
-        /* タブコンテンツの表示・非表示 */
-        .tab-content {
-            display: none;
-            margin-bottom: 10%;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        /* ヘッダーの高さ分のオフセット */
-        section[id] {
-            scroll-margin-top: 6rem;
-        }
-
-        /* Custom style for gallery tab content titles on sm screens and up */
-        @media (min-width: 640px) {
-            .gallery-content-area .tab-content h3 {
-                font-family: 'Californian FB', serif;
-                font-size: 3.5rem;
-                line-height: 6rem;
-                color: white;
-                -webkit-text-stroke-width: 0.1px;
-                -webkit-text-stroke-color: black;
-            }
-            .sm\:px-14 { /* Custom class for 3.5rem padding */
-                padding-left: 3.5rem;
-                padding-right: 3.5rem;
-            }
-        }
-        /* History list styling */
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #E5E7EB;
-        }
-        .history-item:last-child {
-            border-bottom: none;
-        }
-        .history-item .title {
-            font-weight: 500;
-            color: #374151;
-        }
-        .history-item .artist {
-            color: #6B7280;
-            font-size: 0.875rem;
-        }
-        .history-item .date, .history-item .type {
-            font-size: 0.875rem;
-            color: #4B5563;
-            white-space: nowrap;
-        }
-        .history-item > div {
-            margin-right: 1rem;
-        }
-        .history-item > div:last-child {
-            margin-right: 0;
-        }
-
-        /* Data section individual area styling */
-        .data-area-block {
-            background-color: #F9FAFB;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-bottom: 2rem;
-        }
-        .data-area-block:last-child {
-            margin-bottom: 0;
-        }
-        /* Footer SNS icons */
-        .footer-sns-icons img {
-            width: 40px;
-            height: 24px;
-            transition: opacity 0.3s ease;
-            object-fit: contain;
-        }
-        .footer-sns-icons a:hover img {
-            opacity: 0.7;
-        }
-        /* Hamburger Menu Styling */
-        .mobile-menu {
-            display: none; /* Hidden by default */
-            position: absolute;
-            top: 6rem; /* Below header */
-            left: 0;
-            right: 0;
-            background-color: black; /* Match header */
-            padding: 1rem 0;
-            z-index: 40; /* Below header's z-index */
-        }
-        .mobile-menu.active {
-            display: block;
-        }
-        .mobile-menu a {
-            display: block;
-            padding: 0.75rem 1.5rem; /* py-3 px-6 */
-            text-align: center;
-            color: white;
-            border-bottom: 1px solid #374151; /* gray-700 for separator */
-        }
-        .mobile-menu a:last-child {
-            border-bottom: none;
-        }
-        .mobile-menu a:hover {
-            background-color: #1F2937; /* gray-800 for hover */
-        }
-        .text-gray-500 {
-            --tw-text-opacity: 1;
-            color: rgb(107 114 128 / var(--tw-text-opacity, 1));
-            margin: 40px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -481,16 +204,28 @@
                         <p class="text-gray-600 text-base sm:text-lg mt-2">お問い合わせ</p>
                         <span class="section-title-line mt-4 sm:mt-6"></span>
                     </div>
-                    <p class="text-center text-gray-500 mt-1">受付状態 : 
+                    <p class="text-center text-gray-500 mt-1 mb-4">受付状態 : 
                         <!-- <span class="text-red-600 font-semibold">受付中</span> -->
                         <span class="text-red-600 font-semibold">受付中</span>
                         <span class="font-semibold">(最短納期は2月上旬～)</span>
                         <!-- <span class="text-red-600 font-semibold">要相談</span> -->
                         <!-- <span class="text-red-600 font-semibold">停止中</span> -->
                     (2025.12.21更新)</p>
+                    
+                    <p class="text-center text-sm text-gray-600 mb-6">
+                        ご依頼はメールでも受け付けております。
+                        <span class="relative inline-block">
+                            <button type="button" id="copy-email-btn" class="email-copy-button" title="クリックでコピー">
+                                utugi0313@gmail.com
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="copy-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+                                </svg>
+                            </button>
+                            <span id="copy-feedback" class="copy-feedback">コピーしました！</span>
+                        </span>
+                    </p>
+
                     <div class="max-w-xl mx-auto bg-gray-50 p-6 sm:p-8 rounded-lg shadow-xl">
-                        <p class="text-gray-700 text-center mb-6">ご依頼はメール(utugi0313@gmail.com)でも受け付けております。</p>
-                        
                         <!-- 
                         【設定箇所】
                         actionのURLを、Formspreeで取得したものに書き換えてください。
@@ -505,50 +240,89 @@
                             <input type="hidden" name="依頼内容詳細" value="---">
 
                             <div class="mb-4">
-                                <label for="name" class="inline-block text-sm font-medium text-gray-700 mb-1">お名前 (Name)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <input type="text" name="依頼主" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">お名前<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <input type="text" name="依頼主" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                </div>
                             </div>
                             
                             <div class="mb-6">
-                                <label for="consultation-details" class="inline-block text-sm font-medium text-gray-700 mb-1">ご依頼内容 (Consultation Details)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <textarea name="ご依頼内容" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
+                                <label for="consultation-details" class="block text-sm font-medium text-gray-700 mb-2">ご依頼内容<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <textarea name="ご依頼内容" id="consultation-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="オリジナル楽曲MV制作、クロスフェード映像制作など。" required></textarea>
+                                </div>
                             </div>
                             <div class="mb-4">
-                                <label for="budget" class="inline-block text-sm font-medium text-gray-700 mb-1">ご予算 (Budget)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <input type="text" name="ご予算" id="budget" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="MV制作は5万円〜" required>
+                                <label for="budget" class="block text-sm font-medium text-gray-700 mb-2">ご予算<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <input type="text" name="ご予算" id="budget" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="MV制作は5万円～" required>
+                                </div>
                             </div>
                             <div class="mb-4">
-                                <label for="cg-usage" class="inline-block text-sm font-medium text-gray-700 mb-1">CGの使用度合い (CG Usage)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <select name="CGの使用度合い" id="cg-usage" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
-                                    <option value="">選択してください</option>
-                                    <option value="フル3D (サビを含め曲全体で3DCGがメイン)">フル3D (サビを含め曲全体で3DCGがメイン)</option>
-                                    <option value="中程度">中程度</option>
-                                    <option value="一部・無し">一部・無し</option>
-                                </select>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">CGの使用度合い<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4 flex flex-col gap-2">
+                                    <label class="flex items-center gap-2">
+                                        <input type="radio" name="CGの使用度合い" value="フル3D" required>
+                                        <span>フル3D</span>
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="radio" name="CGの使用度合い" value="中程度（サビのみ等）" required>
+                                        <span>中程度（サビのみ等）</span>
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="radio" name="CGの使用度合い" value="一部・無し" required>
+                                        <span>一部・無し</span>
+                                    </label>
+                                </div>
                             </div>
                             <div class="mb-4">
-                                <label for="delivery-date" class="inline-block text-sm font-medium text-gray-700 mb-1">納期 (Delivery Date)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <input type="text" name="納期" id="delivery-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                <label for="delivery-date" class="block text-sm font-medium text-gray-700 mb-2">納期<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <input type="text" name="納期" id="delivery-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                </div>
                             </div>
                             <div class="mb-4">
-                                <label for="song-length" class="inline-block text-sm font-medium text-gray-700 mb-1">曲尺 (Song Length)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <input type="text" name="曲尺" id="song-length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                <label for="song-length" class="block text-sm font-medium text-gray-700 mb-2">曲尺<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <input type="text" name="曲尺" id="song-length" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                </div>
                             </div>
                             <div class="mb-6">
-                                <label for="reference" class="inline-block text-sm font-medium text-gray-700 mb-1">リファレンス (Reference)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <textarea name="リファレンス" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など（可能ならば3つ以上）。"></textarea>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">リファレンス<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4 flex flex-col gap-2">
+                                    <label class="flex items-center gap-2">
+                                        <input type="radio" name="リファレンス有無" value="あり" id="reference-yes" required>
+                                        <span>あり</span>
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="radio" name="リファレンス有無" value="なし（修正なし、完全お任せ）" id="reference-no" required>
+                                        <span>なし（修正なし、完全お任せ）</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="reference-details" class="mb-6 pl-4" style="display: none;">
+                                <p class="text-sm text-gray-600 mb-2">
+                                    リファレンスを入力する際は<a href="https://docs.google.com/document/d/1y_QzzIO0bPoqao0MhP2XENRZFOSLPsI5LIsOUWQaFjM/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:text-emerald-700 underline">リファレンスについて</a>をご一読ください。
+                                </p>
+                                <textarea name="リファレンス詳細" id="reference" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="参考にしてほしい映像の表現や動画「〇〇のMVの〇分〇秒」など（可能ならば3つ以上）。"></textarea>
                             </div>
                             <div class="mb-4">
-                                <label for="email" class="inline-block text-sm font-medium text-gray-700 mb-1">メールアドレス (Email Address)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <input type="email" name="返信先メールアドレス" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">メールアドレス<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <input type="email" name="返信先メールアドレス" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" required>
+                                </div>
                             </div>
                             <div class="mb-6">
-                                <label for="account" class="inline-block text-sm font-medium text-gray-700 mb-1">活動アカウント (X, YouTube) (Accounts)</label><span class="text-red-600 font-semibold text-xs ml-1">*</span>
-                                <input name="活動アカウント" id="account" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="お持ちでない場合は「無し」とお書きください。">
+                                <label for="account" class="block text-sm font-medium text-gray-700 mb-2">活動アカウント (X, YouTube)<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>
+                                <div class="pl-4">
+                                    <input name="活動アカウント" id="account" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="お持ちでない場合は「無し」とお書きください。">
+                                </div>
                             </div>
                             <div class="mb-6">
-                                <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-1">その他 (Other Notes)</label>
-                                <textarea name="その他" id="other-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
+                                <label for="other-notes" class="block text-sm font-medium text-gray-700 mb-2">その他</label>
+                                <div class="pl-4">
+                                    <textarea name="その他" id="other-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500"></textarea>
+                                </div>
                             </div>
                             <div>
                                 <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">送信</button>
@@ -608,423 +382,8 @@
             <p class="text-sm">© 2024 空木/utugi. All Rights Reserved.</p>
         </footer>
     </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    <script src="js/galleryData.js"></script>
+    <script src="js/main.js"></script>
 
-        // --- ギャラリーアイテムデータ ---
-            const cgItemsData = [
-                { type: 'video', fileName: 'nurumayu.mp4', altText: 'Level 37、ぬるま湯と烏。 / Sera。', link: 'https://www.youtube.com/watch?v=me_tPVG_06E', cells: [1,2], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'pastel.mp4', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [3, 4, 5, 8, 9, 10], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'cyan.mp4', altText: '総べてシアン / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=jpvf1JqjGf4', cells: [6, 7, 11, 12], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'tukikage.mp4', altText: '月影見し海 / urumeiwashi', link: 'https://www.youtube.com/watch?v=mGBy8PUflyI', cells: [13, 14], pathPrefix: 'resources/3dcg/' },
-                { type: 'video', fileName: 'yumeikaga.mp4', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [15], pathPrefix: 'resources/3dcg/' }
-                
-            ];
-            const lyricMotionItemsData = [
-                { type: 'video', fileName: 'hell.mp4', altText: '【二次創作】ヘルライクヘヴン / shikisai', link: 'https://www.youtube.com/watch?v=doOi2dS_Wrk', cells: [1, 2], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'astronauts.mp4', altText: 'アストロノーツ・テレキャスター / memex', link: 'https://www.youtube.com/watch?v=0inHMl2SktY', cells: [3, 4], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'septentrio.mp4', altText: 'セプテントリオー / Sera。 ', link: 'https://www.youtube.com/watch?v=_UKNvO-7ROo', cells: [5], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'reflection_fire.mp4', altText: 'Reflection FIRE / Eye feat.つぐ', link: 'https://www.youtube.com/watch?v=TQ9kBxxaQbc', cells: [6, 7, 8, 11, 12, 13], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'open_ur.mp4', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [9,10], pathPrefix: 'resources/lyric_motion/' },
-                { type: 'video', fileName: 'utakata_shima.mp4', altText: 'ウタカタララバイ / 島爺（cover）', link: 'https://x.com/utugi313/status/1862043754426949942/video/1', cells: [14, 15], pathPrefix: 'resources/lyric_motion/' }
-            ];
-
-            const MotionGraphicsItemsData = [
-                { type: 'video', fileName: 'self_251010_design.mp4', altText: '【自主制作】2025/10/10', link: 'https://x.com/utugi313/status/1976560485433819197?s=20', cells: [1, 6], pathPrefix: 'resources/motion_graphics/' },
-                { type: 'video', fileName: 'self_251026.mp4', altText: '【自主制作】2025/10/26', link: 'https://x.com/utugi313/status/1982295977202786499?s=20', cells: [2, 3], pathPrefix: 'resources/motion_graphics/' },
-                { type: 'video', fileName: 'self_251103.mp4', altText: '【自主制作】2025/11/03', link: 'https://x.com/utugi313/status/1985225430417178690?s=20', cells: [4, 5], pathPrefix: 'resources/motion_graphics/' },
-                { type: 'video', fileName: 'ego_rock.mp4', altText: '【二次創作】エゴロック / すりぃ', link: 'https://www.youtube.com/watch?v=D4bpqkqgy8c', cells: [7, 8, 9, 12, 13, 14], pathPrefix: 'resources/motion_graphics/' },
-                { type: 'video', fileName: 'pastel.mp4', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [11], pathPrefix: 'resources/motion_graphics/' },
-                { type: 'video', fileName: 'self_251015_night.mp4', altText: '【自主制作】2025/10/15', link: 'https://x.com/utugi313/status/1978369480448147663?s=20', cells: [10, 15], pathPrefix: 'resources/motion_graphics/' }
-            ];
-
-            const logoDesignItemsData = [
-                { type: 'image', fileName: 'yumeikaga.jpg', altText: '夢如何 / めんま', link: 'https://www.youtube.com/watch?v=GxAioK4PBLQ', cells: [1, 2], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'gen.png', altText: '眩 / ユアネス', link: 'https://www.youtube.com/watch?v=IvDIGdqnWbY', cells: [3, 8], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'mieterudake.png', altText: '見えてるだけ / szri', link: 'https://www.youtube.com/watch?v=i-qSBGMxeuA', cells: [4, 5], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'open_ur.jpg', altText: 'Øpen Ur / Eye＆ど～ぱみん', link: 'https://www.youtube.com/watch?v=10YaDSMg9Ng', cells: [6, 7, 11, 12], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'pastel.jpg', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [9, 10], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'nurumayu.png', altText: 'Level 37、ぬるま湯と烏。 / Sera。', link: 'https://www.youtube.com/watch?v=me_tPVG_06E', cells: [13, 14], pathPrefix: 'resources/logo/' },
-                { type: 'image', fileName: 'unravel.png', altText: 'unravel / 音ノ乃のの（cover）', link: 'https://www.youtube.com/watch?v=u5RRk9DZs3M', cells: [15], pathPrefix: 'resources/logo/' }
-            ];
-            const independentProductionItemsData = [
-                { type: 'video', fileName: 'sizumu.mp4', altText: '【二次創作】沈沈沈沈沈沈… / Ruliea', link: 'https://www.youtube.com/watch?v=l9WJpH_DePI', cells: [1,2,3,6,7,8], pathPrefix: 'resources/fan_fiction/' },
-                { type: 'video', fileName: 'utsutsu.mp4', altText: '【二次創作】うつつと空の放送 / 凍傷のエト', link: 'https://www.youtube.com/watch?v=2PkiTNbfzeU', cells: [4,5], pathPrefix: 'resources/fan_fiction/' },
-                { type: 'video', fileName: 'goodbye.mp4', altText: '【二次創作】グッバイ宣言 / Chinozo', link: 'https://www.youtube.com/watch?v=n9zThB7ibog', cells: [11, 12], pathPrefix: 'resources/fan_fiction/' },
-                { type: 'video', fileName: 'moumoku.mp4', altText: '【二次創作】盲目の怪物 / ひらぎ', link: 'https://www.youtube.com/watch?v=0Pli20EHCBw', cells: [9,10,14,15], pathPrefix: 'resources/fan_fiction/' },
-                { type: 'video', fileName: 'tomadoi.mp4', altText: '【二次創作】戸惑いテレパシー / 花譜', link: 'https://www.youtube.com/watch?v=uE0-bkGXWRs', cells: [13], pathPrefix: 'resources/fan_fiction/' }
-            ];
-
-            function getGridPositionClasses(cells) {
-                const numRows = 3, numCols = 5;
-                let minRow = numRows + 1, maxRow = 0, minCol = numCols + 1, maxCol = 0;
-                cells.forEach(cellNumber => {
-                    const row = Math.floor((cellNumber - 1) / numCols) + 1;
-                    const col = ((cellNumber - 1) % numCols) + 1;
-                    if (row < minRow) minRow = row;
-                    if (row > maxRow) maxRow = row;
-                    if (col < minCol) minCol = col;
-                    if (col > maxCol) maxCol = col;
-                });
-                return `col-start-${minCol} col-span-${maxCol - minCol + 1} row-start-${minRow} row-span-${maxRow - minRow + 1}`;
-            }
-
-            function populateGallery(containerId, itemsData) {
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                container.innerHTML = '';
-                itemsData.forEach(itemData => {
-                    const itemWrapper = document.createElement('div');
-                    itemWrapper.className = `gallery-item ${getGridPositionClasses(itemData.cells)}`;
-                    const link = document.createElement('a');
-                    link.href = itemData.link;
-                    link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
-                    let mediaElement;
-                    const mediaPath = `${itemData.pathPrefix}${itemData.fileName}`;
-                    if (itemData.type === 'image') {
-                        mediaElement = document.createElement('img');
-                        mediaElement.src = mediaPath;
-                        mediaElement.alt = itemData.altText;
-                        mediaElement.onerror = function() {
-                            this.onerror = null;
-                            this.src = `https://placehold.co/${itemWrapper.offsetWidth || 200}x${itemWrapper.offsetHeight || 200}/FFFFFF/1F2937?text=${encodeURIComponent(itemData.fileName)}`;
-                        };
-                    } else if (itemData.type === 'video') {
-                        mediaElement = document.createElement('video');
-                        mediaElement.src = mediaPath;
-                        mediaElement.alt = itemData.altText;
-                        mediaElement.muted = true;
-                        mediaElement.preload = 'auto';
-                        mediaElement.setAttribute('playsinline', '');
-
-                        mediaElement.addEventListener('loadedmetadata', function() {
-                            this.currentTime = 0.2;
-                        }, { once: true });
-
-                        mediaElement.addEventListener('mouseover', () => { mediaElement.loop = true; mediaElement.play().catch(e => {}); });
-                        mediaElement.addEventListener('mouseout', () => { mediaElement.loop = false; mediaElement.pause(); });
-                        mediaElement.onerror = function() {
-                            this.outerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs p-2">Video not found: ${itemData.fileName}</div>`;
-                        };
-                    }
-                    if (mediaElement) {
-                        link.appendChild(mediaElement);
-                        itemWrapper.appendChild(link);
-                        container.appendChild(itemWrapper);
-                    }
-                });
-            }
-        
-            populateGallery('lyric-grid-items-container', lyricMotionItemsData);
-            // populateGallery('logo-grid-items-container', logoDesignItemsData);
-            // populateGallery('3dcg-grid-items-container', cgItemsData);
-            // populateGallery('independent-grid-items-container', independentProductionItemsData);
-
-
-        
-        // --- ローディング画面の制御 ---
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const progressBar = document.getElementById('loading-progress-bar');
-        const percentageText = document.getElementById('loading-percentage');
-        const mainContent = document.getElementById('main-content');
-
-        // 読み込み中はスクロールを禁止
-        document.body.style.overflow = 'hidden';
-
-        // 読み込むべき画像と動画をすべて取得 (src属性がないものやプレースホルダーは除外)
-        const assets = Array.from(document.querySelectorAll('img, video')).filter(el => {
-            const src = el.src || el.currentSrc;
-            return src && !src.includes('placehold.co');
-        });
-
-        let loadedCount = 0;
-        const totalAssets = assets.length;
-
-        // 読み込むアセットがない場合は即時表示
-        if (totalAssets === 0) {
-            hideLoadingScreenAndInit();
-            return;
-        }
-
-        // アセットが1つ読み込まれるたびに呼ばれる関数
-        function assetLoaded() {
-            loadedCount++;
-            const percentage = totalAssets > 0 ? Math.round((loadedCount / totalAssets) * 100) : 100;
-            progressBar.style.width = percentage + '%';
-            percentageText.textContent = percentage + '%';
-
-            // すべてのアセットが読み込まれたらローディング画面を非表示にする
-            if (loadedCount >= totalAssets) {
-                setTimeout(hideLoadingScreenAndInit, 300); // 100%表示を少し見せるため遅延
-            }
-        }
-
-        // ローディング画面を非表示にし、サイトの初期化処理を呼び出す関数
-        function hideLoadingScreenAndInit() {
-            loadingOverlay.style.opacity = '0';
-            loadingOverlay.addEventListener('transitionend', () => {
-                loadingOverlay.style.display = 'none';
-            });
-
-            // メインコンテンツを表示し、スクロールを許可
-            mainContent.style.visibility = 'visible';
-            document.body.style.overflow = 'auto';
-
-            initializeApp(); // サイトのメインの初期化処理
-        }
-
-        // 各アセットにロード完了イベントリスナーを設定
-        assets.forEach(asset => {
-            if (asset.tagName.toLowerCase() === 'img') {
-                if (asset.complete) {
-                    assetLoaded();
-                } else {
-                    asset.onload = assetLoaded;
-                    asset.onerror = assetLoaded; // エラーでも読み込み完了として扱う
-                }
-            } else if (asset.tagName.toLowerCase() === 'video') {
-                if (asset.readyState >= 3) { // HAVE_FUTURE_DATA
-                    assetLoaded();
-                } else {
-                    asset.oncanplaythrough = assetLoaded;
-                    asset.onerror = assetLoaded; // エラーでも読み込み完了として扱う
-                }
-            }
-        });
-
-        // --- サイトのメインの初期化処理 ---
-        function initializeApp() {
-            // メニューの切り替え
-            const hamburgerButton = document.getElementById('hamburger-button');
-            const mobileMenu = document.getElementById('mobile-menu-nav');
-            const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
-
-            if (hamburgerButton && mobileMenu) {
-                hamburgerButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('active');
-                });
-                mobileMenuLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.remove('active');
-                    });
-                });
-            }
-
-            // --- お問い合わせフォームと確認モーダルのロジック ---
-            const confirmationModal = document.getElementById('confirmation-modal');
-            const submitConfirmButton = document.getElementById('submit-confirm-button');
-            const cancelButton = document.getElementById('cancel-button');
-            const contactForm = document.getElementById('contact-form');
-
-            if (contactForm && confirmationModal) {
-                const nameInput = document.getElementById('name');
-                
-                const detailsInput = document.getElementById('consultation-details');
-                const budgetInput = document.getElementById('budget');
-                const cgUsageInput = document.getElementById('cg-usage');
-                const deliveryDateInput = document.getElementById('delivery-date');
-                const songLengthInput = document.getElementById('song-length');
-                const referenceInput = document.getElementById('reference');
-                const emailInput = document.getElementById('email');
-                const accountInput = document.getElementById('account');
-                const otherNotesInput = document.getElementById('other-notes');
-                const subjectInput = document.getElementById('email-subject');
-
-                const confirmName = document.getElementById('confirm-name');
-                
-                const confirmDetails = document.getElementById('confirm-consultation-details');
-                const confirmBudget = document.getElementById('confirm-budget');
-                const confirmCgUsage = document.getElementById('confirm-cg-usage');
-                const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
-                const confirmSongLength = document.getElementById('confirm-song-length');
-                const confirmReference = document.getElementById('confirm-reference');
-                const confirmEmail = document.getElementById('confirm-email');
-                const confirmAccount = document.getElementById('confirm-account');
-                const confirmOtherNotes = document.getElementById('confirm-other-notes');
-
-                contactForm.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    if (!contactForm.checkValidity()) {
-                        contactForm.reportValidity();
-                        return;
-                    }
-                    subjectInput.value = `【${nameInput.value || '名前未入力'}, ${budgetInput.value || '予算未入力'}】ホームページから依頼が入りました。`;
-                    confirmName.textContent = nameInput.value || '未入力';
-                    confirmDetails.textContent = detailsInput.value || '未入力';
-                    confirmBudget.textContent = budgetInput.value || '未入力';
-                    confirmCgUsage.textContent = cgUsageInput.options[cgUsageInput.selectedIndex].text || '未選択';
-                    confirmDeliveryDate.textContent = deliveryDateInput.value || '未入力';
-                    confirmSongLength.textContent = songLengthInput.value || '未入力';
-                    confirmReference.textContent = referenceInput.value || '未入力';
-                    confirmEmail.textContent = emailInput.value || '未入力';
-                    confirmAccount.textContent = accountInput.value || '未入力';
-                    confirmOtherNotes.textContent = otherNotesInput.value || '未入力';
-                    confirmationModal.classList.remove('hidden');
-                });
-
-                submitConfirmButton.addEventListener('click', function() {
-                    contactForm.submit();
-                });
-
-                cancelButton.addEventListener('click', function() {
-                    confirmationModal.classList.add('hidden');
-                });
-            }
-
-            // populateGallery('lyric-grid-items-container', lyricMotionItemsData);
-            
-            populateGallery('3dcg-grid-items-container', cgItemsData);
-            populateGallery('graphics-grid-items-container', MotionGraphicsItemsData);
-            populateGallery('logo-grid-items-container', logoDesignItemsData);
-            populateGallery('independent-grid-items-container', independentProductionItemsData);
-            
-
-            const allGalleryItems = document.querySelectorAll('.gallery-item');
-            const titleDisplayElement = document.getElementById('gallery-item-title-display');
-            if (allGalleryItems.length > 0 && titleDisplayElement) {
-                allGalleryItems.forEach(item => {
-                    item.addEventListener('mouseenter', () => {
-                        const media = item.querySelector('img, video');
-                        if (media && media.alt) {
-                            titleDisplayElement.textContent = media.alt;
-                            titleDisplayElement.style.opacity = '1';
-                            titleDisplayElement.style.visibility = 'visible';
-                        }
-                    });
-                    item.addEventListener('mouseleave', () => {
-                        titleDisplayElement.style.opacity = '0';
-                        titleDisplayElement.style.visibility = 'hidden';
-                    });
-                });
-            }
-
-            const tabButtons = Array.from(document.querySelectorAll('.gallery-tab-button'));
-            const prevButton = document.getElementById('gallery-prev-button');
-            const nextButton = document.getElementById('gallery-next-button');
-            let currentTabIndex = tabButtons.findIndex(button => button.classList.contains('active-tab'));
-            currentTabIndex = currentTabIndex === -1 ? 0 : currentTabIndex;
-
-            function updateTabs(newIndex) {
-                if (newIndex < 0 || newIndex >= tabButtons.length) return;
-                const oldTabId = tabButtons[currentTabIndex].dataset.tab;
-                document.getElementById(oldTabId + '-content').classList.remove('active');
-                tabButtons[currentTabIndex].classList.remove('active-tab');
-                currentTabIndex = newIndex;
-                const newTabId = tabButtons[currentTabIndex].dataset.tab;
-                document.getElementById(newTabId + '-content').classList.add('active');
-                tabButtons[currentTabIndex].classList.add('active-tab');
-            }
-
-            tabButtons.forEach((button, index) => button.addEventListener('click', () => updateTabs(index)));
-            prevButton.addEventListener('click', () => updateTabs((currentTabIndex - 1 + tabButtons.length) % tabButtons.length));
-            nextButton.addEventListener('click', () => updateTabs((currentTabIndex + 1) % tabButtons.length));
-            if(tabButtons[currentTabIndex]) updateTabs(currentTabIndex);
-
-            const lightGreenThemeColors = ['rgba(193, 217, 199, 0.8)', 'rgba(218, 232, 221, 0.8)', 'rgba(167, 201, 176, 0.7)', 'rgba(141, 185, 153, 0.8)', 'rgba(229, 239, 233, 0.8)'];
-            const lightGreenThemeBorders = ['rgba(193, 217, 199, 1)', 'rgba(218, 232, 221, 1)', 'rgba(167, 201, 176, 1)', 'rgba(141, 185, 153, 1)', 'rgba(229, 239, 233, 1)'];
-            const commonChartOptions = {
-                responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { color: '#374151' }},
-                    title: { display: true, font: { size: 16 }, color: '#1F2937' },
-                    tooltip: { callbacks: { label: context => '' } }
-                },
-                animation: { animateScale: true, animateRotate: true, duration: 1500 }
-            };
-
-            const requestRatioChartConfig = {
-                type: 'pie',
-                data: {
-                    labels: ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作', 'その他'],
-                    datasets: [{
-                        label: '依頼内容の割合', data: [],
-                        backgroundColor: lightGreenThemeColors,
-                        borderColor: lightGreenThemeBorders,
-                        borderWidth: 1
-                    }]
-                },
-                options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: '依頼内容の割合' } } }
-            };
-
-            let requestRatioChartInstance = null;
-            let allHistoryData = [];
-
-            function renderHistory() {
-                const historyListContainer = document.getElementById('history-list-container');
-                if (!historyListContainer) return;
-                historyListContainer.innerHTML = '';
-                const itemsToRender = allHistoryData.slice(0, 3);
-                itemsToRender.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'history-item';
-                    itemDiv.innerHTML = `<div class="flex-grow"><p class="title">${item.title}</p><p class="artist">${item.artist}</p></div><div class="text-right"><p class="date">${item.date}</p><p class="type">${item.type}</p></div>`;
-                    historyListContainer.appendChild(itemDiv);
-                });
-            }
-
-            function parseCsvAndRenderCharts(csvText) {
-                const lines = csvText.trim().split('\n');
-                const dataRows = lines.slice(1);
-                const parsedData = dataRows.map(line => {
-                    const values = line.split(',');
-                    return values.length >= 10 ? {
-                        client: (values[0] || '').trim(), title: (values[1] || '').trim(),
-                        releaseDate: (values[2] || '').trim(), requestContent: (values[3] || '').trim(),
-                        cgUsageCol4: (values[4] || '').trim(), link: (values[5] || '').trim(),
-                        cgUsageCol9: (values[9] || '').trim()
-                    } : null;
-                }).filter(Boolean);
-
-                const requestCounts = { 'オリジナル楽曲MV制作': 0, '歌ってみたMV制作': 0, 'ショートムービー制作': 0, 'その他': 0};
-                parsedData.forEach(item => {
-                    if (requestCounts.hasOwnProperty(item.requestContent)) {
-                        requestCounts[item.requestContent]++;
-                    } else { requestCounts['その他']++; }
-                });
-
-                const requestChartCanvas = document.getElementById('requestRatioChart');
-                if (requestChartCanvas) {
-                    const observer = new IntersectionObserver((entries) => {
-                        if (entries[0].isIntersecting) {
-                            if (requestRatioChartInstance) requestRatioChartInstance.destroy();
-                            const requestData = [requestCounts['オリジナル楽曲MV制作'], requestCounts['歌ってみたMV制作'], requestCounts['ショートムービー制作'], requestCounts['その他']];
-                            requestRatioChartConfig.data.datasets[0].data = requestData;
-                            requestRatioChartInstance = new Chart(requestChartCanvas, requestRatioChartConfig);
-                            observer.disconnect();
-                        }
-                    }, { threshold: 0.5 });
-                    observer.observe(requestChartCanvas);
-                }
-
-                allHistoryData = parsedData.map(item => ({
-                    artist: item.client, title: item.title, date: item.releaseDate, type: item.requestContent
-                })).sort((a, b) => new Date(b.date) - new Date(a.date));
-                renderHistory();
-            }
-
-            async function loadCsvData() {
-                try {
-                    const response = await fetch('utugi_works - _.csv');
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const csvText = await response.text();
-                    parseCsvAndRenderCharts(csvText);
-                } catch (error) {
-                    console.error('CSVデータの読み込みまたはパース中にエラーが発生しました:', error);
-                    const dataSection = document.getElementById('data');
-                    if (dataSection) {
-                        const errorMessage = document.createElement('p');
-                        errorMessage.className = 'text-center text-red-500 mt-4';
-                        errorMessage.textContent = 'データ表示に失敗しました。';
-                        dataSection.querySelector('.container').appendChild(errorMessage);
-                    }
-                }
-            }
-
-            loadCsvData();
-        }
-    });
-    </script>
 </body>
 </html>
-
