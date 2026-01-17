@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function assetLoaded() {
             loadedCount++;
-            const percentage = totalAssets > 0 ? Math.round((loadedCount / totalAssets) * 100) : 100;
+            const percentage = Math.min(100, totalAssets > 0 ? Math.round((loadedCount / totalAssets) * 100) : 100);
             progressBar.style.width = percentage + '%';
             percentageText.textContent = percentage + '%';
 
@@ -151,19 +151,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         assets.forEach(asset => {
+            let hasLoaded = false;
+            const onAssetComplete = () => {
+                if (hasLoaded) return;
+                hasLoaded = true;
+                assetLoaded();
+            };
+
             if (asset.tagName.toLowerCase() === 'img') {
                 if (asset.complete) {
-                    assetLoaded();
+                    onAssetComplete();
                 } else {
-                    asset.onload = assetLoaded;
-                    asset.onerror = assetLoaded;
+                    asset.addEventListener('load', onAssetComplete, { once: true });
+                    asset.addEventListener('error', onAssetComplete, { once: true });
                 }
             } else if (asset.tagName.toLowerCase() === 'video') {
                 if (asset.readyState >= 3) {
-                    assetLoaded();
+                    onAssetComplete();
                 } else {
-                    asset.oncanplaythrough = assetLoaded;
-                    asset.onerror = assetLoaded;
+                    asset.addEventListener('canplaythrough', onAssetComplete, { once: true });
+                    asset.addEventListener('error', onAssetComplete, { once: true });
                 }
             }
         });
