@@ -44,23 +44,43 @@
             <div class="text-center mb-12 sm:mb-16">
                 <span class="section-title-line mb-4 sm:mb-6"></span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 section-main-title">
-                    <span class="first-letter">H</span><span class="rest-of-title">istory</span>
+                    <span class="first-letter">W</span><span class="rest-of-title">orks</span>
                 </h2>
-                <p class="text-gray-600 text-base sm:text-lg mt-2">すべての実績記録</p>
+                <p class="text-gray-600 text-base sm:text-lg mt-2">実績記録</p>
                 <span class="section-title-line mt-4 sm:mt-6"></span>
+                <!-- YouTubeプレイリストリンク -->
+                <div class="mt-6">
+                    <a href="https://www.youtube.com/playlist?list=PLbNq05L8kMQtjO3HJi5AIhOHNKyNDGAkP" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-red-600 hover:text-red-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span class="text-sm font-medium underline">携わった動画を見る (YouTubeプレイリスト)</span>
+                    </a>
+                </div>
             </div>
 
             <div class="data-area-block max-w-3xl mx-auto">
-                <div class="text-center mb-6">
-                    <a href="https://www.youtube.com/playlist?list=PLbNq05L8kMQtjO3HJi5AIhOHNKyNDGAkP" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="-ml-0.5 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        携わった動画 (YouTubeプレイリスト)
-                    </a>
+                <!-- フィルターセクション -->
+                <div class="mb-8">
+                    <!-- 並び替えと全選択ボタン -->
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-300">
+                        <button id="sort-toggle" class="text-sm text-gray-700 hover:text-gray-900 font-medium underline">
+                            ▼ 新しい順
+                        </button>
+                        <button class="filter-all-button" data-category="all">すべて選択/解除</button>
+                    </div>
+                    <!-- カテゴリータグ -->
+                    <div class="flex flex-wrap gap-2 justify-center mb-2">
+                        <button class="filter-tag" data-category="オリジナル楽曲MV制作">オリジナル楽曲MV</button>
+                        <button class="filter-tag" data-category="歌ってみたMV制作">歌ってみたMV</button>
+                        <button class="filter-tag" data-category="ショートムービー制作">ショートムービー</button>
+                        <button class="filter-tag" data-category="その他">その他</button>
+                    </div>
+                    <div class="text-center text-sm text-gray-600">
+                        <p>クリックで複数選択可能</p>
+                    </div>
                 </div>
-                <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">すべての実績</h3>
+
                 <div id="full-history-list-container" class="space-y-2">
                     <!-- CSVから読み込まれたすべての履歴データがここに表示されます -->
                 </div>
@@ -108,32 +128,143 @@
             }
 
             const fullHistoryListContainer = document.getElementById('full-history-list-container');
+            let allHistoryData = []; // 全データを保持
+            const activeFilters = new Set(); // アクティブなフィルター
+            let isDescending = true; // 降順フラグ
+            const knownCategories = ['オリジナル楽曲MV制作', '歌ってみたMV制作', 'ショートムービー制作'];
+
+            // 並び替えボタンのイベントリスナー
+            const sortToggleButton = document.getElementById('sort-toggle');
+            sortToggleButton.addEventListener('click', function() {
+                isDescending = !isDescending;
+                this.textContent = isDescending ? '▼ 新しい順' : '▲ 古い順';
+                renderFullHistory(filterData(allHistoryData));
+            });
+
+            // フィルターボタンのイベントリスナー
+            document.querySelectorAll('.filter-tag, .filter-all-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    if (category === 'all') {
+                        // 「すべて選択/解除」ボタンの動作
+                        const allButton = this;
+                        const categoryButtons = document.querySelectorAll('.filter-tag');
+                        
+                        if (allButton.classList.contains('active')) {
+                            // 全解除
+                            activeFilters.clear();
+                            allButton.classList.remove('active');
+                            categoryButtons.forEach(btn => btn.classList.remove('active'));
+                        } else {
+                            // 全選択
+                            activeFilters.clear();
+                            categoryButtons.forEach(btn => {
+                                const cat = btn.dataset.category;
+                                activeFilters.add(cat);
+                                btn.classList.add('active');
+                            });
+                            allButton.classList.add('active');
+                        }
+                    } else {
+                        // 個別カテゴリーの選択
+                        const allButton = document.querySelector('[data-category="all"]');
+                        
+                        if (activeFilters.has(category)) {
+                            activeFilters.delete(category);
+                            this.classList.remove('active');
+                        } else {
+                            activeFilters.add(category);
+                            this.classList.add('active');
+                        }
+                        
+                        // すべてのカテゴリーが選択されているかチェック
+                        const categoryButtons = document.querySelectorAll('.filter-tag');
+                        const allSelected = Array.from(categoryButtons).every(btn => btn.classList.contains('active'));
+                        
+                        if (allSelected) {
+                            allButton.classList.add('active');
+                        } else {
+                            allButton.classList.remove('active');
+                        }
+                    }
+                    
+                    // フィルタリングして再描画
+                    renderFullHistory(filterData(allHistoryData));
+                });
+            });
+
+            // データをフィルタリングする関数
+            function filterData(data) {
+                if (activeFilters.size === 0) {
+                    return data; // 何も選択されていない場合は全て表示
+                }
+                return data.filter(item => {
+                    // 「その他」が選択されている場合、既知のカテゴリー以外も含める
+                    if (activeFilters.has('その他') && !knownCategories.includes(item.type)) {
+                        return true;
+                    }
+                    return activeFilters.has(item.type);
+                });
+            }
 
             // 履歴リストをレンダリングする関数 (全件表示用)
             function renderFullHistory(historyData) {
                 if (!fullHistoryListContainer) return;
                 fullHistoryListContainer.innerHTML = ''; // 既存の内容をクリア
 
-                historyData.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'history-item';
+                // ソート処理
+                const sortedData = [...historyData].sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return isDescending ? dateB - dateA : dateA - dateB;
+                });
 
-                    // リンクが存在する場合はaタグを、存在しない場合はpタグを生成
-                    const titleElement = item.link
-                        ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="title">${item.title}</a>`
-                        : `<p class="title">${item.title}</p>`;
+                // 年ごとにグループ化
+                const groupedByYear = {};
+                sortedData.forEach(item => {
+                    const year = item.date.substring(0, 4); // 日付から年を取得
+                    if (!groupedByYear[year]) {
+                        groupedByYear[year] = [];
+                    }
+                    groupedByYear[year].push(item);
+                });
 
-                    itemDiv.innerHTML = `
-                        <div class="flex-grow">
-                            ${titleElement}
-                            <p class="artist">${item.artist}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="date">${item.date}</p>
-                            <p class="type">${item.type}</p>
-                        </div>
-                    `;
-                    fullHistoryListContainer.appendChild(itemDiv);
+                // 年をソート
+                const years = Object.keys(groupedByYear).sort((a, b) => isDescending ? b - a : a - b);
+
+                years.forEach((year, index) => {
+                    // 年の見出しを追加
+                    const yearHeading = document.createElement('h4');
+                    // 最初の年以外には上に余白を追加
+                    const marginTop = index === 0 ? 'mt-0' : 'mt-16';
+                    yearHeading.className = `text-xl font-bold text-gray-700 ${marginTop} mb-4 pb-2 border-b-2 border-gray-300`;
+                    yearHeading.textContent = `${year}年`;
+                    yearHeading.style.paddingTop = index === 0 ? '0' : '3rem'; // 48px
+                    fullHistoryListContainer.appendChild(yearHeading);
+
+                    // その年の履歴アイテムを追加
+                    groupedByYear[year].forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'history-item';
+
+                        // リンクが存在する場合はaタグを、存在しない場合はpタグを生成
+                        const titleElement = item.link
+                            ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="title">${item.title}</a>`
+                            : `<p class="title">${item.title}</p>`;
+
+                        itemDiv.innerHTML = `
+                            <div class="flex-grow">
+                                ${titleElement}
+                                <p class="artist">${item.artist}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="date">${item.date}</p>
+                                <p class="type">${item.type}</p>
+                            </div>
+                        `;
+                        fullHistoryListContainer.appendChild(itemDiv);
+                    });
                 });
             }
 
@@ -159,7 +290,7 @@
                 });
 
                 // 履歴リスト用のデータを準備してソート (新しい日付が先頭に来るように)
-                const allHistoryData = parsedData.map(item => ({
+                allHistoryData = parsedData.map(item => ({
                     artist: item.client,
                     title: item.title,
                     date: item.releaseDate,
@@ -173,7 +304,7 @@
             // CSVデータをロードする関数
             async function loadCsvData() {
                 try {
-                    const response = await fetch('utugi_works - _.csv');
+                    const response = await fetch('data/utugi_works.csv');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }

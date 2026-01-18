@@ -181,7 +181,7 @@
                     </div> -->
 
                     <div class="data-area-block max-w-3xl mx-auto">
-                        <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">History</h3>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">実績記録</h3>
                         <div id="history-list-container" class="space-y-2">
                         </div>
                         <div class="text-center mt-6">
@@ -238,6 +238,9 @@
                             
                             <!-- メール本文の最初に表示される見出し（Formspree用） -->
                             <input type="hidden" name="依頼内容詳細" value="---">
+                            
+                            <!-- 返信用コピペテキスト（メールの最後に表示） -->
+                            <textarea name="返信用・依頼内容まとめ" id="copy-paste-summary" style="display:none;"></textarea>
 
                             <div class="mb-4">
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">お名前<span class="text-red-600 font-semibold text-xs ml-1">*</span></label>

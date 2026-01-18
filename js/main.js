@@ -105,12 +105,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Create all galleries first (using data from galleryData.js)
+    // ギャラリーの読み込み状態を管理
+    const galleryLoadState = {
+        lyric: false,
+        '3dcg': false,
+        graphics: false,
+        logo: false,
+        independent: false
+    };
+
+    // 最初のギャラリー（Lyric Motion）のみを作成
     populateGallery('lyric-grid-items-container', galleryData.lyricMotion.pathPrefix, galleryData.lyricMotion.items);
-    populateGallery('3dcg-grid-items-container', galleryData.cgItems.pathPrefix, galleryData.cgItems.items);
-    populateGallery('graphics-grid-items-container', galleryData.motionGraphics.pathPrefix, galleryData.motionGraphics.items);
-    populateGallery('logo-grid-items-container', galleryData.logoDesign.pathPrefix, galleryData.logoDesign.items);
-    populateGallery('independent-grid-items-container', galleryData.independentProduction.pathPrefix, galleryData.independentProduction.items);
+    galleryLoadState.lyric = true;
 
     // Loading screen control
     const loadingOverlay = document.getElementById('loading-overlay');
@@ -122,10 +128,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Wait for DOM update before getting assets
     setTimeout(() => {
-        const assets = Array.from(document.querySelectorAll('img, video')).filter(el => {
+        // 最初のギャラリー（Lyric Motion）のアセットのみを取得
+        const container = document.getElementById('lyric-grid-items-container');
+        const assets = container ? Array.from(container.querySelectorAll('img, video')).filter(el => {
             const src = el.src || el.currentSrc;
             return src && !src.includes('placehold.co');
-        });
+        }) : [];
 
         startLoadingProcess(assets);
     }, CONFIG.LOADING.DOM_UPDATE_DELAY);
@@ -186,6 +194,66 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.style.overflow = 'auto';
 
         initializeApp();
+
+        // ローディング完了後、バックグラウンドで他のギャラリーを読み込む
+        setTimeout(() => {
+            loadRemainingGalleries();
+        }, 500);
+    }
+
+    // 残りのギャラリーをバックグラウンドで読み込む
+    function loadRemainingGalleries() {
+        const galleriesConfig = [
+            { id: '3dcg', containerId: '3dcg-grid-items-container', data: galleryData.cgItems },
+            { id: 'graphics', containerId: 'graphics-grid-items-container', data: galleryData.motionGraphics },
+            { id: 'logo', containerId: 'logo-grid-items-container', data: galleryData.logoDesign },
+            { id: 'independent', containerId: 'independent-grid-items-container', data: galleryData.independentProduction }
+        ];
+
+        galleriesConfig.forEach((gallery, index) => {
+            setTimeout(() => {
+                if (!galleryLoadState[gallery.id]) {
+                    populateGallery(gallery.containerId, gallery.data.pathPrefix, gallery.data.items);
+                    galleryLoadState[gallery.id] = true;
+                }
+            }, index * 300); // 各ギャラリーを300ms間隔で読み込み
+        });
+    }
+
+    // ギャラリーをオンデマンドで読み込む関数
+    function ensureGalleryLoaded(tabName, callback) {
+        const galleryMap = {
+            'lyric': { containerId: 'lyric-grid-items-container', data: galleryData.lyricMotion },
+            '3dcg': { containerId: '3dcg-grid-items-container', data: galleryData.cgItems },
+            'graphics': { containerId: 'graphics-grid-items-container', data: galleryData.motionGraphics },
+            'logo': { containerId: 'logo-grid-items-container', data: galleryData.logoDesign },
+            'independent': { containerId: 'independent-grid-items-container', data: galleryData.independentProduction }
+        };
+
+        const gallery = galleryMap[tabName];
+        if (!gallery) {
+            if (callback) callback();
+            return;
+        }
+
+        if (galleryLoadState[tabName]) {
+            // すでに読み込み済み
+            if (callback) callback();
+        } else {
+            // まだ読み込んでいない場合、ローディングを表示
+            const container = document.getElementById(gallery.containerId);
+            if (container) {
+                // ローディングスピナーを表示
+                container.innerHTML = '<div class="flex items-center justify-center h-64"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>';
+            }
+
+            // ギャラリーを読み込み
+            setTimeout(() => {
+                populateGallery(gallery.containerId, gallery.data.pathPrefix, gallery.data.items);
+                galleryLoadState[tabName] = true;
+                if (callback) callback();
+            }, 100);
+        }
     }
 
     // Main initialization
@@ -363,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             subjectInput.value = `【${nameInput.value || '名前未入力'}, ${budgetInput.value || '予算未入力'}】ホームページから依頼が入りました。`;
+            
             confirmName.textContent = nameInput.value || '未入力';
             confirmDetails.textContent = detailsInput.value || '未入力';
             confirmBudget.textContent = budgetInput.value || '未入力';
@@ -376,6 +445,24 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // リファレンスの表示を更新（ラジオボタン対応）
             const selectedReference = Array.from(referenceInputs).find(input => input.checked);
+            
+            // コピペ用テキストを生成
+            const copyPasteSummary = document.getElementById('copy-paste-summary');
+            const summaryText = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+■ ご依頼内容: ${detailsInput.value || '未入力'}
+■ ご予算: ${budgetInput.value || '未入力'}
+■ CGの使用度合い: ${selectedCgUsage ? selectedCgUsage.value : '未選択'}
+■ 納期: ${deliveryDateInput.value || '未入力'}
+■ 曲尺: ${songLengthInput.value || '未入力'}
+■ リファレンス: ${selectedReference && selectedReference.value === 'あり' ? '\n' + (referenceInput.value || '未入力') : (selectedReference ? selectedReference.value : '未選択')}
+■ 活動アカウント: ${accountInput.value || '未入力'}
+■ その他: ${otherNotesInput.value || '特になし'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`;
+            copyPasteSummary.value = summaryText;
             if (selectedReference && selectedReference.value === 'あり') {
                 confirmReference.textContent = referenceInput.value || '未入力';
             } else if (selectedReference) {
@@ -440,12 +527,16 @@ document.addEventListener('DOMContentLoaded', function () {
         function updateTabs(newIndex) {
             if (newIndex < 0 || newIndex >= tabButtons.length) return;
             const oldTabId = tabButtons[currentTabIndex].dataset.tab;
-            document.getElementById(oldTabId + '-content').classList.remove(CSS_CLASSES.ACTIVE);
-            tabButtons[currentTabIndex].classList.remove(CSS_CLASSES.ACTIVE_TAB);
-            currentTabIndex = newIndex;
-            const newTabId = tabButtons[currentTabIndex].dataset.tab;
-            document.getElementById(newTabId + '-content').classList.add(CSS_CLASSES.ACTIVE);
-            tabButtons[currentTabIndex].classList.add(CSS_CLASSES.ACTIVE_TAB);
+            const newTabId = tabButtons[newIndex].dataset.tab;
+            
+            // 新しいタブのギャラリーを確実に読み込む
+            ensureGalleryLoaded(newTabId, () => {
+                document.getElementById(oldTabId + '-content').classList.remove(CSS_CLASSES.ACTIVE);
+                tabButtons[currentTabIndex].classList.remove(CSS_CLASSES.ACTIVE_TAB);
+                currentTabIndex = newIndex;
+                document.getElementById(newTabId + '-content').classList.add(CSS_CLASSES.ACTIVE);
+                tabButtons[currentTabIndex].classList.add(CSS_CLASSES.ACTIVE_TAB);
+            });
         }
 
         tabButtons.forEach((button, index) => button.addEventListener('click', () => updateTabs(index)));
