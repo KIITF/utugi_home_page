@@ -298,6 +298,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const cgUsageInputs = document.querySelectorAll('input[name="CGの使用度合い"]');
         const deliveryDateInput = document.getElementById('delivery-date');
         const songLengthInput = document.getElementById('song-length');
+        const illustrationInputs = document.querySelectorAll('input[name="イラストの有無"]');
+        const illustrationDetails = document.getElementById('illustration-details');
+        const illustrationInput = document.getElementById('illustration');
         const referenceInputs = document.querySelectorAll('input[name="リファレンス有無"]');
         const referenceDetails = document.getElementById('reference-details');
         const referenceInput = document.getElementById('reference');
@@ -309,9 +312,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const confirmName = document.getElementById('confirm-name');
         const confirmDetails = document.getElementById('confirm-consultation-details');
         const confirmBudget = document.getElementById('confirm-budget');
+        const confirmDepositAgreement = document.getElementById('confirm-deposit-agreement');
         const confirmCgUsage = document.getElementById('confirm-cg-usage');
         const confirmDeliveryDate = document.getElementById('confirm-delivery-date');
         const confirmSongLength = document.getElementById('confirm-song-length');
+        const confirmIllustration = document.getElementById('confirm-illustration');
         const confirmReference = document.getElementById('confirm-reference');
         const confirmEmail = document.getElementById('confirm-email');
         const confirmAccount = document.getElementById('confirm-account');
@@ -355,6 +360,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // CGの使用度合いとリファレンス有無のラジオボタンに適用
         makeRadioDeselectable(cgUsageInputs);
         makeRadioDeselectable(referenceInputs);
+        makeRadioDeselectable(illustrationInputs);
+
+        // イラスト選択の表示切り替え（ラジオボタン対応）
+        if (illustrationInputs.length > 0 && illustrationDetails) {
+            illustrationInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    if (this.checked && this.value === 'あり') {
+                        illustrationDetails.style.display = 'block';
+                    } else {
+                        illustrationDetails.style.display = 'none';
+                        illustrationInput.value = '';
+                    }
+                });
+            });
+        }
 
         // リファレンス選択の表示切り替え（ラジオボタン対応）
         if (referenceInputs.length > 0 && referenceDetails) {
@@ -377,12 +397,19 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // ラジオボタンのバリデーションチェック
             const cgUsageChecked = Array.from(cgUsageInputs).some(input => input.checked);
+            const illustrationChecked = Array.from(illustrationInputs).some(input => input.checked);
             const referenceChecked = Array.from(referenceInputs).some(input => input.checked);
             
             if (!cgUsageChecked) {
                 cgUsageInputs[0].setCustomValidity('いずれかのオプションを選択してください');
             } else {
                 cgUsageInputs.forEach(input => input.setCustomValidity(''));
+            }
+            
+            if (!illustrationChecked) {
+                illustrationInputs[0].setCustomValidity('いずれかのオプションを選択してください');
+            } else {
+                illustrationInputs.forEach(input => input.setCustomValidity(''));
             }
             
             if (!referenceChecked) {
@@ -436,6 +463,12 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmDetails.textContent = detailsInput.value || '未入力';
             confirmBudget.textContent = budgetInput.value || '未入力';
             
+            // 手付金についての確認
+            const depositCheckbox = document.getElementById('deposit-agreement');
+            if (confirmDepositAgreement) {
+                confirmDepositAgreement.textContent = depositCheckbox && depositCheckbox.checked ? '同意する' : '未選択';
+            }
+            
             // CGの使用度合い（ラジオボタン対応）
             const selectedCgUsage = Array.from(cgUsageInputs).find(input => input.checked);
             confirmCgUsage.textContent = selectedCgUsage ? selectedCgUsage.value : '未選択';
@@ -448,21 +481,40 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // コピペ用テキストを生成
             const copyPasteSummary = document.getElementById('copy-paste-summary');
+            const selectedIllustration = Array.from(illustrationInputs).find(input => input.checked);
             const summaryText = `
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ■ ご依頼内容: ${detailsInput.value || '未入力'}
 ■ ご予算: ${budgetInput.value || '未入力'}
+■ 手付金の同意: ${depositCheckbox && depositCheckbox.checked ? '同意する' : '未選択'}
 ■ CGの使用度合い: ${selectedCgUsage ? selectedCgUsage.value : '未選択'}
 ■ 納期: ${deliveryDateInput.value || '未入力'}
 ■ 曲尺: ${songLengthInput.value || '未入力'}
+■ イラストの有無: ${selectedIllustration && selectedIllustration.value === 'あり' ? '\n' + (illustrationInput.value || '未入力') : (selectedIllustration ? selectedIllustration.value : '未選択')}
 ■ リファレンス: ${selectedReference && selectedReference.value === 'あり' ? '\n' + (referenceInput.value || '未入力') : (selectedReference ? selectedReference.value : '未選択')}
 ■ 活動アカウント: ${accountInput.value || '未入力'}
 ■ その他: ${otherNotesInput.value || '特になし'}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
             copyPasteSummary.value = summaryText;
+            
+            // イラストの有無の表示を更新
+            if (selectedIllustration && selectedIllustration.value === 'あり') {
+                if (confirmIllustration) {
+                    confirmIllustration.textContent = illustrationInput.value || '未入力';
+                }
+            } else if (selectedIllustration) {
+                if (confirmIllustration) {
+                    confirmIllustration.textContent = selectedIllustration.value;
+                }
+            } else {
+                if (confirmIllustration) {
+                    confirmIllustration.textContent = '未入力';
+                }
+            }
+            
             if (selectedReference && selectedReference.value === 'あり') {
                 confirmReference.textContent = referenceInput.value || '未入力';
             } else if (selectedReference) {
