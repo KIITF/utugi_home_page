@@ -28,10 +28,10 @@ const galleryData = {
         pathPrefix: 'resources/motion_graphics/',
         items: [
             { type: 'video', fileName: 'self_251010_design.mp4', altText: '【自主制作】2025/10/10', link: 'https://x.com/utugi313/status/1976560485433819197?s=20', cells: [1, 6] },
-            { type: 'video', fileName: 'self_251026.mp4', altText: '【自主制作】2025/10/26', link: 'https://x.com/utugi313/status/1982295977202786499?s=20', cells: [2, 3] },
+            { type: 'video', fileName: 'self_251026.mp4', altText: '【自主制作】2025/10/26', link: 'https://x.com/utugi313/status/1982295977202786499?s=20', cells: [11] },
             { type: 'video', fileName: 'self_251103.mp4', altText: '【自主創作】2025/11/03', link: 'https://x.com/utugi313/status/1985225430417178690?s=20', cells: [4, 5] },
             { type: 'video', fileName: 'ego_rock.mp4', altText: '【二次創作】エゴロック / すりぃ', link: 'https://www.youtube.com/watch?v=D4bpqkqgy8c', cells: [7, 8, 9, 12, 13, 14] },
-            { type: 'video', fileName: 'pastel.mp4', altText: 'パステル / urumeiwashi（cover）', link: 'https://www.youtube.com/watch?v=uyXaE3Z_G6Q', cells: [11] },
+            { type: 'video', fileName: 'kawaii_2.mp4', altText: '【自主創作】kawaii💛　2026', link: 'https://www.youtube.com/watch?v=6xQbyOZX6Ho', cells: [2, 3] },
             { type: 'video', fileName: 'self_251015_night.mp4', altText: '【自主制作】2025/10/15', link: 'https://x.com/utugi313/status/1978369480448147663?s=20', cells: [10, 15] }
         ]
     },
@@ -52,11 +52,11 @@ const galleryData = {
     independentProduction: {
         pathPrefix: 'resources/fan_fiction/',
         items: [
-            { type: 'video', fileName: 'sizumu.mp4', altText: '【二次創作】沈沈沈沈沈沈… / Ruliea', link: 'https://www.youtube.com/watch?v=l9WJpH_DePI', cells: [1, 2, 3, 6, 7, 8] },
+            { type: 'video', fileName: 'sizumu.mp4', altText: '【二次創作】沈沈沈沈沈沈… / Ruliea', link: 'https://www.youtube.com/watch?v=l9WJpH_DePI', cells: [11, 12] },
             { type: 'video', fileName: 'utsutsu.mp4', altText: '【二次創作】うつつと空の放送 / 凍傷のエト', link: 'https://www.youtube.com/watch?v=2PkiTNbfzeU', cells: [4, 5] },
-            { type: 'video', fileName: 'goodbye.mp4', altText: '【二次創作】グッバイ宣言 / Chinozo', link: 'https://www.youtube.com/watch?v=n9zThB7ibog', cells: [11, 12] },
-            { type: 'video', fileName: 'moumoku.mp4', altText: '【二次創作】盲目の怪物 / ひらぎ', link: 'https://www.youtube.com/watch?v=0Pli20EHCBw', cells: [9, 10, 14, 15] },
-            { type: 'video', fileName: 'tomadoi.mp4', altText: '【二次創作】戸惑いテレパシー / 花譜', link: 'https://www.youtube.com/watch?v=uE0-bkGXWRs', cells: [13] }
+            { type: 'video', fileName: 'tikyuuzinn.mp4', altText: '【二次創作】地球人です / SHOE', link: 'https://www.youtube.com/watch?v=0dwp3auEbOo', cells: [1, 2, 3, 6, 7, 8] },
+            { type: 'video', fileName: 'moumoku.mp4', altText: '【二次創作】盲目の怪物 / ひらぎ', link: 'https://www.youtube.com/watch?v=0Pli20EHCBw', cells: [13] },
+            { type: 'video', fileName: 'anatanokoto.mp4', altText: '【二次創作】あなたのことをおしえて / キタニタツヤ', link: 'https://youtu.be/C5WNpQ4Qkls?si=wWjJY2PNBH7Cn8aR', cells: [9, 10, 14, 15] }
         ]
     }
 };
