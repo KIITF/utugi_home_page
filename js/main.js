@@ -644,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const dataRows = lines.slice(1);
             const parsedData = dataRows.map(line => {
                 const values = line.split(',');
-                return values.length >= 10 ? {
+                return values.length >= 6 ? {
                     client: (values[0] || '').trim(), title: (values[1] || '').trim(),
                     releaseDate: (values[2] || '').trim(), requestContent: (values[3] || '').trim(),
                     cgUsageCol4: (values[4] || '').trim(), link: (values[5] || '').trim(),
